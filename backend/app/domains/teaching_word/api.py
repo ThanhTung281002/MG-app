@@ -5,7 +5,7 @@ from fastapi import APIRouter
 
 LOG_API = "3. API ENDPOINTS:"
 LOG_DOMAIN = "          2. DOMAIN LOGIC:"
-LOG_DATABASE = "                        3. DATABASE LOGIC:"
+LOG_DATABASE = "                        1. DATABASE LOGIC:"
 
 print("Vào domain/teaching-words/api.py")
 
@@ -68,10 +68,13 @@ def db_get_teaching_word(id):
     # 1. lấy tất cả lời dạy
     teaching_words = db_get_teaching_words_all()
 
-    # 2. Tìm lời dạy có id nhập vào 
-    
+    # 2. Tìm lời dạy có id nhập vào, và trả kết quả ngay nếu tìm thấy
+    for teaching_word in teaching_words: 
+        if teaching_word["id"] == id: 
+            return teaching_word
 
-    # 3. trả kết quả 
+    # 3. nếu không tìm thấy 
+    return None
 
 
 
@@ -193,6 +196,8 @@ def handle_get_teaching_word_reflection():
 
 
 def handle_get_teaching_word(id): 
+    print(f"{LOG_DOMAIN} vào hàm xử lí lấy teaching word có id: {id}")
+
     # 1. lấy hàm teaching word có id là id 
     teaching_word = db_get_teaching_word(id)
 
@@ -218,7 +223,53 @@ def handle_get_teaching_word(id):
 
 
 
+def handle_get_teaching_word_basic(id): 
+    print(f"{LOG_DOMAIN} vào hàm xử lí lấy lời dạy cơ bản có id: {id}")
 
+    ### 1. lấy lời dạy từ database 
+    teaching_word = db_get_teaching_word(id)
+
+    if not teaching_word: 
+        return {
+            "message": "Teaching word not found"
+        }
+
+    ### 2. Trả lại theo như response trong api contract 
+    ## 2.1 tạo dislay code 
+    display_code = generate_display_code_teaching_word(teaching_word)
+
+    return {
+        "id": teaching_word["id"],
+        "displayCode": display_code,
+        "title": teaching_word["title"]
+    }
+
+
+
+
+
+
+def handle_get_teaching_word_all_basic(): 
+    print(f"{LOG_DOMAIN} vào hàm xử lí lấy tất cả lời dạy mức basic")
+
+    ### 1. lấy tất cả lời dạy từ db 
+    teaching_words = db_get_teaching_words_all()
+    
+    ### 2. tạo một list các object mới mà chỉ có các field mới theo như response (id, display code (đã có hàm tạo displayCode từ một teaching_word object) và title thôi)
+    teaching_words_basic = []
+
+    for teaching_word in teaching_words: 
+        teaching_words_basic.append({
+            "id": teaching_word["id"],
+            "displayCode": generate_display_code_teaching_word(teaching_word),
+            "title": teaching_word["title"]
+        })
+
+
+    ### 3. return kết quả
+    return {
+        "teaching-words": teaching_words_basic
+    }
 
 
 
@@ -232,7 +283,15 @@ def handle_get_teaching_word(id):
 
 
 # ====================== 3. API ENDPOINTS =====================
-# NOTE: TẦNG VIẾT API, NHẬN REQUEST VÀ TRẢ RESPONSE VÀ SỬ DỤNG HÀM NGHIỆP VỤ CỦA TẦNG 2. DOMAIN LOGIC TRONG service.py 
+# NOTE: TẦNG VIẾT API, NHẬN REQUEST VÀ TRẢ RESPONSE VÀ SỬ DỤNG HÀM NGHIỆP VỤ CỦA TẦNG 2. DOMAIN LOGIC TRONG service.py
+@router.get("/teaching-words/{id}")
+def get_teaching_word(id: str): 
+    print(f"{LOG_API} vào get /teaching-words/{id}")
+
+    return handle_get_teaching_word(id)
+    
+
+
 @router.get("/teaching-words/reflection")
 def get_teaching_words_reflection(): 
     print(f"{LOG_API} vào get teaching words reflection")
@@ -243,15 +302,24 @@ def get_teaching_words_reflection():
 
 
 
-@router.get("/teaching-words/{id}")
-def get_teaching_word(id: str): 
-    print(f"{LOG_API} vào get /teaching-words/{id}")
-
-    return handle_get_teaching_word(id)
 
 
 
 
 
 
+@router.get("/teaching-words/basic/{id}")
+def get_teaching_word_basic(id: str):
+    print(f"{LOG_API} vào get /teaching-words/{id}/basic")
 
+    return handle_get_teaching_word_basic(id)
+
+
+
+
+
+@router.get("/teaching-words/basic")
+def get_teaching_word_all_basic():
+    print(f"{LOG_API} vào get /teaching-words/basic")
+
+    return handle_get_teaching_word_all_basic()

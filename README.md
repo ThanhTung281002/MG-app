@@ -231,6 +231,13 @@ Trả lời “không” cho cả 3 → module đang đúng
 ## API CONTRACT 
 > Note: Ở phần này thì phụ thuộc vào luồng người dùng và phân tách ra là hệ thống cần cung ứng gì cho người dùng. 
 
+> Quy tắc tạo URL: 
+> 1. Nhìn URL giống như cái mà lấy tài nguyên gì? Và cách xem nó như thế nào? Chứ không phải hành động. 
+> 2. Xem collections thì get /teaching-words và xem items get /teaching-words/:id 
+> 3. Và muốn tạo view thì đối với collection là get /teaching-words?view=basic 
+
+
+
 **Luồng và api sử dụng (liên hệ tới luồng được ghi ở trên để đọc và hình dung):**
 Luồng ban đầu: 
 1. POST /auth/signup ✅
@@ -484,7 +491,7 @@ Luồng của admin:
 
 
 
-### GET /teaching-words/:id 
+### GET /teaching-words/:id?view=full
 - Lấy nội dung đầy đủ của lời dạy có id trên. 
 
 
@@ -504,7 +511,7 @@ Luồng của admin:
 ```
 
 
-### GET /teaching-words/:id/basic
+### GET /teaching-words/:id?view=basic
 - lấy thông tin cơ của lời dạy như id, display code, title để hiển thị ở mục bối cảnh. 
 
 
@@ -526,7 +533,7 @@ Luồng của admin:
 
 
 
-### GET /teaching-words/basic
+### GET /teaching-words?view=basic
 - Chỉ lấy thông tin cơ bản như id, display code, và title của tất cả lời dạy để hiển thị và tìm kiếm ở FE. 
 
 **Request:**
@@ -629,66 +636,7 @@ Luồng của admin:
 ```
 
 
-
-### GET /life-lessons/:id 
-- Lấy nội dung đầy đủ của life lessons. 
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "title": "title of life lesson", 
-    "main-content": "main content of life lesson",
-    "reflection": "personal reflection of user"
-}
-```
-
-
-
-
-### PUT /life-lessons/:id/personal-reflection
-- Edit cho phần nhận biết cá nhân của bài học. 
-
-
-**Request:**
-```raw
-{
-    "reflection": "updating content of personal reflection"
-}
-```
-
-**Resonse:**
-```raw
-{
-    "updatedAt": "updated time"
-}
-```
-
-### GET /life-lessons/:id/basic
-- Chỉ lấy thông tin cơ bản như title để hiển thị ở bối cảnh. 
-
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "id": "id of life lesson",
-    "title": "title of life lesson"
-}
-```
-
-
-
-
-### GET /life-lesssons/basic
+### GET /life-lesssons?view=basic 
 - Chỉ lấy thông tin cơ bản như id và title của tất bài học để hiển thị ở mục tìm kiếm. 
 
 
@@ -714,9 +662,74 @@ Luồng của admin:
 
 
 
+### GET /life-lessons/:id?view=full
+- Lấy nội dung đầy đủ của life lessons. 
+
+**Request:**
+```raw
+{}
+```
+
+**Resonse:**
+```raw
+{
+    "title": "title of life lesson", 
+    "main-content": "main content of life lesson",
+    "reflection": "personal reflection of user"
+}
+```
 
 
-### GET /life-lessons/:id/main-content
+
+
+### PUT /life-lessons/:id?part=reflection
+- Edit cho phần nhận biết cá nhân của bài học. 
+
+
+
+**Request:**
+```raw
+{
+    "reflection": "updating content of personal reflection"
+}
+```
+
+**Resonse:**
+```raw
+{
+    "updatedAt": "updated time"
+}
+```
+
+### GET /life-lessons/:id?view=basic
+- Chỉ lấy thông tin cơ bản như title để hiển thị ở bối cảnh. 
+
+
+**Request:**
+```raw
+{}
+```
+
+**Resonse:**
+```raw
+{
+    "id": "id of life lesson",
+    "title": "title of life lesson"
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+### GET /life-lessons/:id?view=mainContent
 - Lấy title và nội dung khung của các bài học. 
 
 **Request:**
@@ -737,7 +750,9 @@ Luồng của admin:
 
 
 
-### PUT /life-lessons/:id/main-content
+
+
+### PUT /life-lessons/:id?part=mainContent
 - Chỉnh sửa nội dung khung của bài học. 
 
 
@@ -761,10 +776,13 @@ Luồng của admin:
 
 
 
+
+
+
 -------------------------------
 
 
-### GET /purposes/all
+### GET /purposes
 - lấy tất cả các mục đích mà bản thân mong muốn đạt được
 
 
@@ -791,7 +809,7 @@ Luồng của admin:
 
 
 
-### GET /purposes/:id
+### GET /purposes/:id?view=full
 - Lấy nội dung đầy đủ của purpose như title, hope. 
 
 
@@ -852,7 +870,7 @@ Luồng của admin:
 
 
 
-### GET /purposes/:id/basic
+### GET /purposes/:id?view=basic 
 - lấy nội dung cơ bản như title để hiển thị ở mục bối cảnh. 
 
 **Request:**
@@ -865,28 +883,6 @@ Luồng của admin:
 {
     "id": "id of purpose", 
     "title": "title of purpose"
-}
-```
-
-### GET /purposes/basic
-- Chỉ lấy thông tin cơ bản như id và title để hiển thị ở mục tìm kiếm khi gắn liên kết với thực thể khác thôi. 
-
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "purposes": [
-        {
-            "id": "id of purposes", 
-            "title": "title of purposes"
-        }, 
-        ...
-    ]
 }
 ```
 
@@ -927,7 +923,7 @@ Luồng của admin:
 
 
 -------------------------------
-### GET /purposes/:id/actions/all 
+### GET /purposes/:id/actions
 - lấy toàn bộ actions ứng với một purpose. 
 
 
@@ -1014,6 +1010,8 @@ Luồng của admin:
 
 
 
+
+
 -----------------------------------
 
 
@@ -1045,7 +1043,7 @@ Luồng của admin:
 
 
 
-### GET /notes/:id 
+### GET /notes/:id?view=full
 - Lấy nội dung đầy đủ của note. 
 
 **Request:**
@@ -1102,7 +1100,7 @@ Luồng của admin:
 
 
 
-### GET /notes/:id/basic 
+### GET /notes/:id?view=basic
 - Lấy ở mức cơ bản để hiển thị như display code và title 
 
 **Request:**
@@ -1157,7 +1155,7 @@ Luồng của admin:
 }
 ```
 
-### GET /notes/basic
+### GET /notes?view=basic
 - Chỉ lấy thông tin cơ bản như id và title để hiển thị ở mục tìm kiếm khi gắn liên kết với thực thể khác thôi. 
 
 
@@ -1216,7 +1214,7 @@ Luồng của admin:
 
 
 
-### PUT /admin/pending-users/:id/approve
+### PUT /admin/pending-users/:id?action=approve
 - Duyệt thành viên từ, đổi status từ "pending" lên "approved". 
 
 
@@ -1237,7 +1235,7 @@ Luồng của admin:
 
 
 
-### PUT /admin/pending-users/:id/reject
+### PUT /admin/pending-users/:id?action=reject
 - Xóa thành viên không hợp lệ. 
 - Xóa đây không phải là xóa vật lí mà là vô hiệu hóa, tức là đổi status thành rejected. 
 
