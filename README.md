@@ -235,6 +235,7 @@ Trả lời “không” cho cả 3 → module đang đúng
 > 1. Nhìn URL giống như cái mà lấy tài nguyên gì? Và cách xem nó như thế nào? Chứ không phải hành động. 
 > 2. Xem collections thì get /teaching-words và xem items get /teaching-words/:id 
 > 3. Và muốn tạo view thì đối với collection là get /teaching-words?view=basic 
+> 4. Viết static trước, dynamic sau, đối với cùng thứ tự /1/2/3/4 trong url. 
 
 > Nguyên lí Backend đọc url: 
 > 1. Đọc method trước rồi tới path sau. 
@@ -684,7 +685,7 @@ Luồng của admin:
 
 
 
-### PUT /life-lessons/:id?part=reflection
+### PUT /life-lessons/:id?view=reflection
 - Edit cho phần nhận biết cá nhân của bài học. 
 
 
@@ -754,7 +755,7 @@ Luồng của admin:
 
 
 
-### PUT /life-lessons/:id?part=mainContent
+### PUT /life-lessons/:id?view=mainContent
 - Chỉnh sửa nội dung khung của bài học. 
 
 
@@ -1216,7 +1217,7 @@ Luồng của admin:
 
 
 
-### PUT /admin/pending-users/:id?action=approve
+### PUT /admin/pending-users/:id/approve
 - Duyệt thành viên từ, đổi status từ "pending" lên "approved". 
 
 
@@ -1237,7 +1238,7 @@ Luồng của admin:
 
 
 
-### PUT /admin/pending-users/:id?action=reject
+### PUT /admin/pending-users/:id/reject
 - Xóa thành viên không hợp lệ. 
 - Xóa đây không phải là xóa vật lí mà là vô hiệu hóa, tức là đổi status thành rejected. 
 
