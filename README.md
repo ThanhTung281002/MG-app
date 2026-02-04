@@ -4,6 +4,8 @@ Dự án làm việc mà dựa theo mục đích và ino với HA để xác đ�
 Dự án làm việc theo mục đích, xong hay chưa thì sẽ do 1 người độc lập quyết định. Sẽ có các câu châm ngôn (phương hướng làm việc trong tuần) hiện ra mỗi khi vào. Và lúc vào thì sẽ có mục để ghi chép những câu chuyện xảy ra, hoặc các điều xảy tới nhưng chưa biết ý nghĩa là gì?. Và hiển thị phần trăm việc đang làm. 
 
 
+Kiến trúc làm: modular monolith
+
 
 ## Phân tích dự án: 
 ### Triết lí của hệ thống: 
