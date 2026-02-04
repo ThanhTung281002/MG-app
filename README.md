@@ -236,6 +236,8 @@ Trả lời “không” cho cả 3 → module đang đúng
 > 2. Xem collections thì get /teaching-words và xem items get /teaching-words/:id 
 > 3. Và muốn tạo view thì đối với collection là get /teaching-words?view=basic 
 
+> Nguyên lí Backend đọc url: 
+> 1. Đọc method trước rồi tới path sau. 
 
 
 **Luồng và api sử dụng (liên hệ tới luồng được ghi ở trên để đọc và hình dung):**
