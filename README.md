@@ -484,10 +484,12 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "id": "id of teaching word", 
-    "displayCode": "display code of teaching word",
-    "title": "title of teaching words at this week", 
-    "content": "content of teaching at this week"
+    teachingWord: {
+        "id": "id of teaching word", 
+        "displayCode": "display code of teaching word",
+        "title": "title of teaching words at this week", 
+        "content": "content of teaching at this week"
+    } | null,
 }
 ```
 
@@ -573,7 +575,7 @@ Luồng của admin:
 }
 ```
 
-> Câu hỏi ❓: ở phần date thì có cần tách riêng ra ngày, tháng năm không? hay là ở dạng "01/02/2026" (ví dụ ngày hôm nay). 
+> Note: Phần date thì ghi ở dạng 22/01/2026 (ví dụ) rồi BE tự động tách ra và ghi vào DB. day/month/year    
 
 
 **Resonse:**
