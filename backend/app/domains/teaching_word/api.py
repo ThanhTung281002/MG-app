@@ -144,6 +144,32 @@ class DomainError(Exception):
     pass
 
 
+def tw_validate_title(title: str) -> bool:
+    if title is None:
+        return False
+    
+    # Trim and ensure at least 3 characters remain
+    return len(title.strip()) >= 3
+
+
+def tw_validate_content(content: str) -> bool:
+    if content is None:
+        return False
+    
+    # Trim and ensure at least 50 characters remain
+    return len(content.strip()) >= 50
+
+
+def tw_validate_date(date: str) -> bool:
+    if date is None:
+        return False
+    try:
+        datetime.strptime(date, "%d/%m/%Y")
+        return True
+    except ValueError:
+        return False
+
+
 
 def get_current_year_and_week(): 
     # tách từ now 
@@ -200,6 +226,19 @@ def generate_display_code_teaching_word(teaching_word):
 
     # 3. return result string 
     return result
+
+
+
+def tw_validate_title(title): 
+    
+
+
+
+def tw_validate_content(content):
+
+
+
+def tw_validate_date(date):
     
 
 
@@ -457,7 +496,8 @@ def handle_put_teaching_words(id, title, content, date):
 def get_teaching_words_reflection(): 
     print(f"{LOG_API} vào get /teaching-words/reflection")
 
-    return handle_get_teaching_word_reflection()
+    try: 
+        return handle_get_teaching_word_reflection()
 
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
@@ -475,17 +515,20 @@ def get_teaching_word(
 
     print(f"{LOG_API} vào get /teaching-words/:id, id: {id}")
 
-    ### 1. nếu view basic thì handle get teaching word basic 
-    if view == "basic":
-        return handle_get_teaching_word_basic(id)
     
-    ### 2. nếu view full thì handle get teaching word full
-    if view == "full": 
-        return handle_get_teaching_word_full(id)
+    try: 
+        ### 1. nếu view basic thì handle get teaching word basic 
+        if view == "basic":
+            return handle_get_teaching_word_basic(id)
+    
+        ### 2. nếu view full thì handle get teaching word full
+        if view == "full": 
+            return handle_get_teaching_word_full(id)
 
-    return {
-        "message": "Invalid view type"
-    }
+        return {
+            "message": "Invalid view type"
+        }
+
 
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
@@ -499,18 +542,13 @@ def get_teaching_word(
 
 @router.get("/teaching-words")
 def get_teaching_words_basic(
-    view: str = Query(default="full")
+    view: str = Query(default="basic") 
     ):
 
     print(f"{LOG_API} vào get /teaching-words")
 
-    if view == "basic":
+    try: 
         return handle_get_teaching_words_all_basic()
-
-    ### suy nghĩ lại về phần này. 
-    return {
-        "message": "Invalid view type"
-    }
 
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
@@ -536,10 +574,11 @@ class teachingWordRequest(BaseModel):
 def post_teaching_words(request: teachingWordRequest):
     print(f"{LOG_API} vào post /teaching-words có request: {request.dict()}")
 
-    ### 1. handle post teaching word
-    request_dict = request.dict()
-    return handle_post_teaching_words(request_dict["title"], request_dict["content"], request_dict["date"])    
-    
+    try: 
+        ### 1. handle post teaching word
+        request_dict = request.dict()
+        return handle_post_teaching_words(request_dict["title"], request_dict["content"], request_dict["date"])    
+        
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
   
@@ -551,17 +590,17 @@ def post_teaching_words(request: teachingWordRequest):
 
 @router.put("/teaching-words/{id}")
 def put_teaching_word(id: str, request: teachingWordRequest):
-    print(f"{LOG_API} vào put /teaching-words/:id có request: {request.dict}")
+    print(f"{LOG_API} vào put /teaching-words/:id có request: {request.dict()}")
 
-    ### 1. handle put teaching word id 
-    request_dict = request.dict()
-    return handle_put_teaching_words(id, request_dict["title"], request_dict["content"], request_dict["date"])
+    try: 
+        ### 1. handle put teaching word id 
+        request_dict = request.dict()
+        return handle_put_teaching_words(id, request_dict["title"], request_dict["content"], request_dict["date"])
 
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
   
     except Exception: 
         raise HTTPException(status_code=500, detail="Internal server error")
-
 
 
