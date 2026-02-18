@@ -1,6 +1,30 @@
 # LOG 
 
 
+
+## 06/02/2026
+- [ ] Hoàn thành 
+
+### Context
+- Mục tiêu hiện tại: Lập trình api cho các domain. 
+- file đang làm là api.py trong domain teaching_word
+
+
+### Đã làm
+- Đã hoàn thành việc thêm message và chuẩn hóa lỗi ở BE. 
+
+### Đang kẹt / dở
+- Chưa ghép nối cơ sở dữ liệu thật cho BE. 
+- Chưa nắm cách phối hợp với chatGPT và codex như thế nào? 
+
+### Hướng làm tiếp
+- Ghép nối cơ sở dữ liệu thật cho BE. 
+- Làm thử một dự án phối hợp nhanh với codex nhưng vẫn giữ những điều đã đặt ra lúc đầu: Mình là người làm chính và tư duy chính, AI là hỗ trợ 2 phần kiến trúc tổng thể và low level pair programmer. 
+
+----------------
+
+
+
 ## Ngày giờ
 - [x] Hoàn thành 
 

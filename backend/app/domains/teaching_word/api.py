@@ -1,7 +1,10 @@
 from datetime import datetime 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends 
 from fastapi import Query
 from pydantic import BaseModel
+from app.core.database import db
+from bson import ObjectId
+from app.dependencies.auth import require_admin, require_login
 
 
 
@@ -69,20 +72,43 @@ import uuid
 
 def db_get_teaching_words_all():
     print(f"{LOG_DATABASE} lấy tất cả teaching words")
-    # 1. lấy toàn bộ teaching_words và trả lại 
-    return TEACHING_WORDS
+    # 1. lấy toàn bộ teaching_words 
+    teaching_words = db.teaching_words.find({})
+
+    # 2. đổi key _id thành id cho phù hợp với contract 
+    result = []
+    for teaching_word in teaching_words: 
+        teaching_word["id"] = str(teaching_word["_id"])
+        del teaching_word["_id"]
+        result.append(teaching_word)
+
+    # 3. return list teaching words
+    return result 
 
 
 
 
 def db_get_teaching_word(id): 
     print(f"{LOG_DATABASE} lấy lời dạy mà có id: {id}")
-    # 1. Tìm lời dạy có id như id nhập vào
-    for teaching_word in TEACHING_WORDS: 
-        if teaching_word["id"] == id: 
-            return teaching_word
+    ### 1. Tìm lời dạy có id như id nhập vào, và nếu có thì trả chính lời dạy đó
+    ## 1.1 kiểm tra xem id có hợp format với ObjectId hay không? 
+    try: 
+        object_id = ObjectId(id)
+    except: 
+        # id không đúng format ObjectId
+        return None
 
-    # 2. nếu không tìm thấy 
+    ## 1.2 lấy lời dạy đó 
+    teaching_word = db.teaching_words.find_one({"_id": object_id})
+
+    ## 1.3 đổi format của _id thành id cho đúng api contract
+    if teaching_word: 
+        teaching_word["id"] = str(teaching_word["_id"])
+        del teaching_word["_id"]
+
+        return teaching_word
+
+    ### 2. nếu không tìm thấy thì trả None 
     return None
 
 
@@ -90,25 +116,23 @@ def db_get_teaching_word(id):
 def db_create_teaching_word(title, content, year, week, weekday): 
     print(f"{LOG_DATABASE} tạo lời dạy mới với title: {title}, content: {content}, year: {year}, week: {week}, weekday: {weekday}")
 
-    ### 1. tạo id 
-    id = str(uuid.uuid4())
+    ### 1. tạo thời gian tạo 
     created_time = datetime.now()
 
     ### 2. thêm vào collection 
-    TEACHING_WORDS.append(
-        {
-            "id": id,
-            "title": title, 
-            "content": content,
-            "year": year,
-            "week": week, 
-            "weekday": weekday, 
-            "created_at": created_time,
-            "updated_at": datetime.now()
-        }
-    )
+    result = db.teaching_words.insert_one({
+        "title": title,
+        "content": content, 
+        "year": year, 
+        "week": week, 
+        "weekday": weekday,
+        "created_at": created_time, 
+        "updated_at": created_time
+    })
 
-    return id, created_time
+
+
+    return str(result.inserted_id), created_time
     
 
 
@@ -116,19 +140,29 @@ def db_create_teaching_word(title, content, year, week, weekday):
 def db_update_teaching_word(id, title, content, year, week, weekday): 
     print(f"{LOG_DATABASE} cập nhập lời dạy có id: {id} với nội dung mới là: {title}, content: {content}, date is: {weekday}W{week}Y{year}")
 
-    # tìm trong cơ sở dữ liệu lời dạy có id như trên và sửa lại các phần nội dung của nó
-    for teaching_word in TEACHING_WORDS: 
-        if teaching_word["id"] == id: 
-            teaching_word["title"] = title
-            teaching_word["content"] = content
-            teaching_word["year"] = year
-            teaching_word["week"] = week
-            teaching_word["weekday"] = weekday
-            teaching_word["updated_at"] = datetime.now()
+    # 1. kiểm tra xem id có hợp lệ hay không?
+    try: 
+        obj_id = ObjectId(id)
+    except: 
+        return False
 
-            return teaching_word["updated_at"]
 
-    return False
+    # 2. sửa lại trong database teaching word theo tham số của hàm 
+    updated_time = datetime.now()
+    result = db.teaching_words.update_one(
+        {"_id": obj_id},
+        {"$set": {
+            "title": title,
+            "content": content, 
+            "year": year, 
+            "week": week, 
+            "weekday": weekday, 
+            "updated_at": updated_time
+        }}
+    )
+
+
+    return updated_time
 
 
 
@@ -226,20 +260,6 @@ def generate_display_code_teaching_word(teaching_word):
 
     # 3. return result string 
     return result
-
-
-
-def tw_validate_title(title): 
-    
-
-
-
-def tw_validate_content(content):
-
-
-
-def tw_validate_date(date):
-    
 
 
 
@@ -435,7 +455,7 @@ def handle_post_teaching_words(title, content, date):
 
 
 def handle_put_teaching_words(id, title, content, date):
-    print(f"{LOG_DOMAIN} vào hàm xử lí cập nhập lời ")
+    print(f"{LOG_DOMAIN} vào hàm xử lí cập nhập lời dạy có id: {id}, title: {title}, content: {content} và date: {date}")
 
     """
     DOMAIN RULES: 
@@ -492,8 +512,12 @@ def handle_put_teaching_words(id, title, content, date):
 
 # ====================== 3. API ENDPOINTS =====================
 # NOTE: TẦNG VIẾT API, NHẬN REQUEST VÀ TRẢ RESPONSE VÀ SỬ DỤNG HÀM NGHIỆP VỤ CỦA TẦNG 2. DOMAIN LOGIC TRONG service.py
+class APIError(Exception):
+    pass
+
+
 @router.get("/teaching-words/reflection")
-def get_teaching_words_reflection(): 
+def get_teaching_words_reflection(current_user = Depends(require_login)): 
     print(f"{LOG_API} vào get /teaching-words/reflection")
 
     try: 
@@ -502,7 +526,8 @@ def get_teaching_words_reflection():
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
   
-    except Exception: 
+    except Exception as e: 
+        print(f"SERVER ERROR: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
@@ -510,7 +535,8 @@ def get_teaching_words_reflection():
 @router.get("/teaching-words/{id}")
 def get_teaching_word(
     id: str,
-    view: str = Query(default="full")
+    view: str = Query(default="full"), 
+    current_user = Depends(require_login)
     ): 
 
     print(f"{LOG_API} vào get /teaching-words/:id, id: {id}")
@@ -525,35 +551,45 @@ def get_teaching_word(
         if view == "full": 
             return handle_get_teaching_word_full(id)
 
-        return {
-            "message": "Invalid view type"
-        }
+        raise APIError("Invalid view type")
 
+
+    except APIError as e: 
+        raise HTTPException(status_code=400, detail=str(e))
 
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
   
-    except Exception: 
+    except Exception as e: 
+        print(f"SERVER ERROR: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
-
 
 
 
 
 @router.get("/teaching-words")
 def get_teaching_words_basic(
-    view: str = Query(default="basic") 
+    view: str = Query(default="basic"),
+    current_user = Depends(require_login)
     ):
 
     print(f"{LOG_API} vào get /teaching-words")
 
     try: 
-        return handle_get_teaching_words_all_basic()
+        if view == "basic":
+            return handle_get_teaching_words_all_basic()
+        
+        raise APIError("Invalid view type")
+
+
+    except APIError as e: 
+        raise HTTPException(status_code=400, detail=str(e))
 
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
   
-    except Exception: 
+    except Exception as e: 
+        print(f"SERVER ERROR: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
@@ -571,7 +607,7 @@ class teachingWordRequest(BaseModel):
 
 
 @router.post("/teaching-words")
-def post_teaching_words(request: teachingWordRequest):
+def post_teaching_words(request: teachingWordRequest, current_user = Depends(require_admin)):
     print(f"{LOG_API} vào post /teaching-words có request: {request.dict()}")
 
     try: 
@@ -582,14 +618,18 @@ def post_teaching_words(request: teachingWordRequest):
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
   
-    except Exception: 
+    except Exception as e: 
+        print(f"SERVER ERROR: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
 
 
+
+
+
 @router.put("/teaching-words/{id}")
-def put_teaching_word(id: str, request: teachingWordRequest):
+def put_teaching_word(id: str, request: teachingWordRequest, current_user = Depends(require_admin)):
     print(f"{LOG_API} vào put /teaching-words/:id có request: {request.dict()}")
 
     try: 
@@ -600,7 +640,8 @@ def put_teaching_word(id: str, request: teachingWordRequest):
     except DomainError as e: 
         raise HTTPException(status_code=400, detail=str(e))
   
-    except Exception: 
+    except Exception as e: 
+        print(f"SERVER ERROR: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
