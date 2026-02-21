@@ -288,10 +288,11 @@ def handle_post_purpose_free(user_id: str, origin_context_type: str, origin_cont
     print(f"{LOG_DOMAIN} vào hàm xử lí đăng mục đích tự do của user: {user_id} gắn tới bối cảnh là: {origin_context_type} có id: {origin_context_id} cho mục đích: {title} với hy vọng: {hope}")
 
     """
-    DOMAIN RULES: 
+    DOMAIN RULES:nhưllr
     1. origin_context_type phải là một trong 4 loại như "TEACHING_WORD", "LIFE_LESSON", "PURPOSE", "NOTE"
     2. id của bất cứ loại nào thì phải tồn tại trong database 
-    2. title và hope có thể trống, không có yêu cầu gì cả. 
+    3. thực thể bối cảnh như llr, purpose và note thì phải thuộc về cùng user
+    4. title và hope có thể trống, không có yêu cầu gì cả. 
     """
 
     ### 1. check origin context type 
@@ -303,10 +304,13 @@ def handle_post_purpose_free(user_id: str, origin_context_type: str, origin_cont
             raise DomainError("Teaching Word not found")
 
     elif origin_context_type == "LIFE_LESSON": 
-        ll = db_get_life_lesson_reflection_by_id(origin_context_id)
+        llr = db_get_life_lesson_reflection_by_id(origin_context_id)
 
-        if not ll: 
+        if not llr: 
             raise DomainError("Life Lesson not found")
+
+        if user_id != llr["user_id"]: 
+            raise DomainError("User does not have the right to the origin context")
 
     elif origin_context_type == "PURPOSE": 
         p = db_get_purpose_by_id(origin_context_id)
@@ -314,11 +318,17 @@ def handle_post_purpose_free(user_id: str, origin_context_type: str, origin_cont
         if not p: 
             raise DomainError("Purpose not found")
 
+        if user_id != p["user_id"]: 
+            raise DomainError("User does not have the right to the origin context")
+
     elif origin_context_type == "NOTE": 
         n = db_get_note_by_id(origin_context_id)
         
         if not n: 
             raise DomainError("Note not found")
+
+        if user_id != n["user_id"]: 
+            raise DomainError("User does not have the right to the origin context")
 
     else: 
         raise DomainError("Invalid origin context type")

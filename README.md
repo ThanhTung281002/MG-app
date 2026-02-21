@@ -1324,8 +1324,8 @@ Luồng của admin:
 ```
 
 ---------------------------------
-### GET /relations?fromType={FROM_TYPE}&fromId={FROM_ID}
-- lấy tất cả mối liên kết của có bối cảnh là thực thể {FROM_TYPE VÀ FROM_ID}. 
+### GET /relations/origin?type={TO_TYPE}&id={TO_ID}
+- lấy origin là bối cảnh mà nó được sinh của thực thể TO_TYPE và TO_ID. 
 
 
 **Request:**
@@ -1336,23 +1336,14 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "from": {
-        "type": "FROM_TYPE", 
-        "id": "FROM_ID"
-    }, 
-    "relations": [
-        {
-            "toType": "example type", 
-            "toId": "example id"
-        },
-        ...
-    ]
+    "type": "'TEACHING_WORD' || 'LIFE_LESSON' || 'PURPOSE' || 'NOTE'",
+    "id": "id of object"
 }
 ```
 
 
-### GET /relations?toType={TO_TYPE}&toId={TO_ID}
-- lấy bối cảnh của thực thể {TO_TYPE VÀ TO_ID}. 
+### GET /relations/born?type={FROM_TYPE}&id={FROM_ID}
+- lấy tất cả thực thể sinh ra từ bối cảnh FROM_TYPE và FROM_ID. 
 
 
 **Request:**
@@ -1363,14 +1354,13 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "to": {
-        "type": "TO_TYPE", 
-        "id": "TO_ID"
-    }, 
-    "context": {
-        "type": "example type", 
-        "id": "example id"
-    }
+    "born": [
+        {
+            "type": "example type", 
+            "id": "example id"
+        },
+        ...
+    ]
 }
 ```
 
@@ -1545,6 +1535,9 @@ erDiagram
 3. Display code của teaching word là `T4W01Y26`
 
 
+## một số điều cần làm rõ và kĩ khi cân nhắc nâng cấp lên phiên bản mới: 
+1. Xóa chưa triệt để note, vì mới xóa note đó mà không xóa các thực thể sinh ra từ nó cũng như các liên kết có liên kết tới nó. 
+2. frontend chưa phân biệt được status của user như pending, approved, rejected (phiên bản hiện tại v1, là không gian cá nhân nên mình sẽ chưa để tâm)
 
 
 ## Hướng phát triển: 
