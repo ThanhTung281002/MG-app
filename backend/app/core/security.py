@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 SECRET_KEY = "IMA_TAI_LAM_BANG_PI"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 10
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 
 def create_access_token(data: dict): 

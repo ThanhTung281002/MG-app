@@ -20,15 +20,19 @@ def require_login(credentials: HTTPAuthorizationCredentials = Depends(security))
     token = credentials.credentials
     payload = decode_access_token(token)
 
+    ### kiểm tra token có hợp lệ hay không? 
     if payload is None: 
         raise HTTPException(status_code=401, detail="Unauthorized - người dùng chưa xác thực")
-    
+
+    ### check xem trong cơ sở dữ liệu có user này chưa    
     user_id = payload["user_id"]
 
     user = db.users.find_one({"_id": ObjectId(user_id)})
     if not user: 
         raise HTTPException(status_code=401, detail="Non existed user")
 
+
+    ### có user, chỉnh sửa lại format rồi return lại ở hàm này 
     user["id"] = str(user["_id"])
     del user["_id"]
 

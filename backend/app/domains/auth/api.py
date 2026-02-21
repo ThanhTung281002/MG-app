@@ -10,6 +10,7 @@ LOG_DATABASE = "                        1. DATABASE LOGIC:"
 # NOTE: XỬ LÍ ĐƠN GIẢN CRUD ĐỐI VỚI DATABASE, SỬ DỤNG BẢNG Ở models.py ĐỂ HỖ TRỢ 
 from app.core.database import db 
 from datetime import datetime 
+from bson import ObjectId
 
 
 def db_get_user_by_email(email: str): 
@@ -70,6 +71,35 @@ def db_create_user(fullname: str, email: str, username: str, password_hash: str)
 
     return created_time 
 
+
+
+
+
+def db_get_life_lessons_main_all(): 
+    print(f"{LOG_DATABASE} lấy toàn bộ bài học nội dung chính")
+
+    ### 1. lấy từ database và đổi sang format list, điều chỉnh _id thành id
+    life_lessons_main = db.life_lessons_main.find({})
+
+    result = []
+    
+    for llm in life_lessons_main: 
+        llm["id"] = str(llm["_id"])
+        del llm["_id"]
+        result.append(llm)
+
+
+    return result 
+
+
+
+def db_create_life_lesson_reflection(user_id: str, life_lesson_id: str):
+    db.life_lessons_reflection.insert_one({
+        "user_id": ObjectId(user_id),
+        "life_lesson_id": ObjectId(life_lesson_id),
+        "reflection": "",
+        "updated_at": datetime.now()
+    })
 
 
 
@@ -225,7 +255,21 @@ def verify_password(plain_password: str, hashed_password: str):
 
 
 
+# tạo ra các reflection ứng với từng life -lesson main đối với user_id trong tham số 
+def create_reflections_for_user(user_id: str): 
+    ### 1. lấy toàn bộ life-lessons main 
+    life_lessons_main = db_get_life_lessons_main_all()
 
+    ### 2. tạo life-lessons-reflection ứng với từng life-lesson main trên gắn với user-id trong tham số vào và nội dung reflection là trống lúc đầu
+    for llm in life_lessons_main: 
+        db_create_life_lesson_reflection(user_id, llm["id"])
+
+
+
+
+
+
+# ngoài những việc mà nó cần làm thì còn phải có một việc nữa, đó là tạo ra các reflection tương ứng với từng life-lessons-main mà gắn với user vừa tạo 
 def handle_signup(fullname: str, email: str, username: str, password: str): 
     print(f"{LOG_DOMAIN} vào hàm xử lí đăng kí với fullname: {fullname}, email: {email}, username: {username}, password: {password}")
 
@@ -265,6 +309,10 @@ def handle_signup(fullname: str, email: str, username: str, password: str):
 
     # tạo user trong database 
     db_create_user(fullname, email, username, password_hash)
+
+    # tạo các reflection ứng với mỗi life-lessons main cho user vừa tạo
+    user = db_get_user_by_username(username) 
+    create_reflections_for_user(user["id"])
 
     return {
         "message": "Signup successfully"
