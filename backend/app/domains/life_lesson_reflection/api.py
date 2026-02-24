@@ -150,6 +150,19 @@ def db_update_life_lesson_reflection(id: str, updating_reflection: str):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ================= 2. DOMAIN LOGIC ================= 
 # NOTE: XỬ LÍ CÁC NGHIỆP VỤ/LOGIC CHÍNH, SỬ DỤNG CÁC HÀM Ở TẦNG 1. DATABASE LOGIC Ở repository.py và các hàm bổ trợ khác nhưng mình chưa biết nó sẽ nằm ở file nào? 
 from fastapi import HTTPException
@@ -174,8 +187,7 @@ def handle_get_life_lessons_reflection_all_basic(user_id: str):
     for llr in life_lessons_reflection:
         main = db_get_life_lesson_main_by_id(llr["life_lesson_id"])
         result.append({
-            "id": llr["id"],
-            "title": main["title"]
+            "id": llr["id"]
         })
 
     ### 3. return lại
@@ -228,10 +240,7 @@ def handle_get_life_lessons_reflection_reflection(user_id: str):
     for ll in life_lessons_reflection_sorted: 
         life_lesson_main = db_get_life_lesson_main_by_id(ll["life_lesson_id"])
         life_lessons.append({
-            "id": ll["id"],
-            "title": life_lesson_main["title"],
-            "main_content": life_lesson_main["main_content"],
-            "reflection": ll["reflection"],
+            "id": ll["id"]
         })
 
     ### 3. return lại n cái gần nhất 
@@ -242,36 +251,8 @@ def handle_get_life_lessons_reflection_reflection(user_id: str):
 
 
 
-# TỚI LOGIC NGHIỆP VỤ CHÍNH CỦA TỪNG HÀM 
-def handle_get_life_lesson_basic(id: str, user_id: str): 
-    print(f"{LOG_DOMAIN} vào hàm xử lí lấy bài học cơ bản có id: {id} của người dùng với id: {user_id}")
 
-    """
-    DOMAIN RULES: 
-    1. id phải có
-    2. user phải có quyền với llr này 
-    """
-
-    ### 1. lấy reflection có id trên 
-    life_lesson_reflection = db_get_life_lesson_reflection_by_id(id)
-
-    if not life_lesson_reflection: 
-        raise DomainError("Life lesson reflection not found")
-
-    if user_id != life_lesson_reflection["user_id"]: 
-        raise DomainError("User does not have the right to this life lesson reflection")
-
-    ### 2. lấy main của reflection đó trả kết quả 
-    life_lesson_main = db_get_life_lesson_main_by_id(life_lesson_reflection["life_lesson_id"])
-
-    return {
-        "id": life_lesson_reflection["id"],
-        "title": life_lesson_main["title"]
-    }
-
-
-
-def handle_get_life_lesson_full(id: str, user_id: str): 
+def handle_get_life_lesson(id: str, user_id: str): 
     print(f"{LOG_DOMAIN} vào hàm xử lí lấy bài học đầy đủ có id: {id} của người dùng với id: {user_id}")
 
     """
@@ -296,7 +277,8 @@ def handle_get_life_lesson_full(id: str, user_id: str):
         "id": life_lesson_reflection["id"],
         "title": life_lesson_main["title"],
         "main-content": life_lesson_main["main_content"],
-        "reflection": life_lesson_reflection["reflection"]
+        "reflection": life_lesson_reflection["reflection"],
+        "updatedAt": life_lesson_reflection["updated_at"]
     }
 
 
@@ -428,17 +410,11 @@ def get_life_lessons_reflection(current_user = Depends(require_login)):
 
 
 @router.get("/life-lessons-reflection/{id}")
-def get_life_lesson(id: str, view : str = Query(default="full"), current_user = Depends(require_login)): 
-    print(f"{LOG_API} vào get /life-lessons-reflection/{id}?view={view}")
+def get_life_lesson(id: str, current_user = Depends(require_login)): 
+    print(f"{LOG_API} vào get /life-lessons-reflection/{id}")
 
     try: 
-        if view == "basic": 
-            return handle_get_life_lesson_basic(id, current_user["id"])
-        elif view == "full": 
-            return handle_get_life_lesson_full(id, current_user["id"])
-        else: 
-            raise APIError("Invalid view type")
-
+        return handle_get_life_lesson(id, current_user["id"])
 
     except APIError as e: 
         raise HTTPException(status_code=400, detail=str(e))

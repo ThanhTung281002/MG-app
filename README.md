@@ -516,11 +516,15 @@ Luồng của admin:
 ```raw
 {
     "id": "id of user",
-    "role": "ADMIN || USER"
+    "fullname": "fullname of user", 
+    "email": "email of user",
+    "role": "ADMIN || USER",
+    "status": "status of user",
+    "updatedAt": "updated time of user"
 }
 ```
-đối với me thì phải yêu cầu login, nếu chưa login mà gọi thì trả 401 
 
+> Note 🪛 : Sửa lại cho đầy đủ để lưu trữ trong state 
 
 
 
@@ -549,18 +553,13 @@ Luồng của admin:
 ```raw
 {
     teachingWord: {
-        "id": "id of teaching word", 
-        "displayCode": "display code of teaching word",
-        "title": "title of teaching words at this week", 
-        "content": "content of teaching at this week"
-    } | null,
+        "id": "id of teaching word"
+    } || null
 }
 ```
 
 
-
-
-### GET /teaching-words/:id?view=full
+### GET /teaching-words/:id
 - Lấy nội dung đầy đủ của lời dạy có id trên. 
 
 
@@ -575,35 +574,18 @@ Luồng của admin:
     "id": "id of teaching word", 
     "displayCode": "display code of teaching word",
     "title": "title of teaching word", 
-    "content": "content of teaching word"
+    "content": "content of teaching word",
+    "updatedAt": "updated time of teaching word"
 }
 ```
 
-
-### GET /teaching-words/:id?view=basic
-- lấy thông tin cơ của lời dạy như id, display code, title để hiển thị ở mục bối cảnh. 
-
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "id": "id of teaching words", 
-    "displayCode": "display code of teaching word",
-    "title": "title of teaching words"
-}
-```
 
 
 
 
 
 ### GET /teaching-words?view=basic
-- Chỉ lấy thông tin cơ bản như id, display code, và title của tất cả lời dạy để hiển thị và tìm kiếm ở FE. 
+- Chỉ lấy thông tin cơ bản như id, display code, và title của tất cả lời dạy ở trang tìm kiếm. 
 
 **Request:**
 ```raw
@@ -615,14 +597,13 @@ Luồng của admin:
 {
     "teaching-words": [
         {
-            "id": "id of teaching words", 
-            "displayCode": "display code of teaching word",
-            "title": "title of teaching words"
+            "id": "id of teaching word"
         }, 
         ...
     ]
 }
 ```
+> 🪛: lấy toàn bộ nhưng ở mức id thôi. Cái nào chưa có trong cache của FE thì hệ thống tự hỏi lại. 
 
 
 
@@ -698,15 +679,13 @@ Luồng của admin:
 {
     "life-lessons": [
         {
-            "id": "id of life lesson", 
-            "title": "title of life lesson", 
-            "main-content": "main content of life lesson",
-            "reflection": "personal reflection of user"
+            "id": "id of life lesson"
         }, 
         ... 3 cái tổng cộng 
     ]
 }
 ```
+
 
 
 ### GET /life-lesssons-reflection?view=basic 
@@ -723,19 +702,18 @@ Luồng của admin:
 {
     "life-lessons": [
         {
-            "id": "id of life lesson", 
-            "title": "title of life lesson"
+            "id": "id of life lesson"
         }, 
         ...
     ]
 }
 ```
+> 🪛: giống như vậy, lấy id thôi 
 
 
 
 
-
-### GET /life-lessons-reflection/:id?view=full
+### GET /life-lessons-reflection/:id
 - Lấy nội dung đầy đủ của life lessons. 
 - của người dùng
 
@@ -750,10 +728,10 @@ Luồng của admin:
     "id": "id of life lesson", 
     "title": "title of life lesson", 
     "main-content": "main content of life lesson",
-    "reflection": "personal reflection of user"
+    "reflection": "personal reflection of user",
+    "updatedAt": "updated time of life lesson reflection"
 }
 ```
-
 
 
 
@@ -776,22 +754,6 @@ Luồng của admin:
 }
 ```
 
-### GET /life-lessons-reflection/:id?view=basic
-- Chỉ lấy thông tin cơ bản như title để hiển thị ở bối cảnh. 
-- Của người dùng và id là của life-lessons-reflection. 
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "id": "id of life lesson",
-    "title": "title of life lesson"
-}
-```
 
 
 
@@ -821,13 +783,13 @@ Luồng của admin:
 {
     "life-lessons": [
         {
-            "id": "id of life lesson", 
-            "title": "title of life lesson"
+            "id": "id of life lesson"
         }, 
         ...
     ]
 }
 ```
+
 
 
 
@@ -846,10 +808,10 @@ Luồng của admin:
 {
     "id": "id of life-lesson",
     "title": "title of life lesson", 
-    "mainContent": "main content of life lesson"
+    "mainContent": "main content of life lesson",
+    "updatedAt": "updated time"
 }
 ```
-
 
 
 
@@ -893,7 +855,7 @@ Luồng của admin:
 -------------------------------
 
 
-### GET /purposes
+### GET /purposes?view=basic
 - lấy tất cả các mục đích mà bản thân mong muốn đạt được
 
 
@@ -907,10 +869,7 @@ Luồng của admin:
 {
     "purposes": [
         {
-            "id": "id of purpose",
-            "title": "title of purpose", 
-            "hope": "hope can achieve from this purpose", 
-            "status": "ACTIVE || ARCHIVED"
+            "id": "id of purpose"
         }, 
         ...
     ]
@@ -921,7 +880,7 @@ Luồng của admin:
 
 
 
-### GET /purposes/:id?view=full
+### GET /purposes/:id
 - Lấy nội dung đầy đủ của purpose như title, hope. 
 
 
@@ -936,9 +895,11 @@ Luồng của admin:
     "id": "id of purpose", 
     "title": "title of purpose", 
     "hope": "hope of purpose",
-    "status": "ACTIVE || ARCHIVED"
+    "status": "ACTIVE || ARCHIVED",
+    "updatedAt": "updated time"
 }
 ```
+
 
 
 
@@ -962,24 +923,6 @@ Luồng của admin:
 }
 ```
 
-
-
-
-### GET /purposes/:id?view=basic 
-- lấy nội dung cơ bản như title để hiển thị ở mục bối cảnh. 
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "id": "id of purpose", 
-    "title": "title of purpose"
-}
-```
 
 
 
@@ -1035,12 +978,15 @@ Luồng của admin:
         {
             "id": "id of actions", 
             "context": "context of actions", 
-            "status": "status of action"
+            "status": "status of action",
+            "updatedAt": "updated time"
         }, 
         ... 
     ]
 }
 ```
+> 🪛: để đơn giản hóa chắc lấy đầy đủ luôn. 
+
 
 
 
@@ -1123,21 +1069,18 @@ Luồng của admin:
 {
     "unresolved-notes": [
         {
-            "id": "id of note", 
-            "displayCode": "display code of note" 
-            "title": "title of note",
-            "content": "content of note",
-            "type": "UNRESOLVED"
+            "id": "id of note"
         }, 
         ... 
     ]
 }
 ```
+> 🪛: lấy id thôi
 
 
 
 
-### GET /notes/:id?view=full
+### GET /notes/:id
 - Lấy nội dung đầy đủ của note. 
 
 **Request:**
@@ -1152,10 +1095,11 @@ Luồng của admin:
     "displayCode": "display code of note", 
     "title": "title of note",
     "content": "content of note", 
-    "type": "type of note"
+    "type": "type of note",
+    "updatedAt": "Updated time"
 }
 ```
-
+> 🪛: lấy đầy đủ hơn
 
 
 
@@ -1192,26 +1136,6 @@ Luồng của admin:
 
 
 
-
-
-### GET /notes/:id?view=basic
-- Lấy ở mức cơ bản để hiển thị như display code và title. 
-- Dùng để hiển thị ở bối cảnh. 
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "id": "id of note", 
-    "title": "title note", 
-    "displayCode": "display code of note",
-    "type": "type of note"
-}
-```
 
 
 
@@ -1274,7 +1198,8 @@ Luồng của admin:
         {
             "id": "id of user",
             "fullname": "fullname of user", 
-            "email": "email of user"
+            "email": "email of user",
+            "username": "username"
         }, 
         ...
     ]

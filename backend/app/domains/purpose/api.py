@@ -255,7 +255,7 @@ from fastapi import HTTPException
 class DomainError(Exception): 
     pass
 
-def handle_get_purposes_all(user_id: str): 
+def handle_get_purposes_all_basic(user_id: str): 
     print(f"{LOG_DOMAIN} vào hàm xử lí lấy tất cả mục đích của user có id: {user_id}")
 
     """
@@ -270,10 +270,7 @@ def handle_get_purposes_all(user_id: str):
     result = []
     for p in purposes: 
         result.append({
-            "id": p["id"],
-            "title": p["title"],
-            "hope": p["hope"],
-            "status": p["status"]
+            "id": p["id"]
         })
     
     ### 3. return 
@@ -351,34 +348,6 @@ def handle_post_purpose_free(user_id: str, origin_context_type: str, origin_cont
 
 
 
-def handle_get_purpose_basic(id: str, user_id: str): 
-    print(f"{LOG_DOMAIN} vào hàm xử lí lấy mục đích cơ bản có id: {id} của user: {user_id}")
-
-    """
-    DOMAIN RULES: 
-    1. mục đích phải tồn tại 
-    2. mục đích phải thuộc về user 
-    """
-
-    ### check rules 
-    p = db_get_purpose_by_id(id)
-
-    if not p: 
-        raise DomainError("Purpose not found")
-    
-    if p["user_id"] != user_id: 
-        raise DomainError("User does not have the right to this purpose")
-
-
-    ### 1. trả lại theo format của api contract 
-    return {
-        "id": p["id"],
-        "title": p["title"]
-    }
-
-
-
-
 def handle_get_purpose_full(id: str, user_id: str): 
     print(f"{LOG_DOMAIN} vào hàm xử lí lấy mục đích đầy đủ có id: {id} của user: {user_id}")
 
@@ -403,7 +372,8 @@ def handle_get_purpose_full(id: str, user_id: str):
         "id": p["id"],
         "title": p["title"],
         "hope": p["hope"],
-        "status": p["status"]
+        "status": p["status"],
+        "updatedAt": p["updated_at"]
     }
 
 
@@ -457,6 +427,19 @@ def handle_put_purpose(id: str, user_id: str, updating_title: str, updating_hope
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ====================== 3. API ENDPOINTS =====================
 # NOTE: TẦNG VIẾT API, NHẬN REQUEST VÀ TRẢ RESPONSE VÀ SỬ DỤNG HÀM NGHIỆP VỤ CỦA TẦNG 2. DOMAIN LOGIC TRONG service.py 
 from fastapi import APIRouter, Depends, Query
@@ -475,11 +458,14 @@ class APIError(Exception):
 
 
 @router.get("/purposes")
-def get_purposes_all(current_user = Depends(require_login)): 
-    print(f"{LOG_API} vào get /purposes")
+def get_purposes_all(view: str = Query(default="basic"), current_user = Depends(require_login)): 
+    print(f"{LOG_API} vào get /purposes?view={view}")
 
     try: 
-        return handle_get_purposes_all(current_user["id"])
+        if view == "basic": 
+            return handle_get_purposes_all_basic(current_user["id"])
+        else: 
+            raise APIError("Invalid view type")
     
     except APIError as e: 
         raise HTTPException(status_code=400, detail=str(e))
@@ -539,16 +525,11 @@ def post_purpose_free_write(request: postPurposeFreeRequest, current_user = Depe
 
 
 @router.get("/purposes/{id}")
-def get_purpose(id: str, view = Query(default="full"), current_user = Depends(require_login)): 
-    print(f"{LOG_API} vào get /purposes/{id}?view={view}")
+def get_purpose(id: str, current_user = Depends(require_login)): 
+    print(f"{LOG_API} vào get /purposes/{id}")
 
     try: 
-        if view == "basic": 
-            return handle_get_purpose_basic(id, current_user["id"])
-        elif view == "full": 
-            return handle_get_purpose_full(id, current_user["id"])
-        else: 
-            raise APIError("Invalid view type")
+        return handle_get_purpose_full(id, current_user["id"])
 
     except APIError as e: 
         raise HTTPException(status_code=400, detail=str(e))

@@ -382,7 +382,11 @@ def handle_me(user: dict):
 
     return {
         "id": user["id"],
-        "role": user["role"]
+        "fullname": user["fullname"],
+        "email": user["email"],
+        "role": user["role"],
+        "status": user["status"],
+        "updatedAt": user["updated_at"]
     }
 
 

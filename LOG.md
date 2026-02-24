@@ -2,8 +2,28 @@
 
 
 
-## 06/02/2026
+
+## 24.02.2026 7h45
 - [ ] Hoàn thành 
+
+### Context
+- Mục tiêu đang làm: Chỉnh sửa api contract cho hệ thống. 
+
+### Đã làm
+- Đã hoàn thành cơ bản BE v1. 
+
+
+### Đang kẹt / dở
+
+### Hướng làm tiếp
+- Chỉnh sửa api contract cho hệ thống rồi quay qua thiết kế figma cho hệ thống (cái này vui)
+
+----------------
+
+
+
+## 06/02/2026
+- [x] Hoàn thành 
 
 ### Context
 - Mục tiêu hiện tại: Lập trình api cho các domain. 

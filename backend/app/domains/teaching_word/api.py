@@ -290,10 +290,7 @@ def handle_get_teaching_word_reflection():
     # 4. trả lại kết quả
     return {
         "teachingWord": {
-            "id": this_week_teaching_word["id"],
-            "displayCode": display_code,
-            "title": this_week_teaching_word["title"],
-            "content": this_week_teaching_word["content"]
+            "id": this_week_teaching_word["id"]
         }
     }
 
@@ -302,7 +299,7 @@ def handle_get_teaching_word_reflection():
 
 
 
-def handle_get_teaching_word_full(id): 
+def handle_get_teaching_word(id): 
     print(f"{LOG_DOMAIN} vào hàm xử lí lấy teaching word có id: {id}")
 
     """
@@ -324,38 +321,10 @@ def handle_get_teaching_word_full(id):
         "id": teaching_word["id"],
         "displayCode": display_code,
         "title": teaching_word["title"],
-        "content": teaching_word["content"]
+        "content": teaching_word["content"],
+        "updatedAt": teaching_word["updated_at"]
     }
 
-
-
-
-
-
-
-def handle_get_teaching_word_basic(id): 
-    print(f"{LOG_DOMAIN} vào hàm xử lí lấy lời dạy cơ bản có id: {id}")
-
-    """
-    DOMAIN RULES: 
-    1. LỜI DẠY VỚI ID PHẢI CÓ TRONG DATABASE
-    """
-
-    ### 1. lấy lời dạy từ database 
-    teaching_word = db_get_teaching_word(id)
-
-    if not teaching_word: 
-        raise DomainError("Teaching words not found")
-
-    ### 2. Trả lại theo như response trong api contract 
-    ## 2.1 tạo dislay code 
-    display_code = generate_display_code_teaching_word(teaching_word)
-
-    return {
-        "id": teaching_word["id"],
-        "displayCode": display_code,
-        "title": teaching_word["title"]
-    }
 
 
 
@@ -377,9 +346,7 @@ def handle_get_teaching_words_all_basic():
 
     for teaching_word in teaching_words: 
         teaching_words_basic.append({
-            "id": teaching_word["id"],
-            "displayCode": generate_display_code_teaching_word(teaching_word),
-            "title": teaching_word["title"]
+            "id": teaching_word["id"]
         })
 
 
@@ -535,23 +502,14 @@ def get_teaching_words_reflection(current_user = Depends(require_login)):
 @router.get("/teaching-words/{id}")
 def get_teaching_word(
     id: str,
-    view: str = Query(default="full"), 
     current_user = Depends(require_login)
     ): 
 
-    print(f"{LOG_API} vào get /teaching-words/:id, id: {id}")
+    print(f"{LOG_API} vào get /teaching-words/{id}")
 
     
     try: 
-        ### 1. nếu view basic thì handle get teaching word basic 
-        if view == "basic":
-            return handle_get_teaching_word_basic(id)
-    
-        ### 2. nếu view full thì handle get teaching word full
-        if view == "full": 
-            return handle_get_teaching_word_full(id)
-
-        raise APIError("Invalid view type")
+        return handle_get_teaching_word(id)
 
 
     except APIError as e: 

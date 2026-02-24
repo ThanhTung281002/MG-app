@@ -128,8 +128,7 @@ def handle_get_life_lessons_main_all_basic():
     result = []
     for llm in life_lessons_main: 
         result.append({
-            "id": llm["id"],
-            "title": llm["title"]
+            "id": llm["id"]
         })
 
     return {
@@ -159,7 +158,8 @@ def handle_get_life_lesson_main(id: str):
     return {
         "id": life_lesson_main["id"],
         "title": life_lesson_main["title"],
-        "mainContent": life_lesson_main["main_content"]
+        "mainContent": life_lesson_main["main_content"],
+        "updatedAt": life_lesson_main["updated_at"]
     }
 
 

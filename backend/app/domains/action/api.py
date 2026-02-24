@@ -208,7 +208,7 @@ def handle_get_actions_of_purpose_all(id: str, user_id):
 
     
     ### 2. lấy toàn bộ actions của một purpose 
-    actions = db_get_actions_of_purpose(id)
+    actions = db_get_actions_of_purpose(id) 
 
     ### 3. đổi format sang phù hợp với api contract 
     result = []
@@ -216,7 +216,8 @@ def handle_get_actions_of_purpose_all(id: str, user_id):
         result.append({
             "id": a["id"],
             "context": a["context"],
-            "status": a["status"]
+            "status": a["status"],
+            "updatedAt": a["updated_at"]
         })
     
 
