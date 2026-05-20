@@ -2,6 +2,12 @@
 
 Các tầng của backend có những quy ước và mối quan tâm riêng. 
 
+## Cách chạy: 
+```cmd
+    uvicorn app.main:app --reload
+```
+> note: Phải ở trong thư mục `backend` khi chạy lệnh trên. 
+
 ## Tầng API ENDPOINTS
 - Chỉ quan tâm tới api request: path, query và method. 
 - Sử dụng tầng DOMAIN

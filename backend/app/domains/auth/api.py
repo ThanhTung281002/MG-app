@@ -337,7 +337,7 @@ def handle_login(username: str, password: str):
     """
 
     if not validate_username(username): 
-        raise DomainError("Invalid input username, username must have at least 2 word, each word must have at least 2 characters")
+        raise DomainError("Invalid input username, username must have at least 5 characters")
 
     if not validate_password(password): 
         raise DomainError("Invalid input password, password must have at least one uppercase, one lowercase, one number and one special character")
