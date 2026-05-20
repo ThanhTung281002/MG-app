@@ -127,9 +127,9 @@ const state = {
 
     ui: {
         loading: true || false, 
-        error: null || "network error", 
         fabOpen: true || false
-    }
+    }, 
+    error: "network error" || null
 
 }
 

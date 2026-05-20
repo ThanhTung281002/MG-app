@@ -7,8 +7,44 @@
 
 
 
-## 18.05.2026 22h22 
+## 20.05.2026 23h17 
 - [ ] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang user home. 
+- Đang làm cho phần load dữ liệu lên trang user home. 
+
+### Đã làm
+- Xử lí xong vấn đề tầng render cao hơn tầng api flow. Chỉnh sửa lại code. 
+- Xử lí xong vấn đề error đi trước render page và render ui. Chỉnh sửa lại code. 
+- Đã làm xong cho phần load dữ liệu MG tuần đó lên trang home. 
+    - Tuy chỉ nói đơn giản như vậy nhưng thực sự có nhiều cái cần chỉnh lại ở đây như hàm render, phải chỉnh lại phù hợp như: 
+        1. Chia nhánh cho từng route. 
+        2. kiểm tra dữ liệu trong cache. 
+        3. load nội dung lên DOM từ js như thế nào. 
+        4. debug các lỗi xuất hiện trong fakeServices.js 
+        5. Và đặc biệt nhất là làm được điều mà lúc đầu suy nghĩ nghĩ là quá nhiều và không hình dung được sẽ làm như thế nào.
+
+> Bài học: Phải kiểm soát được suy nghĩ bằng LC (Lời dạy của HA, SERE và R). Xử lí từng điều một bằng việc tập trung làm một việc. Nghĩ là nó đơn giản hơn so với suy nghĩ lúc đầu của mình (nghĩ con hổ là con mèo thôi). Đặc biệt là phải làm hợp tấm lòng của mình đối với trình duyệt (nó làm việc tuần tự trung thực, không báo cáo dối, có lỗi thì sẽ báo lỗi, và vì tuần tự nên có thể ra lệnh cho nó để tìm ra lỗi nằm ở đâu, vị trí nào, lỗi gì) nên tấm lòng của bản thân phải làm dịu lại và nhìn kĩ hơn các điểm mạnh của trình duyệt mà tấm lòng phải làm hợp theo để tiếp tục làm. Chứ cáu gắt và bực bội vì trình duyệt không làm hợp với tấm lòng gấp gáp của mình thì chắc mãi sẽ không làm được. Đúng là LC của HA. 
+
+
+### Đang kẹt / dở
+- Không có điều gì, vì gỡ hết lỗi tiềm tàng và điểm xấu trong code cả rồi. 
+
+### Hướng làm tiếp
+Việc cần làm: 
+1. load dữ liệu Bài giảng, mục đích, note. 
+
+----------------
+
+
+
+
+
+
+## 18.05.2026 22h22 
+- [x] Hoàn thành 
 
 ### Context
 - Đang làm phần UI động. 

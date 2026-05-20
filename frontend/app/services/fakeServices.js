@@ -31,7 +31,28 @@ export const fakeUsers = [
     }
 ];
 
-const API_LOG = "               2.1 API"
+
+
+const fakeTeachingWords = [
+    {
+        id: 1, 
+        displayCode: "T4W23Y26", 
+        title: "Hãy làm hợp tấm lòng với đối tượng hoặc vật tồn tại đối tượng", 
+        content: `Đừng làm hợp tấm lòng mình,
+
+mà phải vừa làm hợp tấm lòng bản thân với hình dáng và hình tượng thực tế đang tồn tại,
+
+vừa phải vui mừng và thích nó.
+
+Nếu có ý định đạt được đá cảnh, bảo vật hay con người bằng cách làm hợp tấm lòng mình
+
+thì có khi cả đời cũng không đạt được.`, 
+        updatedAt: Date.now()
+    }
+]; 
+
+
+const API_LOG = "                       1.1 API"
 const delay = 0; // 300ms 
 
 
@@ -93,6 +114,9 @@ export async function login(username, password) {
 export async function signup(fullname, email, username, password) {
     console.log(`${API_LOG} vào signup với họ tên: ${fullname}, email: ${email}, username: ${username}, password: ${password}`); 
 
+    // 0. giả lập delay BE 
+    await new Promise(resolve => setTimeout(resolve, delay)); 
+
     // logic chính ở đây là check từng cái hợp lệ hay chưa
     // check email đã có ai xài rồi chưa
     // check username đã có ai xài rồi chưa 
@@ -129,6 +153,10 @@ export async function signup(fullname, email, username, password) {
 export async function getMe(token) {
     console.log(`${API_LOG} vào getMe với token: ${token}`); 
 
+    // 0. giả lập delay BE 
+    await new Promise(resolve => setTimeout(resolve, delay)); 
+
+
     // 1. so sánh với fakeToken để xác định người dùng 
     const userId = getUserIdFromToken(token); 
 
@@ -144,3 +172,41 @@ export async function getMe(token) {
     return user; 
 }
 
+
+
+
+
+// hàm lấy id của lời dạy hiện tại
+export async function getTeachingWordReflection() {
+    console.log(`${API_LOG} vào hàm lấy lời dạy hiện tại`); 
+
+    // 0. giả lập delay BE 
+    await new Promise(resolve => setTimeout(resolve, delay)); 
+
+    // nhưng hiện tại mình sẽ lấy lời dạy đầu thôi, không có thuật toán nhiều 
+    const tw = fakeTeachingWords[0]; 
+
+    return {
+        teachingWord: {
+            id: tw.id
+        }
+    }
+}
+
+
+
+
+
+// hàm lấy nội dung đầy đủ của một lời dạy từ id 
+export async function getTeachingWord(id) {
+    console.log(`${API_LOG} vào hàm lấy nội dung đầy đủ của lời dạy có id: ${id}`); 
+
+    // 0. giả lập delay BE 
+    await new Promise(resolve => setTimeout(resolve, delay)); 
+
+
+    // 1. từ id lọc trong cơ sở dữ liệu thôi
+    const teachingWord = fakeTeachingWords.find(tw => tw.id === id); 
+
+    return teachingWord; 
+}

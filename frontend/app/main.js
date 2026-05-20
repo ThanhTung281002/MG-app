@@ -1,13 +1,15 @@
 console.log("main.js loaded")
+
+
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup} from "./services/fakeServices.js"
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord} from "./services/fakeServices.js"
 
 
-const DOM_LOG = "               0. DOM:"; 
-const RENDER_LOG = "            1. RENDER:"; 
-const API_FLOW_LOG = "           2. API FLOW:"; 
+const DOM_LOG = "                   0. DOM:"; 
+const API_FLOW_LOG = "                  1. API FLOW:"; 
+const RENDER_LOG = "            2. RENDER:"; 
 const CONTROLLER_LOG = "        3. CONTROLLER:"
 const EVENT_HANDLER_LOG = "   4. EVENT HANDLER:"; 
 const INIT_LOG = "5. INIT:";
@@ -54,9 +56,10 @@ const state = {
 
     ui: {
         loading: false, 
-        error: null, 
         fabOpen: false
-    }
+    }, 
+
+    error: null
 
 }
 
@@ -85,47 +88,153 @@ const state = {
 
 
 
-// ============== 1. RENDER ===============
+
+// ================== 1. API FLOW ================
+// gọi và lấy dữ liệu từ api 
+async function loginFlow(username, password) {
+    console.log(`${API_FLOW_LOG} vào login flow với username: ${username}, password: ${password}`); 
+
+    try {
+        const {data, message} = await login(username, password); 
+        return {data, message}; 
+    } catch(err) {
+        console.log(`lỗi ở loginFlow: ${err.message}`); 
+        throw err; 
+    }
+}
+
+
+
+
+
+
+
+async function getMeFlow() {
+    console.log(`${API_FLOW_LOG} vào getMeFlow`)
+
+    const token = localStorage.getItem("accessToken"); 
+
+    if (!token) {
+        throw new Error("No token"); 
+    }
+
+    try {
+        const user = await getMe(token); 
+        return user; 
+    } catch(err) {
+        console.log(`${API_FLOW_LOG} lỗi ở getMeFlow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+async function signupFlow(fullname, email, username, password) {
+    console.log(`${API_FLOW_LOG} vào signupFlow với họ tên: ${fullname}, email: ${email}, username: ${username}, password: ${password}`); 
+
+    // 1. logic chính 
+    try {
+        const {message} = await signup(fullname, email, username, password); 
+
+        return {message}; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở signupFlow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+async function getTeachingWordReflectionFlow() {
+    console.log(`${API_FLOW_LOG} vào hàm lấy lời dạy hiện tại`); 
+
+    try {
+        const {teachingWord} = await getTeachingWordReflection(); 
+
+        return {teachingWord}; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở api flow: ${err.message}`);
+
+        throw err; 
+    }
+}
+
+
+
+
+async function getTeachingWordFlow(id) {
+    console.log(`${API_FLOW_LOG} vào hàm lấy lời dạy theo id: ${id}`); 
+
+    try {
+        const teachingWord = await getTeachingWord(id); 
+
+        return teachingWord; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============== 2. RENDER ===============
 // hàm mà render toàn bộ trang web từ nguồn sự thật, mình nghĩ là mình sẽ viết pseudo code trước 
 function render() {
     console.log(`${RENDER_LOG} vào hàm lớn render`); 
 
+    // 1. render error 
+    if (state.error) {
+        renderError(); 
 
-    // 1. render page phù hợp
-    renderRoute(); 
+    } else {
+        // 1. render page phù hợp
+        renderRoute(); 
 
-    // 2. render ui state như loading, disabled, fabOpen. 
-    renderUIState(); 
+        // 2. render ui state như loading, disabled, fabOpen. 
+        renderUIState(); 
+    }
+
+    
 
     // câu hỏi đặt ra là render page trước hay render ui state trước? Vì phải có gì đó thì mới có trạng thái của cái đó nên là render page trước. 
 }
 
 
 
-// hiển thị trang phù hợp theo route trong state 
-// function renderRoute() {
-//     console.log(`${RENDER_LOG} 1. vào hàm renderRoute với state.route: ${JSON.stringify(state.route, null, 2)}`); 
 
-//     // 1. ẩn tất cả các trang 
-//     document.querySelectorAll("[data-page]").forEach(el => el.classList.add("hidden")); 
+function renderError() {
+    console.log(`${RENDER_LOG}  1. render error: ${state.error}`); 
 
-//     // 2. nếu không có user, thì nếu là login hay signup thì hiển thị trang tương ứng lên. 
-//     // nếu có user thì hiển thị tương ứng page theo role, ngoại trừ ENTITY LÀM THÊM BƯỚC PHỤ LÀ MỞ data-entity-type nữa. 
-//     if (!state.route.userRole) {
-//         document.querySelector(`[data-page="${state.route.name}"`).classList.remove("hidden"); 
-//     } else {
-//         document.querySelector(`[data-user-role="${state.route.userRole}"] [data-page="${state.route.name}"]`).classList.remove("hidden"); 
-
-//         if (state.route.name === "ENTITY") { 
-//             // hide all entity-type 
-//             document.querySelectorAll("[data-entity-type]").forEach(el => el.classList.add("hidden")); 
-//             document.querySelector(`[data-user-role="${state.route.userRole}"] [data-page="ENTITY"] [data-entity-type="${state.route.currentEntity.type}"]`).classList.remove("hidden"); 
-//         }
-//     }
-// }
+    alert(state.error); 
+}
 
 
-function renderRoute() {
+
+
+
+async function renderRoute() {
     console.log(`${RENDER_LOG}  1. render route cho trang với route: ${JSON.stringify(state.route, null, 2)}`); 
 
 
@@ -146,7 +255,7 @@ function renderRoute() {
         if (state.route.userRole === "USER") {
             if (state.route.name === "HOME") {
                 showUserHomePage(); 
-                renderReflectionTeachingWord(); 
+                await renderReflectionTeachingWord(); 
                 // renderlatestLifeLessons(); 
                 // renderPurposes(); 
                 // renderUnresolvedNotes(); 
@@ -194,9 +303,7 @@ function renderRoute() {
 function renderUIState() {
     console.log(`${RENDER_LOG}  2. vào hàm render UI state với state.ui: ${JSON.stringify(state.ui, null, 2)}`); 
 
-    if (state.ui.error) {
-        alert(state.ui.error); 
-    }
+
 }
 
 
@@ -293,128 +400,138 @@ function showAdminEntityPage() {
 
 
 
-function renderReflectionTeachingWords() {
+async function renderReflectionTeachingWord() {
     console.log(`${RENDER_LOG}      1.3 render nội dung của Lời Dạy mới nhất`); 
 
-    // 1. lấy dữ liệu teaching word 
-    // 1.1 lấy id từ server 
-    // 1.2 check trong cache, 
-    // 1.2.1 nếu không có sẵn thì lấy từ server
-    // 1.2.2 nếu có rồi thì lấy từ cache
-    const {teachingWord} = getTeachingWordReflectionFlow(); 
+    state.error = null; 
 
-    if (ExistsInCache(teachingWord.id, "TEACHING_WORD")) {
-        const {tw} = getTeachingWordFlow(teachingWord.id); 
-        // lưu vào cache 
-    } else {
-        // lấy từ cache 
+    try {
+        // 1. lấy dữ liệu teaching word 
+        // 1.1 lấy id từ server 
+        // 1.2 check trong cache, 
+        // 1.2.1 nếu không có sẵn thì lấy từ server
+        // 1.2.2 nếu có rồi thì lấy từ cache
+        const {teachingWord} = await getTeachingWordReflectionFlow(); 
+
+        // console.log(`${RENDER_LOG}      1.3.1 kiểm tra teachingWord: ${JSON.stringify(teachingWord, null, 2)}`); 
+
+        let tw; // Lời dạy đầy đủ 
+
+        if (!ExistsInCache(teachingWord.id, "TEACHING_WORD")) {
+            tw = await getTeachingWordFlow(teachingWord.id); 
+
+            // lưu vào cache 
+            state.cache.teachingWords[tw.id] = tw; 
+
+
+        } else {
+            // lấy từ cache 
+            tw = state.cache.teachingWords[teachingWord.id]; 
+        }
+        console.log(`${RENDER_LOG}      1.3.2 Lời dạy có nội dung là: ${JSON.stringify(tw, null, 2)}`); 
+
+        // 2. render ra trang web. 
+        const twContainer = document.querySelector('[data-user-role="USER"] [data-page="HOME"] .teaching-words-section');
+        twContainer.innerHTML = '<h2 class="relative right-4 font-bold">Mục Lời Dạy</h2>'; 
+        twContainer.innerHTML += createTeachingWordCard(tw); 
+
+
+    } catch(err) {
+        state.error = err.message; 
+        render(); 
     }
 
-    // 2. render ra trang web. 
-
-    
 }
 
 
+
+function createTeachingWordCard(teachingWord) {
+    console.log(`${RENDER_LOG}          1.3.3 tạo ra nội dung html cho card lời dạy có: ${JSON.stringify(teachingWord, null, 2)}`); 
+    // chỗ content phải là bản tóm tắt của nó mới hợp lí 
+    return `<div class="teaching-word-card card mt-4 shadow-md bg-white rounded-4xl">
+                                <div class="card-body relative">
+                                    <h1 class="card-title text-2xl">${teachingWord.title}</h1>
+                                    <h2 class="text-xl">${teachingWord.displayCode}</h2>
+                                    <p class="whitespace-pre-wrap mt-4 line-clamp-[22]">${teachingWord.content}</p>
+
+
+                                    <p class="absolute bottom-0 right-0 w-full h-full bg-gradient-to-b from-transparent to-white flex items-end justify-center rounded-3xl">
+                                        <button class="btn btn-outline flex gap-2 mb-6 font-bold text-lg items-center">
+                                            <div class="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                                    <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <p>xem thêm</p>
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>`
+}
   
 
 
 
 
 
+function ExistsInCache(id, type) {
+    console.log(`${RENDER_LOG}          1.3.1 hàm kiểm tra (${type}, ${id}) có nằm trong cache rồi hay không?`); 
 
 
+    if (type === "TEACHING_WORD") {
+        const tw = state.cache.teachingWords[id]; 
+
+        if (!tw) {
+            return false; 
+        } 
+
+        return true; 
 
 
+    } else if (type === "LIFE_LESSON") {
+        const ll = state.cache.lifeLessons[id]; 
+
+        if (!ll) {
+            return false; 
+        } 
+
+        return true; 
 
 
+    } else if (type === "PURPOSE") {
+        const p = state.cache.purposes[id]; 
 
+        if (!p) {
+            return false; 
+        } 
 
+        return true; 
 
+        
+    } else if (type === "NOTE") {
+        const n = state.cache.notes[id]; 
 
+        if (!n) {
+            return false; 
+        } 
 
+        return true; 
 
+    } else if (type === "USER") {
+        const u = state.cache.users[id]; 
 
+        if (!u) {
+            return false; 
+        } 
 
+        return true; 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ================== 2. API FLOW ================
-// gọi và lấy dữ liệu từ api 
-async function loginFlow(username, password) {
-    console.log(`${API_FLOW_LOG} vào login flow với username: ${username}, password: ${password}`); 
-
-    try {
-        const {data, message} = await login(username, password); 
-        return {data, message}; 
-    } catch(err) {
-        console.log(`lỗi ở loginFlow: ${err.message}`); 
-        throw err; 
+    } else if (type === "RELATION") {
+        // 
+    } else {
+        return false; 
     }
 }
-
-
-
-
-
-
-
-async function getMeFlow() {
-    console.log(`${API_FLOW_LOG} vào getMeFlow`)
-
-    const token = localStorage.getItem("accessToken"); 
-
-    if (!token) {
-        throw new Error("No token"); 
-    }
-
-    try {
-        const user = await getMe(token); 
-        return user; 
-    } catch(err) {
-        console.log(`${API_FLOW_LOG} lỗi ở getMeFlow: ${err.message}`); 
-
-        throw err; 
-    }
-}
-
-
-
-async function signupFlow(fullname, email, username, password) {
-    console.log(`${API_FLOW_LOG} vào signupFlow với họ tên: ${fullname}, email: ${email}, username: ${username}, password: ${password}`); 
-
-    // 1. logic chính 
-    try {
-        const {message} = await signup(fullname, email, username, password); 
-
-        return {message}; 
-    } catch (err) {
-        console.log(`${API_FLOW_LOG} 1. lỗi ở signupFlow: ${err.message}`); 
-
-        throw err; 
-    }
-}
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -553,6 +670,7 @@ function redirect(route) {
 async function initApp() {
     console.log(`${CONTROLLER_LOG} vào hàm khởi tạo app`); 
 
+    state.error = null; 
 
     const route = getRouteFromURL(); 
     console.log(`${CONTROLLER_LOG} 1. route: ${JSON.stringify(route, null, 2)}`); 
@@ -653,7 +771,7 @@ function handlePopState(currRoute) {
 async function handleLogin(username, password) {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí login với username: ${username}, password: ${password}`); 
 
-    state.ui.error = null; 
+    state.error = null; 
 
     // 1. xử lí 
     try {
@@ -677,7 +795,7 @@ async function handleLogin(username, password) {
         redirect({name: "HOME", userRole: user.role}); 
 
     } catch(err) {
-        state.ui.error = err.message; 
+        state.error = err.message; 
 
         console.log(`${CONTROLLER_LOG} lỗi ở handleLogin: ${err.message}`); 
 
@@ -691,7 +809,7 @@ async function handleLogin(username, password) {
 function handleRedirectToSignUpPage() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí chuyển hướng đăng kí trong trang đăng nhập`); 
 
-    state.ui.error = null; 
+    state.error = null; 
     navigate({name: "SIGN_UP"}); 
 }
 
@@ -713,7 +831,7 @@ function handleRedirectToSignUpPage() {
 function handleRedirectToLogInPage() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí chuyển hướng đăng nhập trong trang đăng kí`); 
 
-    state.ui.error = null; 
+    state.error = null; 
     navigate({name: "LOG_IN"}); 
 }
 
@@ -728,14 +846,14 @@ async function handleSignup(fullname, email, username, password) {
 
     // 1. gửi cho server, chờ nhận trả lời từ server. Server trả về cái gì nhỉ? là message báo đăng kí thành công. 
     // 2. vậy không làm gì cả mà tự động chuyển qua trang login 
-    state.ui.error = null; 
+    state.error = null; 
 
     try {
         const {message} = await signupFlow(fullname, email, username, password); 
 
         navigate({name: "LOG_IN"}); 
     } catch (err) {
-        state.ui.error = err.message; 
+        state.error = err.message; 
 
         console.log(`${CONTROLLER_LOG} 1. lỗi ở handleSignup: ${err.message}`); 
 
@@ -749,6 +867,8 @@ async function handleSignup(fullname, email, username, password) {
 // ======= ROUTE: HOME USER ========
 function handleLogOut() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí đăng xuất`); 
+
+    state.error = null; 
 
     // 1. xóa token 
     localStorage.removeItem("accessToken"); 
