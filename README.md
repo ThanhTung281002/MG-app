@@ -689,7 +689,7 @@ Luồng của admin:
 
 
 ### GET /life-lesssons-reflection?view=basic 
-- Chỉ lấy thông tin cơ bản như id và title của tất bài học để hiển thị ở mục tìm kiếm ở user. 
+- Chỉ lấy id của tất bài học để hiển thị ở phía user. 
 
 
 **Request:**
@@ -856,7 +856,7 @@ Luồng của admin:
 
 
 ### GET /purposes?view=basic
-- lấy tất cả các mục đích mà bản thân mong muốn đạt được
+- lấy tất cả các mục đích mà bản thân mong muốn đạt được và có trạng thái là active. 
 
 
 **Request:**
@@ -1132,6 +1132,7 @@ Luồng của admin:
 ```
 
 
+> 🪛🪛🪛: cảm giác là cũng không cần các thông tin trên lắm. Chỉ cần response message là được rồi. 
 
 
 

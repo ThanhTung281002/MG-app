@@ -111,23 +111,63 @@ const state = {
         } || null, 
     },
 
-    newEntityType: null || NOTE || PURPOSE, 
-
     cache: {
-        teachingWords: {}, 
+        teachingWords: {
+            "id1": {
+                id, 
+                title, 
+                content, 
+                updatedAt
+            }
+        }, 
         lifeLessons: {}, 
-        purposes: {}, 
+        purposes: {
+            "id1": {
+                id, 
+                title, 
+                hope, 
+                status, 
+                updatedAt, 
+                numIncompleteActions, 
+                actions: [
+                        id: 
+                        context,
+                        status, 
+                        updatedAt
+                    ]
+                }
+            }
+        }, 
         notes: {}, 
         relations: {
             origin: {}, 
-            born: {}
+            born: {
+                "NOTE-1": {
+                        purposes: [
+                            {
+                                id
+                            }
+                        ], 
+                        notes: [
+                            {
+                                id
+                            },
+                        ]
+                }
+            }
         },
         users: {}
     }
 
     ui: {
         loading: true || false, 
-        fabOpen: true || false
+        disabled: true || false, 
+        fabState: 0 || 1 || 2
+        overlayEntity: "NOTE_FREE_WRITE" || "PURPOSE_FREE_WRITE" || "ACTION_ADDITION" || null || initial: null, 
+        saveStatus: "SAVED" || "SAVING" || "EDITTING", 
+        noteTypeMenuOpen: true || false || initial: false, 
+
+
     }, 
     error: "network error" || null
 

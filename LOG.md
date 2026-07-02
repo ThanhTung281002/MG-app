@@ -7,8 +7,319 @@
 
 
 
-## 20.05.2026 23h17 
+## 29.06.2026 18h50 
 - [ ] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho các trang của ADMIN. 
+
+### Đã làm
+- Đã làm: 
+    - 
+
+### Đang kẹt / dở
+- Lỗi và sửa ở backend: 
+    1. Chỉnh cho các tên key trong api contract và backend thành dạng hợp với frontend. Ví dụ: life-lessons => lifeLessons. Để dành khi quay lại phần backend. Và xóa triệt để trong backend khi xóa cái gì đó. 
+    2. thêm phần lấy các user rejected ở api contract và backend. 
+    3. khi người dùng rejected hoặc pending đăng nhập thì chuyện gì xảy ra. Backend đã tính tới trường hợp này chưa? Có thể để sau vì hiện tại là mình làm để mình xài. 
+    4. Điều chỉnh lại api contract là lấy pending hoặc rejected user thì chỉ trả id thôi. 
+    5. Điều chỉnh lại api contract về việc tạo một cái mới để lấy dữ liệu user. 
+    6. chỉnh lại cho user đơn giản là update status của user thôi, như vậy cho đơn giản. 
+
+> note: 😊, thấy công việc mới rồi, đó là điều chỉnh api contract và sau đó viết api thật cho frontend cũng như điều chỉnh lại code ở backend. 
+
+- Lỗi ở frontend: 
+    1. 
+
+
+### Hướng làm tiếp
+- Làm cho trang home và entity của admin. 
+
+
+-------------
+
+
+
+
+
+
+## 28.06.2026 17h22
+- [x] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang USER TEACHING_WORD. 
+
+### Đã làm
+- Đã làm: 
+    - 
+
+### Đang kẹt / dở
+- Lỗi hiện thấy: 
+    1. Chỉnh cho các tên key trong api contract và backend thành dạng hợp với frontend. Ví dụ: life-lessons => lifeLessons. Để dành khi quay lại phần backend. Và xóa triệt để trong backend khi xóa cái gì đó. 
+    2. Chưa bắt đầu. 
+
+
+### Hướng làm tiếp
+- Làm cho trang LC và trang BG của người dùng. 
+
+
+-------------
+
+
+
+## 27.06.2026 22h20 
+- [x] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang user entity. 
+
+### Đã làm
+- Đã làm: 
+    - Render nội dung 
+    - Click quay lại
+    - click vào mục thực thể sinh ra
+    - render thực thể sinh ra. 
+    - click vào thực thể sinh ra và đi tới trang dành cho nó. 
+    - click vào fab thì ẩn hiện tự động và mở bật fab. 
+    - Thêm ghi chú mới và hành động mới thành công. 
+
+### Đang kẹt / dở
+- Lỗi hiện thấy: 
+    1. Chỉnh cho các tên key trong api contract và backend thành dạng hợp với frontend. Ví dụ: life-lessons => lifeLessons. Để dành khi quay lại phần backend. 
+    2. xóa là nghĩa là thực thể và xóa các liên kết sinh ra từ nó luôn. Cả ở server và cache. 
+
+- Đang làm dở cho phần xóa ghi chú hiện tại. 
+    - Chỗ cấn là khi xóa thì gặp vài bug liên quan. 
+
+
+### Hướng làm tiếp
+- Làm cho trang thực thể ghi chú. 
+
+
+
+
+
+---
+
+
+
+
+## 17.06.2026 19h27 
+- [x] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang user entity. 
+
+### Đã làm
+- Đã làm: 
+    - Render nội dung 
+    - Click quay lại
+    - click vào mục thực thể sinh ra
+    - render thực thể sinh ra. 
+    - click vào thực thể sinh ra và đi tới trang dành cho nó. 
+    - click vào fab thì ẩn hiện tự động và mở bật fab. 
+    - Thêm ghi chú mới và hành động mới thành công. 
+
+### Đang kẹt / dở
+- Lỗi hiện thấy: 
+    1. Chỉnh cho các tên key trong api contract và backend thành dạng hợp với frontend. Ví dụ: life-lessons => lifeLessons. 
+    
+    
+     
+- Điều có thể tối ưu: 
+    1. Sắp xếp cho hành động hoàn thành mới nhất lên cùng, còn chưa hoàn thành thì cũ nhất lên cùng. hoàn thành thì sắp xếp theo updated, còn chưa hoàn thành thì sắp xếp theo ngày tạo.
+    2. thêm khoảng trống ở đáy để người dùng có thể nhập và tránh click vào nút fab.
+    3. Gộp các sự kiện click trong trang thực thể vào một cái 
+
+### Hướng làm tiếp
+- Làm cho trang thực thể mục đích. 
+- Thêm hành động 
+
+
+
+
+---
+
+
+
+## 02.06.2026 16h27
+- [x] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang user home. 
+- Đã xong phần di chuyển tới các trang khác trong home. 
+- Đã xong phần đăng xuất cho trang home. 
+- Đã xong phần load dữ liệu cho trang home. 
+- Đã xong phần click vào từng thực thể thì đi tới trang của các thực thể đó. 
+- Đã xong toàn bộ các hành vi cần thiết cho trang thực thể lời dạy. 
+    - Render nội dung 
+    - Click quay lại
+    - click vào mục thực thể sinh ra
+    - render thực thể sinh ra. 
+    - click vào thực thể sinh ra và đi tới trang dành cho nó. 
+    - hiệu ứng và hành vi của nút fab. 
+    - click và thực thi các action của fab. 
+    - Thêm ghi chú mới và mục đích mới thành công. 
+- Chính thức hoàn thành trang thực thể lời dạy. 
+
+### Đã làm
+- Đã làm: 
+    - Render nội dung 
+    - Click quay lại
+    - click vào mục thực thể sinh ra
+    - render thực thể sinh ra. 
+    - click vào thực thể sinh ra và đi tới trang dành cho nó. 
+    - click vào fab thì ẩn hiện tự động và mở bật fab. 
+    - Thêm ghi chú mới và hành động mới thành công. 
+
+### Đang kẹt / dở
+- Lỗi hiện thấy: 
+    1. khi vào trong các hành động của fab thì khi ra lại thì fab không tự ẩn đi được. 
+    2. Chỉnh cho các tên key trong api contract và backend thành dạng hợp với frontend. Ví dụ: life-lessons => lifeLessons. 
+
+### Hướng làm tiếp
+- Chính thức hoàn thành trang thực thể lời dạy, và hướng tới làm cho trang bài học. 
+
+
+
+
+
+## 02.06.2026 0h12
+- [x] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang user home. 
+- Đã xong phần di chuyển tới các trang khác trong home. 
+- Đã xong phần đăng xuất cho trang home. 
+- Đã xong phần load dữ liệu cho trang home. 
+- Đã xong phần click vào từng thực thể thì đi tới trang của các thực thể đó. 
+- Đã xong toàn bộ các hành vi cần thiết cho trang thực thể lời dạy. 
+    - Render nội dung 
+    - Click quay lại
+    - click vào mục thực thể sinh ra
+    - render thực thể sinh ra. 
+    - click vào thực thể sinh ra và đi tới trang dành cho nó. 
+
+### Đã làm
+- Đã làm: 
+    - Render nội dung 
+    - Click quay lại
+    - click vào mục thực thể sinh ra
+    - render thực thể sinh ra. 
+    - click vào thực thể sinh ra và đi tới trang dành cho nó. 
+    - click vào fab thì ẩn hiện tự động và mở bật fab. 
+
+### Đang kẹt / dở
+- Phần render cần chỉnh lại cho phù hợp với state driven UI. Mình làm điều mới với tinh thần cũ. Mình hiểu hiện tại là như vậy. Nên phải làm/hành động để học. Không có cách khác. Không phải mường tượng là hiểu được. 
+
+### Hướng làm tiếp
+- Làm phần UI state cho phù hợp và tối ưu cho fab. Cũng như phần thêm ghi chú mới và mục đích mới. 
+
+
+----------------
+
+
+
+
+## 25.05.2026 17h27 
+- [x] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang user home. 
+- Đã xong phần di chuyển tới các trang khác trong home. 
+- Đã xong phần đăng xuất cho trang home. 
+- Đã xong phần load dữ liệu cho trang home. 
+- Đã xong phần click vào từng thực thể thì đi tới trang của các thực thể đó. 
+
+### Đã làm
+- Đã làm phần click vào từng nút read me hoặc card thì vào trang của từng thực thể. 
+
+### Đang kẹt / dở
+- Không có gì. 
+
+### Hướng làm tiếp
+- Làm phần UI động cho các trang thực thể. 
+
+
+----------------
+
+
+
+
+
+
+
+
+
+## 25.05.2026 17h27 
+- [x] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang user home. 
+- Đã xong phần di chuyển tới các trang khác trong home. 
+- Đã xong phần đăng xuất cho trang home. 
+- Đã xong phần load dữ liệu cho trang home. 
+- Đang làm phần click vào từng phần và đi tới trang entity. 
+
+### Đã làm
+- Đã làm xong toàn bộ cho phần load dữ liệu lên trang home, với các dữ liệu như lời dạy, bài học, mục đích, ghi chú. 
+
+### Đang kẹt / dở
+- Không có gì. 
+
+### Hướng làm tiếp
+- Click vào từng thực thể trong trang home thì đi tới trang của từng thực thể đó. 
+
+
+----------------
+
+
+
+
+
+
+
+
+
+## 24.05.2026 22h41 
+- [x] Hoàn thành 
+
+### Context
+- Đang làm phần UI động. 
+- Đang làm cho trang user home. 
+- Đang làm cho phần load dữ liệu lên trang user home. 
+
+### Đã làm
+- Đã làm xong cho phần việc load dữ liệu bài giảng lên trang home. 
+- Vấn đề, bug tới là bình thường. Tấm lòng bình tĩnh và tìm cách để sửa lỗi bằng LC là được. 
+
+> Bài học: Mở mắt để nhìn được điều bản thân mong muốn và thực hiện nó. Gặp vấn đề thì giải quyết thôi, để có thể đi về hướng mong muốn. 
+
+> Note: làm sao để biết và phân biệt được điều gì con làm là làm trong HA, và điều gì con làm là làm ở bên ngoài Người? 
+
+### Đang kẹt / dở
+- Không có gì. 
+
+### Hướng làm tiếp
+Việc cần làm: 
+1. load dữ liệu mục đích. 
+
+----------------
+
+
+
+
+
+## 20.05.2026 23h17 
+- [x] Hoàn thành 
 
 ### Context
 - Đang làm phần UI động. 
@@ -34,7 +345,7 @@
 
 ### Hướng làm tiếp
 Việc cần làm: 
-1. load dữ liệu Bài giảng, mục đích, note. 
+1. load dữ liệu Bài giảng. 
 
 ----------------
 
