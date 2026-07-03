@@ -120,7 +120,7 @@ const state = {
                 updatedAt
             }
         }, 
-        lifeLessons: {}, 
+        lifeLessonsReflection: {}, 
         purposes: {
             "id1": {
                 id, 
@@ -156,7 +156,8 @@ const state = {
                 }
             }
         },
-        users: {}
+        users: {}, 
+        lifeLessonsMain: {}
     }
 
     ui: {

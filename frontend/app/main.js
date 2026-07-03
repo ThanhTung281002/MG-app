@@ -4,7 +4,7 @@ console.log("main.js loaded")
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus} from "./services/fakeServices.js";
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord} from "./services/fakeServices.js";
 
 
 const DOM_LOG = "                   0. DOM:"; 
@@ -578,7 +578,19 @@ async function updateUserStatusFlow(id, status) {
 
 
 
+async function updateTeachingWordFlow(id, title, content, date) {
+    console.log(`${API_FLOW_LOG} cập nhập cho lời dạy: ${id}, với title ${title}, content: ${content}, date: ${date}`); 
 
+    try {
+        const {message} = await updateTeachingWord(id, title, content, date); 
+
+        return {message}; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
 
 
 
@@ -735,6 +747,7 @@ async function renderRoute() {
 
             } else if (state.route.name === "LIFE_LESSONS") {
                 showAdminLifeLessonsPage(); 
+                await renderAdminLifeLessonsPage(); 
 
 
             } else if (state.route.name === "ENTITY"){
@@ -2109,7 +2122,7 @@ function createLifeLessonReflectionMiniCard(lifeLesson) {
 
 // =========== ROUTE: ADMIN HOME ===========
 async function renderAdminHomePage() {
-    console.log(`${RENDER_LOG} render trang admin home`); 
+    console.log(`${RENDER_LOG}      1.3 render trang admin home`); 
 
     state.error = null; 
 
@@ -2202,7 +2215,7 @@ function createUserCard(user) {
 
 
 async function renderAdminTeachingWordsPage() {
-    console.log(`${RENDER_LOG} render trang lời dạy của admin`); 
+    console.log(`${RENDER_LOG}      1.3 render trang lời dạy của admin`); 
 
     state.error = null; 
 
@@ -2251,7 +2264,22 @@ function createAdminTeachingWordMiniCard(teachingWord) {
 
 
 
+async function renderAdminLifeLessonsPage() {
+    console.log(`${RENDER_LOG}      1.3 render trang bài học của admin`); 
 
+    state.error = null; 
+
+
+    try {
+        // 1. lấy toàn bộ bài học 
+        // 2. 
+
+    } catch (err) {
+        state.error = err.message; 
+        console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
+        render(); 
+    }
+}
 
 
 
@@ -2354,19 +2382,22 @@ async function renderAdminTeachingWordEntity() {
 
 
 function createAdminTeachingWordEntity(teachingWord) {
+    const date = displayCodeToDate(teachingWord.displayCode); 
+    const inputDate = dateToInputDate(date); 
+
     return `<div class="">
                     <div class="text-base font-semibold">Tiêu đề</div>
-                    <div contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 mt-2 p-2 px-4">${teachingWord.title}</div>
+                    <div data-content-type="title" contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 mt-2 p-2 px-4">${teachingWord.title}</div>
                 </div>
 
                 <div>
                     <div class="font-semibold mt-10">Ngày truyền</div>
-                    <input type="date" value="2026-03-22" class="p-2 px-4 text-xl border border-black rounded-lg mt-2 w-full h-12 ">
+                    <input data-content-type="date" type="date" value="${inputDate}" class="p-2 px-4 text-xl border border-black rounded-lg mt-2 w-full h-12 ">
                 </div>
 
                 <div class="">
                     <div class="text-base font-semibold mt-10">Nội dung</div>
-                    <div contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${teachingWord.content}</div>
+                    <div data-content-type="content" contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${teachingWord.content}</div>
                 </div>`; 
 }
 
@@ -2377,6 +2408,94 @@ function createAdminTeachingWordEntity(teachingWord) {
 
 
 
+function displayCodeToDate(displayCode) {
+    const match = displayCode.match(/^(CN|T[2-7])W(\d{1,2})Y(\d{2}|\d{4})$/);
+    if (!match) return "";
+
+    const [, dayPart, weekText, yearText] = match;
+
+    const targetWeekday = dayPart === "CN" ? 1 : Number(dayPart.slice(1));
+    const targetWeek = Number(weekText);
+    const targetYear = yearText.length === 2 ? 2000 + Number(yearText) : Number(yearText);
+
+    for (let month = 0; month < 12; month++) {
+        for (let day = 1; day <= 31; day++) {
+            const date = new Date(targetYear, month, day);
+
+            if (date.getFullYear() !== targetYear || date.getMonth() !== month) {
+                continue;
+            }
+
+            const parts = getTeachingWordDateParts(date);
+
+            if (
+                parts.year === targetYear &&
+                parts.week === targetWeek &&
+                parts.weekday === targetWeekday
+            ) {
+                return formatDateDDMMYYYY(date);
+            }
+        }
+    }
+
+    return "";
+}
+
+function dateToInputDate(date) {
+    // date dạng dd/mm/yyyy
+    const [day, month, year] = date.split("/");
+
+    if (!day || !month || !year) return "";
+
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+}
+
+function getTeachingWordDateParts(date) {
+    const year = date.getFullYear();
+
+    // JS: Sunday = 0, Monday = 1, ..., Saturday = 6
+    // Rule backend: Sunday = 1, Monday = 2, ..., Saturday = 7
+    const weekday = date.getDay() + 1;
+
+    let week = getIsoWeek(date);
+
+    // Backend cộng thêm 1 nếu là Chủ nhật
+    if (weekday === 1) {
+        week += 1;
+    }
+
+    return { weekday, week, year };
+}
+
+function getIsoWeek(date) {
+    const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const day = d.getDay() || 7;
+
+    d.setDate(d.getDate() + 4 - day);
+
+    const yearStart = new Date(d.getFullYear(), 0, 1);
+
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+function formatDateDDMMYYYY(date) {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+}
+
+
+
+function inputDateToDate(inputDate) {
+    // inputDate dạng yyyy-mm-dd
+    const [year, month, day] = inputDate.split("-");
+
+    if (!year || !month || !day) return "";
+
+    return `${day}/${month}/${year}`;
+}
 
 
 
@@ -2795,7 +2914,7 @@ function redirect(route) {
 
 // ------- hàm khởi tạo app ---------------------------
 // là những gì cần làm lúc reload lại page, mình hiểu như vậy
-const VALID_ROUTE_NAME = new Set(["HOME", "TEACHING_WORDS", "LIFE_LESSONS", "ENITY"]); 
+const VALID_ROUTE_NAME = new Set(["HOME", "TEACHING_WORDS", "LIFE_LESSONS", "ENTITY"]); 
 
 async function initApp() {
     console.log(`${CONTROLLER_LOG} vào hàm khởi tạo app`); 
@@ -2840,13 +2959,19 @@ async function initApp() {
 
             // 1. nếu route.userRole đúng với user.role
             if (route.userRole === user.role) {
+                console.log(`BUG: route.userRole khớp với user.role`); 
+
                 // 1. route.name khớp với các route name hợp lệ thì đi vào đó, không thì vào "HOME"
                 if (VALID_ROUTE_NAME.has(route.name)) {
+                    console.log('BUG: route.name khớp với ROUTE NAME hợp lệ'); 
                     redirect(route); 
                 } else {
+                    console.log('BUG: route.name không khớp với ROUTE NAME hợp lệ'); 
                     redirect({name: "HOME", userRole: user.role}); 
                 }
             } else {
+                console.log(`BUG: route.userRole không khớp với user.role`); 
+
                 // nếu không đúng thì sao? Vì về trang home của user.role
                 redirect({name: "HOME", userRole: user.role}); 
             }
@@ -3627,6 +3752,75 @@ async function handleUserMiniAction(miniAction) {
         render(); 
     }
 }
+
+
+
+
+async function handleAdminInput(contentType, content) {
+    console.log(`${CONTROLLER_LOG} xử lí nhập cho entity (${state.route.currentEntity.type}, ${state.route.currentEntity.id}) với loại content: ${contentType}, nội dung: ${content}`); 
+
+    // làm gì đây, vào hàm này nghĩa là người dùng đang nhập gì đó
+    // 1. xóa timer
+    // 2. đặt lại timer mới là sau một khoảng thời gian thì sẽ save. 
+    clearTimeout(saveTimer); 
+
+    if (state.ui.saveStatus === "SAVED" || state.ui.saveStatus === "SAVING") {
+        state.ui.saveStatus = "EDITTING"; 
+
+        saveTimer = setTimeout(async () => {
+            state.ui.saveStatus = "SAVING"; 
+            render(); 
+            
+            await saveAdmin(contentType, content); 
+            
+            state.ui.saveStatus = "SAVED"; 
+            render(); 
+        }, saveTime); 
+    } else if (state.ui.saveStatus === "EDITTING") {
+        // nếu nhập trong lúc đang nhập thì reset timer 
+        saveTimer = setTimeout(async () => {
+            state.ui.saveStatus = "SAVING"; 
+            render(); 
+            
+            await saveAdmin(contentType, content); 
+            
+            state.ui.saveStatus = "SAVED"; 
+            render(); 
+        }, saveTime); 
+    } 
+}
+
+
+
+
+async function saveAdmin(contentType, content) {
+    console.log(`${CONTROLLER_LOG}  1. lưu cho entity (${state.route.currentEntity.type}, ${state.route.currentEntity.id}) với loại content: ${contentType}, nội dung: ${content}`); 
+
+    const entity = state.route.currentEntity; 
+
+    // 1. nếu như là teaching word 
+    if (entity.type === "TEACHING_WORD") {
+        const teachingWord = state.cache.teachingWords[entity.id];
+
+        let title = teachingWord.title; 
+        let twContent = teachingWord.content; 
+        let date = displayCodeToDate(teachingWord.displayCode); 
+
+        if (contentType === "title") {
+            title = content; 
+        } else if (contentType === "content") {
+            twContent = content; 
+        } else if (contentType === "date") {
+            date = content; 
+        }
+
+        await updateTeachingWordFlow(entity.id, title, twContent, date); 
+    }
+}
+
+
+
+
 
 
 
@@ -4412,6 +4606,30 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"]').addEvent
 
 
 
+
+document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"]').addEventListener("input", async (e) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện nhập ở trang thực thể admin`); 
+
+    const content = e.target.closest("[contenteditable], input"); 
+
+    if (!content) return; 
+
+    if (content.matches("input")) {
+        const context = inputDateToDate(content.value);
+        const contentType = content.dataset.contentType; 
+
+        await handleAdminInput(contentType, context); 
+
+
+    } else if (content.matches("div")) {
+        const context = content.textContent; 
+        const contentType = content.dataset.contentType; 
+
+        await handleAdminInput(contentType, context); 
+    }
+
+    
+}); 
 
 
 

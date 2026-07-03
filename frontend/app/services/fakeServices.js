@@ -1272,3 +1272,90 @@ export async function updateUserStatus(id, status) {
         message: "updating successfully"
     }
 }
+
+
+
+
+
+
+
+export async function updateTeachingWord(id, title, content, date) {
+    console.log(`${API_LOG} cập nhập cho lời dạy: ${id}, với title ${title}, content: ${content}, date: ${date}`);
+    
+    // 1. kiểm tra có trong cơ sở dữ liệu không
+    const teachingWord = fakeTeachingWords.find(tw => tw.id === id); 
+
+    if (!teachingWord) {
+        throw new Error("Teaching Word not found"); 
+    }
+
+    // 2. cập nhập 
+    teachingWord.title = title; 
+    teachingWord.content = content; 
+    teachingWord.displayCode = dateToDisplayCode(date); 
+
+    // 3. trả theo yêu cầu 
+    return {
+        message: "Update successfully"
+    }
+}
+
+
+
+
+function dateToDisplayCode(date) {
+    // date dạng dd/mm/yyyy
+    const [dayText, monthText, yearText] = date.split("/");
+
+    if (!dayText || !monthText || !yearText) return "";
+
+    const day = Number(dayText);
+    const month = Number(monthText);
+    const year = Number(yearText);
+
+    const jsDate = new Date(year, month - 1, day);
+
+    if (
+        jsDate.getFullYear() !== year ||
+        jsDate.getMonth() !== month - 1 ||
+        jsDate.getDate() !== day
+    ) {
+        return "";
+    }
+
+    const { weekday, week } = getTeachingWordDateParts(jsDate);
+
+    const dayPart = weekday === 1 ? "CN" : `T${weekday}`;
+    const yearPart = String(year).slice(-2);
+
+    return `${dayPart}W${week}Y${yearPart}`;
+}
+
+
+function getTeachingWordDateParts(date) {
+    const year = date.getFullYear();
+
+    // JS: Sunday = 0, Monday = 1, ..., Saturday = 6
+    // Rule backend: Sunday = 1, Monday = 2, ..., Saturday = 7
+    const weekday = date.getDay() + 1;
+
+    let week = getIsoWeek(date);
+
+    // Backend cộng thêm 1 nếu là Chủ nhật
+    if (weekday === 1) {
+        week += 1;
+    }
+
+    return { weekday, week, year };
+}
+
+function getIsoWeek(date) {
+    const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const day = d.getDay() || 7;
+
+    d.setDate(d.getDate() + 4 - day);
+
+    const yearStart = new Date(d.getFullYear(), 0, 1);
+
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
