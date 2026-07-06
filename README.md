@@ -595,7 +595,7 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "teaching-words": [
+    "teachingWords": [
         {
             "id": "id of teaching word"
         }, 
@@ -677,7 +677,7 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "life-lessons": [
+    "lifeLessonsReflection": [
         {
             "id": "id of life lesson"
         }, 
@@ -700,7 +700,7 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "life-lessons": [
+    "lifeLessonsReflection": [
         {
             "id": "id of life lesson"
         }, 
@@ -781,7 +781,7 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "life-lessons": [
+    "lifeLessonsMain": [
         {
             "id": "id of life lesson"
         }, 
@@ -1067,7 +1067,7 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "unresolved-notes": [
+    "unresolvedNotes": [
         {
             "id": "id of note"
         }, 
@@ -1195,7 +1195,7 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "pending-users": [
+    "pendingUsers": [
         {
             "id": "id of user",
             "fullname": "fullname of user", 
@@ -1211,13 +1211,15 @@ Luồng của admin:
 
 
 
-### PUT /admin/pending-users/:id/approve
+### PUT /admin/users/:id
 - Duyệt thành viên từ, đổi status từ "pending" lên "approved". 
 
 
 **Request:**
 ```raw
-{}
+{
+    "status": "APPROVED" || "REJECTED"
+}
 ```
 
 **Resonse:**
@@ -1232,22 +1234,7 @@ Luồng của admin:
 
 
 
-### PUT /admin/pending-users/:id/reject
-- Xóa thành viên không hợp lệ. 
-- Xóa đây không phải là xóa vật lí mà là vô hiệu hóa, tức là đổi status thành rejected. 
 
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "updatedAt": "updated time"
-}
-```
 
 ---------------------------------
 ### GET /relations/origin?type={TO_TYPE}&id={TO_ID}
@@ -1266,6 +1253,10 @@ Luồng của admin:
     "id": "id of object"
 }
 ```
+
+
+// ? cân nhắc bỏ 
+
 
 
 ### GET /relations/born?type={FROM_TYPE}&id={FROM_ID}

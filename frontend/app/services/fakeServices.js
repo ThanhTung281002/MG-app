@@ -174,15 +174,49 @@ mà Kami, Sere, Miko, Ima luôn dạy cho.
 let fakeLifeLessonsReflection = [
     {
         id: 1, 
+        lifeLessonMainId: 1,
+        reflection: `cảm nhận của mình`, 
+        updatedAt: Date.now()
+    },
+    {
+        id: 2, 
+        lifeLessonMainId: 2, 
+        reflection: `cảm nhận của mình`, 
+        updatedAt: Date.now()
+    },
+    {
+        id: 3, 
+        lifeLessonMainId: 3, 
+        reflection: `cảm nhận của mình`, 
+        updatedAt: Date.now()
+    },
+    {
+        id: 4, 
+        lifeLessonMainId: 4, 
+        reflection: `cảm nhận của mình`, 
+        updatedAt: Date.now()
+    },
+    {
+        id: 5, 
+        lifeLessonMainId: 5, 
+        reflection: `cảm nhận của mình`, 
+        updatedAt: Date.now()
+    },
+
+]; 
+
+
+let fakeLifeLessonsMain = [
+    {
+        id: 1, 
         title: "Thuyết con người", 
         mainContent: `Được biểu hiện là con người bên trong, nó tồn tại bằng hình thể có
 các chi thể như mắt, mũi, tai, miệng…hình dáng và hình dạng đó
 giống với BO, nhưng nó không già đi, hay bị bệnh tật, hay chết thối
 rữa rồi biến mất như BO mà tồn tại mãi mãi. BO của bản thân là
 nam thì YO của bản thân cũng là nam. BO là nữ thì YO cũng là nữ.`, 
-        reflection: `cảm nhận của mình`, 
         updatedAt: Date.now()
-    },
+    }, 
     {
         id: 2, 
         title: "7 cấp độ luật lệ", 
@@ -190,10 +224,9 @@ nam thì YO của bản thân cũng là nam. BO là nữ thì YO cũng là nữ.
 được khám phá) bằng luật của HA. LC nói rõ bản chất của sự sáng tạo, mang đến trật tự và sự
 sống. LC là biểu tượng, là luật, là chân lý và là con đường. Đó là lời hoàn hảo 100%. Lời đó không chứa đựng bất kỳ mâu thuẫn nào và bây giờ cũng vậy. HA đã tạo ra mỗi loài mang nét
 độc đáo riêng. Và sự sáng tạo không hoàn thành ngay lập tức mà dần dần phát triển một cách
-sáng tạo.`, 
-        reflection: `cảm nhận của mình`, 
+sáng tạo.`,
         updatedAt: Date.now()
-    },
+    }, 
     {
         id: 3, 
         title: "Ê-li và chim quạ", 
@@ -202,26 +235,27 @@ gì Ngài lại cho Eli ăn thông qua con quạ là con vật mang điềm báo
 không lành như vậy? Và tại sao lại chỉ cho bánh và thịt trong số các
 loại thức ăn? Hơn nữa Ngài lại chỉ ban cho bữa sáng và tối mà
 không có bữa trưa? Tại sao phép lạ con quạ lại không diễn ra đối
-với các mục sư lỗi lạc, vĩ đại trong thời đại này?`, 
-        reflection: `cảm nhận của mình`, 
+với các mục sư lỗi lạc, vĩ đại trong thời đại này?`,
         updatedAt: Date.now()
-    },
+    }, 
     {
         id: 4, 
         title: "Mặt trời đứng yên", 
         mainContent: ``, 
-        reflection: `cảm nhận của mình`, 
         updatedAt: Date.now()
-    },
+    }, 
     {
         id: 5, 
         title: "Phê-rơ và con cá", 
         mainContent: ``, 
-        reflection: `cảm nhận của mình`, 
         updatedAt: Date.now()
-    },
+    }, 
+    
 
 ]; 
+
+        
+
 
 
 
@@ -590,13 +624,13 @@ export async function getLifeLessonsReflectionReflection() {
     
 
     // 1. lấy 3 bài học đầu từ fakeLifeLessons và trả lại thôi 
-    const lifeLessons = fakeLifeLessonsReflection.slice(0, 3).map(ll => ({
+    const lifeLessonsReflection = fakeLifeLessonsReflection.slice(0, 3).map(ll => ({
         id: ll.id
     })); 
 
     // console.log(`${API_LOG} 1. lifeLessons: ${JSON.stringify(lifeLessons, null, 2)}`); 
 
-    return {lifeLessons}
+    return {lifeLessonsReflection}
 }
 
 
@@ -619,8 +653,18 @@ export async function getLifeLessonReflection(id) {
         throw new Error("Life lesson not found"); 
     }
 
-    // 2. trả nội dung lại thôi 
-    return ll; 
+
+    // 2. điều chỉnh phù hợp 
+    const newll = {...ll}; 
+    const llm = fakeLifeLessonsMain.find(el => el.id === ll.lifeLessonMainId); 
+
+    delete newll.lifeLessonMainId; 
+    newll.title = llm.title; 
+    newll.mainContent = llm.mainContent; 
+
+
+    // 3. return phù hợp 
+    return newll; 
 
 }
 
@@ -1159,14 +1203,14 @@ export async function getAllLifeLessonsReflection() {
 
 
     // 1. tạo mảng rút gọn từ cơ sở dữ liệu 
-    const lifeLessons = fakeLifeLessonsReflection.map(ll => ({
+    const lifeLessonsReflection = fakeLifeLessonsReflection.map(ll => ({
         id: ll.id
     })); 
 
 
     // 2. return theo yêu cầu 
     return {
-        lifeLessons: lifeLessons
+        lifeLessonsReflection: lifeLessonsReflection
     }
 }
 
@@ -1254,6 +1298,9 @@ export async function getUser(id) {
 export async function updateUserStatus(id, status) {
     console.log(`${API_LOG} update trạng thái ${status} của user ${id}`); 
 
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
 
     // 1. kiểm tra xem user có tồn tại không? 
     const user = fakeUsers.find(u => u.id === id); 
@@ -1282,6 +1329,11 @@ export async function updateUserStatus(id, status) {
 export async function updateTeachingWord(id, title, content, date) {
     console.log(`${API_LOG} cập nhập cho lời dạy: ${id}, với title ${title}, content: ${content}, date: ${date}`);
     
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+
     // 1. kiểm tra có trong cơ sở dữ liệu không
     const teachingWord = fakeTeachingWords.find(tw => tw.id === id); 
 
@@ -1299,6 +1351,83 @@ export async function updateTeachingWord(id, title, content, date) {
         message: "Update successfully"
     }
 }
+
+
+
+
+
+export async function getAllLifeLessonsMain() {
+    console.log(`${API_LOG} lấy toàn bộ lời dạy nội dung chính`); 
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+
+    // 1. tạo bản rút gọn 
+    const lifeLessonsMain = fakeLifeLessonsMain.map(el => ({
+        id: el.id
+    })); 
+
+
+    // 2. return phù hợp 
+    return {lifeLessonsMain}; 
+}
+
+
+
+
+
+
+export async function getLifeLessonMain(id) {
+    console.log(`${API_LOG} lấy lời dạy nội dung chính có id: ${id}`); 
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+
+    // 1. nếu không có thì báo lỗi 
+    const llm = fakeLifeLessonsMain.find(el => el.id === id); 
+
+    if (!llm) {
+        throw new Error("Life lesson main not found"); 
+    }
+
+
+    // 2. trả 
+    return llm; 
+}
+
+
+
+
+
+
+
+export async function updateLifeLessonMain(id, mainContent) {
+    console.log(`${API_LOG} vào hàm cập nhập lời dạy chính của admin có id: ${id}, và nội dung chính cần cập nhập: ${mainContent}`); 
+
+    // 1. nếu không có trong csdl thì báo not found
+    const llm = fakeLifeLessonsMain.find(el => el.id === id); 
+
+    if (!llm) {
+        throw new Error("Life lesson main not found"); 
+    }
+
+
+    // 2. cập nhập 
+    llm.mainContent = mainContent; 
+
+
+    // 3. trả theo yêu cầu 
+    return {
+        message: "update successfully"
+    }; 
+
+}   
+
+
+
+
 
 
 
@@ -1359,3 +1488,11 @@ function getIsoWeek(date) {
 
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
+
+
+
+
+
+
+
+

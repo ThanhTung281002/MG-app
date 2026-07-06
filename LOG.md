@@ -8,11 +8,10 @@
 
 
 ## 29.06.2026 18h50 
-- [ ] Hoàn thành 
+- [x] Hoàn thành 
 
 ### Context
-- Đang làm phần UI động. 
-- Đang làm cho các trang của ADMIN. 
+- Đã làm xong phần UI động + fake API. 
 
 ### Đã làm
 - Đã làm: 
@@ -26,11 +25,12 @@
     4. Điều chỉnh lại api contract là lấy pending hoặc rejected user thì chỉ trả id thôi. 
     5. Điều chỉnh lại api contract về việc tạo một cái mới để lấy dữ liệu user. 
     6. chỉnh lại cho user đơn giản là update status của user thôi, như vậy cho đơn giản. 
+    7. Phân biệt rõ trong api contract giữa lifeLessonReflection lifeLessonMain. 
 
 > note: 😊, thấy công việc mới rồi, đó là điều chỉnh api contract và sau đó viết api thật cho frontend cũng như điều chỉnh lại code ở backend. 
 
 - Lỗi ở frontend: 
-    1. 
+    1. Chưa làm cho phần thêm Lời Dạy mới. 
 
 
 ### Hướng làm tiếp

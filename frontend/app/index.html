@@ -599,11 +599,7 @@
             </div>
 
             <div data-entity-type="LIFE_LESSON" class="p-8 hidden">
-                <h1 class="text-2xl text-center">Thuyết con người</h1>
-                <div class="mt-10">
-                    <div class="font-semibold">Nội dung chính</div>
-                    <div contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae, ipsum praesentium unde nostrum dolorem sapiente similique esse quod alias officia facilis consequuntur numquam sit dolore maxime laborum modi labore provident ullam laboriosam! Ex quaerat dolores autem obcaecati, nobis quo natus modi error aut atque consectetur ipsam assumenda explicabo tempore eveniet? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam dolorem non, cupiditate culpa molestiae autem, ratione quis facilis vitae illum, omnis voluptatum aspernatur dolores minima nemo facere at. Provident officia cumque ratione exercitationem nihil architecto, animi cum dolor non laborum numquam! Asperiores maiores hic quidem repudiandae odit aperiam cumque aliquam?</div>
-                </div>
+                
             </div>
         </div>
 
@@ -652,7 +648,7 @@
                         </div>
 
                         <ul class="menu flex-1 text-2xl">
-                            <li><a class="flex gap-4 justify-start items-center">
+                            <li data-route="HOME"><a class="flex gap-4 justify-start items-center">
                                 <div class="home-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                         <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
@@ -664,7 +660,7 @@
                                 </div>
                             </a></li>
 
-                            <li><a class="flex gap-4 justify-start items-center">
+                            <li data-route="TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
                                 <div class="sun-icon">
                                     <img src="/image/sun.png" alt="sun" class="size-6">
                                 </div>
@@ -673,7 +669,7 @@
                                 </div>
                             </a></li>
 
-                            <li><a class="flex gap-4 justify-start items-center">
+                            <li data-route="LIFE_LESSONS"><a class="flex gap-4 justify-start items-center">
                                 <div class="fire-icon">
                                     <img src="/image/fire-flame.png" alt="fire-flame" class="size-6">
                                 </div>
@@ -720,23 +716,7 @@
                     </div>
                     <div class="content p-8 py-12">
                         <h3 class="text-xl font-semibold relative right-2">Các bài học cuộc sống</h3>
-                        <div class="flex flex-col gap-6 mt-8">
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Thuyết con người</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Mục đích sáng tạo</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Phán xét lũ lụt</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Thuyết con người</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Mục đích sáng tạo</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Phán xét lũ lụt</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Thuyết con người</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Mục đích sáng tạo</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Phán xét lũ lụt</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Thuyết con người</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Mục đích sáng tạo</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Phán xét lũ lụt</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Thuyết con người</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Mục đích sáng tạo</button>
-                            <button class="btn btn-outline w-full min-h-20 text-lg">Phán xét lũ lụt</button>
-                            
+                        <div class="life-lessons flex flex-col gap-6 mt-8">
                         </div>
                     </div>
                 </div>
@@ -749,7 +729,7 @@
                         </div>
 
                         <ul class="menu flex-1 text-2xl">
-                            <li><a class="flex gap-4 justify-start items-center">
+                            <li data-route="HOME"><a class="flex gap-4 justify-start items-center">
                                 <div class="home-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                                         <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
@@ -761,7 +741,7 @@
                                 </div>
                             </a></li>
 
-                            <li><a class="flex gap-4 justify-start items-center">
+                            <li data-route="TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
                                 <div class="sun-icon">
                                     <img src="/image/sun.png" alt="sun" class="size-6">
                                 </div>
@@ -770,7 +750,7 @@
                                 </div>
                             </a></li>
 
-                            <li><a class="flex gap-4 justify-start items-center">
+                            <li data-route="LIFE_LESSONS"><a class="flex gap-4 justify-start items-center">
                                 <div class="fire-icon">
                                     <img src="/image/fire-flame.png" alt="fire-flame" class="size-6">
                                 </div>

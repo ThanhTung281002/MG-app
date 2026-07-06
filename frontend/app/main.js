@@ -4,7 +4,7 @@ console.log("main.js loaded")
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord} from "./services/fakeServices.js";
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain} from "./services/fakeServices.js";
 
 
 const DOM_LOG = "                   0. DOM:"; 
@@ -42,7 +42,8 @@ const state = {
 
     cache: {
         teachingWords: {}, 
-        lifeLessons: {}, 
+        lifeLessonsReflection: {}, 
+        lifeLessonsMain: {}, 
         purposes: {}, 
         notes: {}, 
         relations: {
@@ -187,11 +188,11 @@ async function getLifeLessonsReflectionReflectionFlow() {
     console.log(`${API_FLOW_LOG} vào hàm lấy id của 3 bài học gần nhất`); 
 
     try {
-        const {lifeLessons} = await getLifeLessonsReflectionReflection(); 
+        const {lifeLessonsReflection} = await getLifeLessonsReflectionReflection(); 
 
-        // console.log(`${API_FLOW_LOG} 1. lifeLessons: ${JSON.stringify(lifeLessons, null, 2)}`); 
+        // console.log(`${API_FLOW_LOG} 1. lifeLessonsReflection: ${JSON.stringify(lifeLessonsReflection, null, 2)}`); 
 
-        return {lifeLessons}; 
+        return {lifeLessonsReflection}; 
     } catch (err) {
         console.log(`${API_FLOW_LOG}    1. lỗi ở api flow: ${err.message}`); 
 
@@ -491,9 +492,9 @@ async function getAllLifeLessonsReflectionFlow() {
     console.log(`${API_FLOW_LOG} Lấy toàn bộ bài học`); 
 
     try {
-        const {lifeLessons} = await getAllLifeLessonsReflection(); 
+        const {lifeLessonsReflection} = await getAllLifeLessonsReflection(); 
 
-        return {lifeLessons}; 
+        return {lifeLessonsReflection}; 
     } catch (err) {
         console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
 
@@ -583,6 +584,58 @@ async function updateTeachingWordFlow(id, title, content, date) {
 
     try {
         const {message} = await updateTeachingWord(id, title, content, date); 
+
+        return {message}; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+async function getAllLifeLessonsMainFlow() {
+    console.log(`${API_FLOW_LOG} vào hàm lấy toàn bộ lời dạy chính của admin`); 
+
+    try {
+        const {lifeLessonsMain} = await getAllLifeLessonsMain(); 
+
+        return {lifeLessonsMain}; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+
+
+
+async function getLifeLessonMainFlow(id) {
+    console.log(`${API_FLOW_LOG} vào hàm lấy lời dạy chính của admin có id: ${id}`); 
+
+    try {
+        const lifeLessonMain = await getLifeLessonMain(id); 
+
+        return lifeLessonMain; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+
+async function updateLifeLessonMainFlow(id, mainContent) {
+    console.log(`${API_FLOW_LOG} vào hàm cập nhập lời dạy chính của admin có id: ${id}, và nội dung chính cần cập nhập: ${mainContent}`); 
+
+    try {
+        const {message} = await updateLifeLessonMain(id, mainContent); 
 
         return {message}; 
     } catch (err) {
@@ -764,6 +817,7 @@ async function renderRoute() {
 
                 } else if (state.route.currentEntity.type === "LIFE_LESSON") {
                     showAdminLifeLessonEntity(); 
+                    await renderAdminLifeLessonEntity(); 
 
                 }
                 
@@ -1060,8 +1114,8 @@ function ExistsInCache(id, type) {
         return true; 
 
 
-    } else if (type === "LIFE_LESSON") {
-        const ll = state.cache.lifeLessons[id]; 
+    } else if (type === "LIFE_LESSON_REFLECTION") {
+        const ll = state.cache.lifeLessonsReflection[id]; 
 
         if (!ll) {
             return false; 
@@ -1069,6 +1123,14 @@ function ExistsInCache(id, type) {
 
         return true; 
 
+    } else if (type === "LIFE_LESSON_MAIN") {
+        const ll = state.cache.lifeLessonsMain[id]; 
+
+        if (!ll) {
+            return false; 
+        } 
+
+        return true; 
 
     } else if (type === "PURPOSE") {
         const p = state.cache.purposes[id]; 
@@ -1128,21 +1190,21 @@ async function renderlatestLifeLessons() {
 
     // 2. render ra DOM card lifel lesson với nội dung đã lấy được. 
     try {
-        const {lifeLessons} = await getLifeLessonsReflectionReflectionFlow(); 
+        const {lifeLessonsReflection} = await getLifeLessonsReflectionReflectionFlow(); 
 
-        // console.log(`${RENDER_LOG}      1.4.1 Life lessons:${JSON.stringify(lifeLessons, null, 2)}`); 
+        // console.log(`${RENDER_LOG}      1.4.1 Life lessons reflection:${JSON.stringify(lifeLessonsReflection, null, 2)}`); 
 
-        for (let ll of lifeLessons) {
-            if (!ExistsInCache(ll.id, "LIFE_LESSON")) {
-                state.cache.lifeLessons[ll.id] = await getLifeLessonReflectionFlow(ll.id); 
+        for (let ll of lifeLessonsReflection) {
+            if (!ExistsInCache(ll.id, "LIFE_LESSON_REFLECTION")) {
+                state.cache.lifeLessonsReflection[ll.id] = await getLifeLessonReflectionFlow(ll.id); 
             }
         }
 
 
         const llContainer = document.querySelector('[data-user-role="USER"] [data-page="HOME"] .life-lessons-section');
         llContainer.innerHTML = '<h2 class="relative right-4 font-bold mt-4 mb-10">Mục Bài Học</h2>';
-        for (let ll of lifeLessons) {
-            let lifeLessonFull = state.cache.lifeLessons[ll.id]; 
+        for (let ll of lifeLessonsReflection) {
+            let lifeLessonFull = state.cache.lifeLessonsReflection[ll.id]; 
 
             llContainer.innerHTML += createLifeLessonReflectionCard(lifeLessonFull); 
         }
@@ -1433,13 +1495,13 @@ async function renderLifeLessonEntity() {
 
         const llId = state.route.currentEntity.id; 
 
-        if (!ExistsInCache(llId, "LIFE_LESSON")) {
+        if (!ExistsInCache(llId, "LIFE_LESSON_REFLECTION")) {
             const lifeLessonServer = await getLifeLessonReflectionFlow(llId); 
 
-            state.cache.lifeLessons[llId] = lifeLessonServer; 
+            state.cache.lifeLessonsReflection[llId] = lifeLessonServer; 
         }
 
-        const lifeLesson = state.cache.lifeLessons[llId]; 
+        const lifeLesson = state.cache.lifeLessonsReflection[llId]; 
 
 
         const container = document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="LIFE_LESSON"]'); 
@@ -2077,15 +2139,15 @@ async function renderUserLifeLessonsPage() {
     try {
         // 1. lấy toàn bộ life lessons 
         // 2. render ra DOM 
-        const {lifeLessons} = await getAllLifeLessonsReflectionFlow(); 
+        const {lifeLessonsReflection} = await getAllLifeLessonsReflectionFlow(); 
 
-        const lls = lifeLessons; 
+        const lls = lifeLessonsReflection; 
 
         for (let ll of lls) {
-            if (!ExistsInCache(ll.id, "LIFE_LESSON")) {
+            if (!ExistsInCache(ll.id, "LIFE_LESSON_REFLECTION")) {
                 const lifeLesson = await getLifeLessonReflection(ll.id); 
 
-                state.cache.lifeLessons[ll.id] = lifeLesson; 
+                state.cache.lifeLessonsReflection[ll.id] = lifeLesson; 
             }
         }
 
@@ -2095,7 +2157,7 @@ async function renderUserLifeLessonsPage() {
         const container = document.querySelector(`[data-user-role="USER"] [data-page="LIFE_LESSONS"] .drawer .drawer-content .content`); 
         container.innerHTML = ""; 
         for (let ll of lls) {
-            const lifeLesson = state.cache.lifeLessons[ll.id]; 
+            const lifeLesson = state.cache.lifeLessonsReflection[ll.id]; 
 
             container.innerHTML += createLifeLessonReflectionMiniCard(lifeLesson); 
         }
@@ -2271,14 +2333,46 @@ async function renderAdminLifeLessonsPage() {
 
 
     try {
-        // 1. lấy toàn bộ bài học 
-        // 2. 
+        // 1. lấy toàn bộ bài học chính 
+        // 2. check trong caches, nếu chưa có thì lấy từ server 
+        // 3. render ra DOM 
+
+        const {lifeLessonsMain} = await getAllLifeLessonsMainFlow(); 
+        const llms = lifeLessonsMain; 
+
+        for (let llm of llms) {
+            if (!ExistsInCache(llm.id, "LIFE_LESSON_MAIN")) {
+                const lifeLessonMainServer = await getLifeLessonMainFlow(llm.id); 
+
+                state.cache.lifeLessonsMain[llm.id] = lifeLessonMainServer; 
+            }
+        }
+
+
+        const container = document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"] .life-lessons'); 
+        container.innerHTML = ""; 
+
+        for (let llm of llms) {
+            const lifeLessonMain = state.cache.lifeLessonsMain[llm.id]; 
+
+            container.innerHTML += createAdminLifeLessonMainMiniCard(lifeLessonMain); 
+        }
 
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
         render(); 
     }
+}
+
+
+
+
+
+
+
+function createAdminLifeLessonMainMiniCard(lifeLessonMain) {
+    return `<button data-id="${lifeLessonMain.id}" class="life-lesson btn btn-outline w-full min-h-20 text-lg">${lifeLessonMain.title}</button>`
 }
 
 
@@ -2400,6 +2494,67 @@ function createAdminTeachingWordEntity(teachingWord) {
                     <div data-content-type="content" contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${teachingWord.content}</div>
                 </div>`; 
 }
+
+
+
+
+
+
+async function renderAdminLifeLessonEntity() {
+    console.log(`${RENDER_LOG} render thực thể bài học của admin`); 
+
+    state.error = null; 
+
+
+    try {
+        // 1. lấy entity 
+        // 2. kiểm tra xem có trong cache chưa, nếu chưa thì lấy từ server 
+        // 3. render ra DOM 
+        const llmEntity = state.route.currentEntity; 
+
+        if (!ExistsInCache(llmEntity.id, "LIFE_LESSON_MAIN")) {
+            const lifeLessonMainServer = await getLifeLessonMainFlow(llmEntity.id);
+
+            state.cache.lifeLessonsMain[llmEntity.id] = lifeLessonMainServer; 
+        }
+
+
+        
+        const container = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="LIFE_LESSON"]'); 
+        container.innerHTML = ""; 
+
+        const lifeLessonMain = state.cache.lifeLessonsMain[llmEntity.id]; 
+        container.innerHTML += createAdminLifeLessonEntity(lifeLessonMain); 
+
+
+    } catch (err) {
+        state.error = err.message; 
+        console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
+        render(); 
+    }
+    
+
+}
+
+
+
+
+function createAdminLifeLessonEntity(lifeLessonMain) {
+    return `<h1 class="text-2xl text-center">${lifeLessonMain.title}</h1>
+                <div class="mt-10">
+                    <div class="font-semibold">Nội dung chính</div>
+                    <div data-content-type="main-content" contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${lifeLessonMain.mainContent}</div>
+                </div>`; 
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3511,8 +3666,8 @@ async function save(contentType, content) {
         const entity = state.route.currentEntity; 
 
         if (entity.type === "LIFE_LESSON") {
-            await updateLifeLessonReflectionFlow(entity.id, content); 
-            state.cache.lifeLessons[entity.id].reflection = content; 
+                await updateLifeLessonReflectionFlow(entity.id, content); 
+            state.cache.lifeLessonsReflection[entity.id].reflection = content; 
 
 
         } else if (entity.type === "PURPOSE") {
@@ -3815,6 +3970,22 @@ async function saveAdmin(contentType, content) {
         }
 
         await updateTeachingWordFlow(entity.id, title, twContent, date); 
+        delete state.cache.teachingWords[entity.id]; 
+
+
+
+    } else if (entity.type === "LIFE_LESSON") {
+        const lifeLessonMain = state.cache.lifeLessonsMain[entity.id]; 
+
+        let mainContent = lifeLessonMain.mainContent; 
+
+        if (contentType === "main-content") {
+            mainContent = content; 
+        }
+
+
+        await updateLifeLessonMainFlow(entity.id, mainContent); 
+        delete state.cache.lifeLessonsMain[entity.id]; 
     }
 }
 
@@ -3854,7 +4025,19 @@ function handleClickAdminTeachingWordMiniCard(id) {
 
 
 
+// --------------- ROUTE: ADMIN LIFE LESSONS ------------------
+function handleClickAdminLifeLessonMainMiniCard(id) {
+    console.log(`${CONTROLLER_LOG} hàm xử lí click vào mini card bài học của admin có id: ${id}`); 
 
+    navigate({
+        name: "ENTITY",
+        userRole: "ADMIN",
+        currentEntity: {
+            id: id, 
+            type: "LIFE_LESSON"
+        }
+    });
+}
 
 
 
@@ -4310,7 +4493,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventL
 
     if (!content) return; 
     const contentType = content.dataset.contentType; 
-    const contentText = content.textContent; 
+    const contentText = content.innerText; 
 
     handleInput(contentType, contentText); 
 }); 
@@ -4557,6 +4740,87 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"]').
 
 
 
+// HÀM CLICK VÀO SIDE NAV 
+document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] .drawer-side').addEventListener("click", (event) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang admin lời dạy`); 
+
+    const target = event.target.closest("li, button"); 
+    
+
+    if (!target) return; 
+
+    // đóng sidenav 
+    document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] .drawer-toggle').checked = false;
+
+    if (target.matches("li")) {
+        console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
+        console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
+
+        navigate({name: target.dataset.route, userRole: "ADMIN"}); 
+    }
+
+    if (target.matches("button")) {
+        console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
+
+        handleLogOut(); 
+    }
+
+}); 
+
+
+
+
+
+
+
+
+
+// ---------------- ROUTE: ADMIN LIFE LESSONS ---------------------
+document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"]').addEventListener("click", (e) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang bài học của admin`); 
+
+    const lifeLessonMainMiniCard = e.target.closest(".life-lesson");
+
+    if (!lifeLessonMainMiniCard) return; 
+
+    const id = Number(lifeLessonMainMiniCard.dataset.id); 
+
+    handleClickAdminLifeLessonMainMiniCard(id); 
+}); 
+
+
+
+
+
+// HÀM CLICK VÀO SIDE NAV CỦA ADMIN HOME 
+document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"] .drawer-side').addEventListener("click", (event) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang admin bài học`); 
+
+    const target = event.target.closest("li, button"); 
+    
+
+    if (!target) return; 
+
+    // đóng sidenav 
+    document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"] .drawer-toggle').checked = false;
+
+    if (target.matches("li")) {
+        console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
+        console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
+
+        navigate({name: target.dataset.route, userRole: "ADMIN"}); 
+    }
+
+    if (target.matches("button")) {
+        console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
+
+        handleLogOut(); 
+    }
+
+}); 
+
+
+
 
 
 
@@ -4622,7 +4886,7 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"]').addEvent
 
 
     } else if (content.matches("div")) {
-        const context = content.textContent; 
+        const context = content.innerText; 
         const contentType = content.dataset.contentType; 
 
         await handleAdminInput(contentType, context); 
