@@ -264,6 +264,94 @@ def db_create_relation(user_id: str, from_type: str, from_id: str, to_type: str,
     return str(result.inserted_id), created_time
 
 
+### hàm này mình đọc thấy ổn 
+def db_get_relation_origin(to_type: str, to_id: str): 
+    print(f"{LOG_DATABASE} vao ham lay relation goc cua object: {to_id} ({to_type})")
+
+    try: 
+        object_to_id = ObjectId(to_id)
+    except InvalidId: 
+        return None
+
+    relation = db.relations.find_one({
+        "to_type": to_type, 
+        "to_id": object_to_id
+    })
+
+    if not relation: 
+        return None
+
+    relation["id"] = str(relation["_id"])
+    del relation["_id"]
+    relation["user_id"] = str(relation["user_id"])
+    relation["from_id"] = str(relation["from_id"])
+    relation["to_id"] = str(relation["to_id"])
+
+    return relation
+
+
+
+### hàm này mình đọc cũng thấy ổn 
+def db_get_relations_born(from_type: str, from_id: str): 
+    print(f"{LOG_DATABASE} vao ham lay cac relation sinh ra tu object: {from_id} ({from_type})")
+
+    try: 
+        object_from_id = ObjectId(from_id)
+    except InvalidId: 
+        return []
+
+    relations = db.relations.find({
+        "from_type": from_type, 
+        "from_id": object_from_id
+    })
+
+    result = []
+
+    for relation in relations: 
+        relation["id"] = str(relation["_id"])
+        del relation["_id"]
+        relation["user_id"] = str(relation["user_id"])
+        relation["from_id"] = str(relation["from_id"])
+        relation["to_id"] = str(relation["to_id"])
+        result.append(relation)
+
+    return result
+
+
+
+
+
+### hàm này mình đọc cũng thấy ổn 
+def db_delete_relation(id: str): 
+    print(f"{LOG_DATABASE} vao ham xoa relation: {id}")
+
+    try: 
+        object_id = ObjectId(id)
+    except InvalidId: 
+        return 0
+
+    result = db.relations.delete_one({"_id": object_id})
+
+    return result.deleted_count
+
+
+
+
+
+### hàm này mình đọc cũng thấy ổn 
+def db_delete_purpose(id: str): 
+    print(f"{LOG_DATABASE} vao ham xoa purpose: {id}")
+
+    try: 
+        object_id = ObjectId(id)
+    except InvalidId: 
+        return 0
+
+    result = db.purposes.delete_one({"_id": object_id})
+
+    return result.deleted_count
+
+
 
 
 
@@ -649,6 +737,10 @@ def handle_delete_note(id: str, user_id: str):
 
     ### 2.2 xóa relation mà có note đó là to_type, to_id
     origin_relation = db_get_relation_origin("NOTE", id); 
+
+    if not origin_relation: 
+        raise DomainError("Origin relation not found")
+
     deleted_count = db_delete_relation(origin_relation["id"])
 
     if deleted_count == 0: 
