@@ -180,6 +180,22 @@ def db_delete_action(id: str):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ================= 2. DOMAIN LOGIC ================= 
 # NOTE: XỬ LÍ CÁC NGHIỆP VỤ/LOGIC CHÍNH, SỬ DỤNG CÁC HÀM Ở TẦNG 1. DATABASE LOGIC Ở repository.py và các hàm bổ trợ khác nhưng mình chưa biết nó sẽ nằm ở file nào? 
 from fastapi import HTTPException
@@ -377,6 +393,18 @@ def handle_delete_action(purposeId: str, user_id: str, actionId: str):
     return {
         "message": "Delete successfully"
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

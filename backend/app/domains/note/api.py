@@ -286,6 +286,23 @@ def db_create_relation(user_id: str, from_type: str, from_id: str, to_type: str,
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ================= 2. DOMAIN LOGIC ================= 
 # NOTE: XỬ LÍ CÁC NGHIỆP VỤ/LOGIC CHÍNH, SỬ DỤNG CÁC HÀM Ở TẦNG 1. DATABASE LOGIC Ở repository.py và các hàm bổ trợ khác nhưng mình chưa biết nó sẽ nằm ở file nào? 
 from fastapi import HTTPException
@@ -325,15 +342,11 @@ def handle_get_notes_unresolved(user_id: str):
     for un in unresolved_notes: 
         display_code = generate_display_code_for_note(un)
         result.append({
-            "id": un["id"],
-            "title": un["title"],
-            "displayCode": display_code,
-            "content": un["content"], 
-            "type": un["type"]
+            "id": un["id"]
         })
 
     return {
-        "unresolved-notes": result
+        "unresolvedNotes": result
     }
 
 
@@ -535,7 +548,8 @@ def handle_get_note_full(id: str, user_id: str):
         "title": note["title"], 
         "content": note["content"],
         "displayCode": display_code, 
-        "type": note["type"]
+        "type": note["type"],
+        "updatedAt": note["updated_at"]
     }
 
     
@@ -626,17 +640,59 @@ def handle_delete_note(id: str, user_id: str):
         raise DomainError("User does not have the right to this note")
 
     
-    ### xóa note và xóa mọi thứ gắn bối cảnh là nó và sau đó nữa và xóa mọi liên kết và có gắn nó là cái sinh ra. 
+    ### 2. Xóa note
+    ### 2.1 Xóa chính note đó
     deleted_count = db_delete_note(id)
+
+    if deleted_count == 0: 
+        raise DomainError("Failed to delete")
+
+    ### 2.2 xóa relation mà có note đó là to_type, to_id
+    origin_relation = db_get_relation_origin("NOTE", id); 
+    deleted_count = db_delete_relation(origin_relation["id"])
+
+    if deleted_count == 0: 
+        raise DomainError("Failed to delete origin relation")
+        
+
+    ### 2.3 xóa tất cả các thực thể sinh ra từ node đó, và sau đó xóa relation đó (note đó là from_type, from_id)
+    delete_born_entities("NOTE", id)
 
 
     ### 3. return theo api contract
-    if deleted_count == 1: 
-        return {
-            "message": "Delete successfully"
-        }
-    else: 
-        raise DomainError("Failed to delete note")
+    return {
+        "message": "Delete successfully"
+    }
+
+
+
+
+
+
+def delete_born_entities(from_type, from_id): 
+    ### Đây là hàm đệ quy 
+
+    ### 1. tìm các relation có from type, from id nhập vào
+    born_relations = db_get_relations_born(from_type, from_id)
+
+
+    ### 2. từng relation, nếu là note thì xóa note, xóa relation rồi xóa thực thể sinh ra từ nó, nếu là purpose cũng như vậy
+    for relation in born_relations: 
+        if relation["to_type"] == "NOTE": 
+            db_delete_note(relation["to_id"])
+            db_delete_relation(relation["id"])
+            delete_born_entities("NOTE", relation["to_id"])
+        
+        elif relation["to_type"] == "PURPOSE": 
+            db_delete_purpose(relation["to_id"])
+            db_delete_relation(relation["id"])
+            delete_born_entities("PURPOSE", relation["to_id"])
+
+        
+
+
+
+
 
 
 

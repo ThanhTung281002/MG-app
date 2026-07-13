@@ -163,6 +163,18 @@ def db_update_life_lesson_reflection(id: str, updating_reflection: str):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 # ================= 2. DOMAIN LOGIC ================= 
 # NOTE: XỬ LÍ CÁC NGHIỆP VỤ/LOGIC CHÍNH, SỬ DỤNG CÁC HÀM Ở TẦNG 1. DATABASE LOGIC Ở repository.py và các hàm bổ trợ khác nhưng mình chưa biết nó sẽ nằm ở file nào? 
 from fastapi import HTTPException
@@ -192,7 +204,7 @@ def handle_get_life_lessons_reflection_all_basic(user_id: str):
 
     ### 3. return lại
     return {
-        "life-lessons": result
+        "lifeLessonsReflection": result
     }
 
 
@@ -245,7 +257,7 @@ def handle_get_life_lessons_reflection_reflection(user_id: str):
 
     ### 3. return lại n cái gần nhất 
     return {
-        "life-lessons": life_lessons[:N]
+        "lifeLessonsReflection": life_lessons[:N]
     }
 
 
@@ -313,6 +325,18 @@ def handle_put_life_lesson(id: str, user_id: str, updating_reflection: str):
         "updatedAt": updated_time
     }
     
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -247,6 +247,24 @@ def db_update_purpose(id: str, updating_title: str, updating_hope: str, updating
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ================= 2. DOMAIN LOGIC ================= 
 # NOTE: XỬ LÍ CÁC NGHIỆP VỤ/LOGIC CHÍNH, SỬ DỤNG CÁC HÀM Ở TẦNG 1. DATABASE LOGIC Ở repository.py và các hàm bổ trợ khác nhưng mình chưa biết nó sẽ nằm ở file nào? 
 from fastapi import HTTPException
@@ -410,6 +428,15 @@ def handle_put_purpose(id: str, user_id: str, updating_title: str, updating_hope
     return {
         "updatedAt": updated_time 
     }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -630,6 +630,10 @@ Luồng của admin:
     "createdAt": "created time of new teaching word"
 }
 ```
+------------
+
+
+
 
 
 ### PUT /teaching-words/:id 
@@ -1075,7 +1079,6 @@ Luồng của admin:
     ]
 }
 ```
-> 🪛: lấy id thôi
 
 
 

@@ -5,6 +5,48 @@
 
 
 
+## 12.07.2026 16h50 
+- [ ] Hoàn thành 
+
+### Context
+- Đã làm xong phần UI động + fake API. 
+- Đang làm cho trang README.md tổng. 
+
+### Đã làm
+- Đã làm: 
+    - 
+
+### Đang kẹt / dở
+- Lỗi và sửa ở backend: 
+    1. Chỉnh cho các tên key trong api contract và backend thành dạng hợp với frontend. Ví dụ: life-lessons => lifeLessons. Để dành khi quay lại phần backend. Và xóa triệt để trong backend khi xóa cái gì đó. 
+    2. thêm phần lấy các user rejected ở api contract và backend. 
+    3. khi người dùng rejected hoặc pending đăng nhập thì chuyện gì xảy ra. Backend đã tính tới trường hợp này chưa? Có thể để sau vì hiện tại là mình làm để mình xài. 
+    4. Điều chỉnh lại api contract là lấy pending hoặc rejected user thì chỉ trả id thôi. 
+    5. Điều chỉnh lại api contract về việc tạo một cái mới để lấy dữ liệu user. 
+    6. chỉnh lại cho user đơn giản là update status của user thôi, như vậy cho đơn giản. 
+    7. Phân biệt rõ trong api contract giữa lifeLessonReflection lifeLessonMain. 
+
+> note: 😊, thấy công việc mới rồi, đó là điều chỉnh api contract và sau đó viết api thật cho frontend cũng như điều chỉnh lại code ở backend. 
+
+- Lỗi ở frontend: 
+    1. Chưa làm cho phần thêm Lời Dạy mới. 
+
+
+
+
+- Đang làm: 
+    1. Sửa backend theo api contract mới ở domain purposes. 
+
+### Hướng làm tiếp
+- Sửa format backend trong từng domain sao cho hợp với api contract mới đã được chỉnh sửa. 
+
+
+
+-------------
+
+
+
+
 
 
 ## 29.06.2026 18h50 

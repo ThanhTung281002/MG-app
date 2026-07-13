@@ -105,6 +105,22 @@ def db_update_life_lesson_main(id: str, updating_content: str):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ================= 2. DOMAIN LOGIC ================= 
 # NOTE: XỬ LÍ CÁC NGHIỆP VỤ/LOGIC CHÍNH, SỬ DỤNG CÁC HÀM Ở TẦNG 1. DATABASE LOGIC Ở repository.py và các hàm bổ trợ khác nhưng mình chưa biết nó sẽ nằm ở file nào? 
 from fastapi import HTTPException
@@ -132,7 +148,7 @@ def handle_get_life_lessons_main_all_basic():
         })
 
     return {
-        "life-lessons": result
+        "lifeLessonsMain": result
     }
 
 
@@ -205,6 +221,23 @@ def handle_update_life_lesson_main_content(id: str, updating_content: str):
     return {
         "updatedAt": updated_at
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -66,6 +66,23 @@ TEACHING_WORDS = [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ================== 1. DATABASE LOGIC =================
 # NOTE: XỬ LÍ ĐƠN GIẢN CRUD ĐỐI VỚI DATABASE, SỬ DỤNG BẢNG Ở models.py ĐỂ HỖ TRỢ 
 import uuid
@@ -163,6 +180,29 @@ def db_update_teaching_word(id, title, content, year, week, weekday):
 
 
     return updated_time
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -352,7 +392,7 @@ def handle_get_teaching_words_all_basic():
 
     ### 3. return kết quả
     return {
-        "teaching-words": teaching_words_basic
+        "teachingWords": teaching_words_basic
     }
 
 
@@ -458,6 +498,25 @@ def handle_put_teaching_words(id, title, content, date):
     return {
         "updatedAt": updated_at
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
