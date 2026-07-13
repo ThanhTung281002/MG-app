@@ -245,11 +245,30 @@ def tw_validate_date(date: str) -> bool:
 
 
 
+def get_teaching_word_date_part(dt: datetime):
+    year = dt.year
+
+    # Python: Monday = 0, Sunday = 6
+    python_weekday = dt.weekday()
+
+    # Chuyển sang rule của bạn: Sunday = 1, Monday = 2, ..., Saturday = 7
+    weekday = ((python_weekday + 1) % 7) + 1
+
+    # Lấy số tuần trong năm (ISO week)
+    week = dt.isocalendar().week
+
+    # vì CN (weekday = 1) là ngày đầu tiên của tuần mới nên nếu là CN thì phải tự động cộng 1 vào số tuần 
+    if weekday == 1: 
+        week += 1
+
+    return weekday, week, year
+
+
+
 def get_current_year_and_week(): 
-    # tách từ now 
+    # tách từ now theo cùng quy tắc với date của teaching word
     now = datetime.now()
-    year = now.year
-    week = now.isocalendar().week
+    _, week, year = get_teaching_word_date_part(now)
 
     print(f"{LOG_DOMAIN} tuần hiện tại là: {week}, năm hiện tại: {year}")
     
@@ -404,22 +423,7 @@ def get_date_part(date: str):
     # parse string "day/month/year" -> datetime
     dt = datetime.strptime(date, "%d/%m/%Y")
 
-    year = dt.year
-
-    # Python: Monday = 0, Sunday = 6
-    python_weekday = dt.weekday()
-
-    # Chuyển sang rule của bạn: Sunday = 1, Monday = 2, ..., Saturday = 7
-    weekday = ((python_weekday + 1) % 7) + 1
-
-    # Lấy số tuần trong năm (ISO week)
-    week = dt.isocalendar().week
-
-    # vì CN (weekday = 1) là ngày đầu tiên của tuần mới nên nếu là CN thì phải tự động cộng 1 vào số tuần 
-    if weekday == 1: 
-        week += 1
-
-    return weekday, week, year
+    return get_teaching_word_date_part(dt)
 
 
 
