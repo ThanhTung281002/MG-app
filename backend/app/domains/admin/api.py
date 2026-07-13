@@ -95,6 +95,15 @@ def db_update_status_of_user(id: str, status: str, updated_time: datetime):
 
 
 
+
+
+
+
+
+
+
+
+
 # ================= 2. DOMAIN LOGIC ================= 
 # NOTE: XỬ LÍ CÁC NGHIỆP VỤ/LOGIC CHÍNH, SỬ DỤNG CÁC HÀM Ở TẦNG 1. DATABASE LOGIC Ở repository.py và các hàm bổ trợ khác nhưng mình chưa biết nó sẽ nằm ở file nào? 
 from fastapi import HTTPException
@@ -136,7 +145,7 @@ def handle_get_pending_users():
 
 
 
-def handle_approve_user(id: str): 
+def handle_update_user(id: str, status: str): 
     print(f"{LOG_DOMAIN} vào hàm xử lí duyệt user: {id}")
 
     """
@@ -152,10 +161,10 @@ def handle_approve_user(id: str):
 
     ### 2. cập nhập status của user trong db 
     updated_time = datetime.now()
-    matched_count, modified_count = db_update_status_of_user(id, "APPROVED", updated_time)
+    matched_count, modified_count = db_update_status_of_user(id, status, updated_time)
 
     if matched_count == 0: 
-        raise DomainError("Failed to approve user")
+        raise DomainError("Failed to update status user")
     else: 
         return {
             "updatedAt": updated_time
@@ -167,30 +176,9 @@ def handle_approve_user(id: str):
 
 
 
-def handle_reject_user(id: str): 
-    print(f"{LOG_DOMAIN} vào hàm xử lí từ chối user: {id}")
 
-    """
-    DOMAIN RULES: 
-    1. user phải tồn tại 
-    """
 
-    ### 1. check rules
-    user = db_get_user_by_id(id)
 
-    if not user: 
-        raise DomainError("User not found")
-
-    ### 2. cập nhập status của user trong db 
-    updated_time = datetime.now()
-    matched_count, modified_count = db_update_status_of_user(id, "REJECTED", updated_time)
-
-    if matched_count == 0: 
-        raise DomainError("Failed to approve user")
-    else: 
-        return {
-            "updatedAt": updated_time
-        }
 
 
 
@@ -241,12 +229,13 @@ def get_pending_users(current_user = Depends(require_admin)):
 
 
 
-@router.put("/admin/pending-users/{id}/approve")
+@router.put("/admin/users/{id}")
 def approve_user(id: str, current_user = Depends(require_admin)):
-    print(f"{LOG_API} vào /admin/pending-users/{id}/approve")
+    request_dict = request.dict()
+    print(f"{LOG_API} vào /admin/users/{id} với request dict: {request_dict}")
 
     try: 
-        return handle_approve_user(id)
+        return handle_update_user(id, request_dict["status"])
 
     except APIError as e: 
         raise HTTPException(status_code=400, detail=str(e))

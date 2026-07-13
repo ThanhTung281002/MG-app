@@ -90,27 +90,6 @@ class DomainError(Exception):
     pass
 
 
-def handle_get_origin_object(user_id: str, type: str, id: str): 
-    print(f"{LOG_DOMAIN} vào hàm xử lí lấy thực thể bối cảnh {id} ({type}) của user: {user_id}")
-
-    """
-    DOMAIN RULES: 
-    1. liên kết phải tồn tại 
-    """ 
-
-    ### 1. check rules
-    relation = db_get_relation_by_user_id_and_to_object(user_id, type, id)
-
-    if not relation: 
-        raise DomainError("Relation not found")
-
-    ### 2. trả theo format của api contract 
-    return {
-        "type": relation["from_type"],
-        "to": relation["from_id"]
-    }
-
-
 
 
 def handle_get_born_objects(user_id: str, type: str, id: str): 
@@ -166,32 +145,6 @@ router = APIRouter()
 
 class APIError(Exception): 
     pass
-
-
-
-@router.get("/relations/origin")
-def get_origin_object(type: str, id: str, current_user = Depends(require_login)): 
-    print(f"{LOG_API} vào get /relations/origin?type={type}&id={id}")
-
-    try: 
-        VALID_TYPES = {"TEACHING_WORD", "LIFE_LESSON", "PURPOSE", "NOTE"}
-        if type not in VALID_TYPES: 
-            raise APIError("Invalid type type")
-        else: 
-            return handle_get_origin_object(current_user["id"], type, id)
-
-        
-    except APIError as e: 
-        raise HTTPException(status_code=400, detail=str(e))
-
-    except DomainError as e: 
-        raise HTTPException(status_code=400, detail=str(e))
-  
-    except Exception as e: 
-        print(f"SERVER ERROR: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
-
-
 
 
 
