@@ -130,14 +130,76 @@ def handle_get_pending_users():
     result = []
     for pu in pending_users: 
         result.append({
-            "id": pu["id"], 
-            "fullname": pu["fullname"], 
-            "email": pu["email"]
+            "id": pu["id"]
         })
 
     return {
-        "pending-users": result 
+        "pendingUsers": result 
     }
+
+
+
+
+
+
+
+
+
+def handle_get_rejected_users(): 
+    print(f"{LOG_DOMAIN} vào hàm xử lí lấy rejected users")
+
+    """
+    DOMAIN RULES: 
+    NONE
+    """
+
+    ### 1. lấy pending users thôi 
+    rejected_users = db_get_users_by_status("REJECTED")
+
+    ### 2. Chỉnh lại format rồi gửi trả lại theo api contract 
+    result = []
+    for ru in rejected_users: 
+        result.append({
+            "id": ru["id"]
+        })
+
+    return {
+        "rejectedUsers": result 
+    }
+
+
+
+
+
+
+
+def handle_get_user(id: str): 
+    print(f"{LOG_DOMAIN} vào hàm xử lí lấy user có id: {id}")
+
+    """
+    DOMAIN RULES: 
+    1. user phải tồn tại 
+    """
+
+
+    ### 1. lấy user, nếu user không tồn tại thì báo lỗi 
+    user = db_get_user_by_id(id)
+
+    if not user: 
+        raise DomainError("User not found")
+
+    ### 2. trả theo yêu cầu
+    return {
+        "id": user["id"],
+        "fullname": user["fullname"],
+        "email": user["email"]
+    }
+
+
+
+
+
+
 
 
 
@@ -229,10 +291,66 @@ def get_pending_users(current_user = Depends(require_admin)):
 
 
 
+
+
+
+
+@router.get("/admin/rejected-users")
+def get_rejected_users(current_user = Depends(require_admin)): 
+    print(f"{LOG_API} vào get /admin/rejected-users")
+
+    try: 
+        return handle_get_rejected_users()
+
+    except APIError as e: 
+        raise HTTPException(status_code=400, detail=str(e))
+
+    except DomainError as e: 
+        raise HTTPException(status_code=400, detail=str(e))
+  
+    except Exception as e: 
+        print(f"SERVER ERROR: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+
+
+
+
+
+@router.get("/admin/users/{id}")
+def get_user(id: str, current_user = Depends(require_admin)):
+    print(f"{LOG_API} vào GET /admin/users/{id}")
+
+    try: 
+        return handle_get_user(id) 
+
+    except APIError as e: 
+        raise HTTPException(status_code=400, detail=str(e))
+
+    except DomainError as e: 
+        raise HTTPException(status_code=400, detail=str(e))
+  
+    except Exception as e: 
+        print(f"SERVER ERROR: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
+
+
+
+
+
+
+class putUserRequest(BaseModel):
+    status: str
+
+
+
 @router.put("/admin/users/{id}")
-def approve_user(id: str, current_user = Depends(require_admin)):
+def approve_user(request: putUserRequest, id: str, current_user = Depends(require_admin)):
     request_dict = request.dict()
-    print(f"{LOG_API} vào /admin/users/{id} với request dict: {request_dict}")
+    print(f"{LOG_API} vào put /admin/users/{id} với request dict: {request_dict}")
 
     try: 
         return handle_update_user(id, request_dict["status"])
@@ -249,25 +367,6 @@ def approve_user(id: str, current_user = Depends(require_admin)):
 
 
 
-
-
-
-@router.put("/admin/pending-users/{id}/reject")
-def reject_user(id: str, current_user = Depends(require_admin)): 
-    print(f"{LOG_API} vào put /admin/pending-users/{id}/reject")
-
-    try: 
-        return handle_reject_user(id)
-
-    except APIError as e: 
-        raise HTTPException(status_code=400, detail=str(e))
-
-    except DomainError as e: 
-        raise HTTPException(status_code=400, detail=str(e))
-  
-    except Exception as e: 
-        print(f"SERVER ERROR: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 

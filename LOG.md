@@ -29,7 +29,8 @@
 > note: 😊, thấy công việc mới rồi, đó là điều chỉnh api contract và sau đó viết api thật cho frontend cũng như điều chỉnh lại code ở backend. 
 
 - Lỗi ở frontend: 
-    1. Chưa làm cho phần thêm Lời Dạy mới. 
+    1. Chưa làm cho phần thêm Lời Dạy mới của admin
+    2. Chưa làm phần loading khi thời gian giao tiếp giữa trình duyệt và server lâu hơn so với bình thường. 
 
 
 

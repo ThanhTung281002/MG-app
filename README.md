@@ -585,7 +585,7 @@ Luồng của admin:
 
 
 ### GET /teaching-words?view=basic
-- Chỉ lấy thông tin cơ bản như id, display code, và title của tất cả lời dạy ở trang tìm kiếm. 
+- Chỉ lấy id của toàn bộ tw. 
 
 **Request:**
 ```raw
@@ -758,7 +758,7 @@ Luồng của admin:
 }
 ```
 
-
+-------
 
 
 
@@ -774,7 +774,7 @@ Luồng của admin:
 
 
 ### GET /life-lesssons-main?view=basic 
-- Chỉ lấy thông tin cơ bản như id và title của tất bài học để hiển thị ở mục tìm kiếm ở admin. 
+- Chỉ lấy thông tin cơ bản như id. 
 - id của life-lessons-main 
 
 **Request:**
@@ -989,7 +989,7 @@ Luồng của admin:
     ]
 }
 ```
-> 🪛: để đơn giản hóa chắc lấy đầy đủ luôn. 
+
 
 
 
@@ -1051,6 +1051,10 @@ Luồng của admin:
     "message": "response message"
 }
 ```
+
+
+
+
 
 
 
@@ -1200,10 +1204,7 @@ Luồng của admin:
 {
     "pendingUsers": [
         {
-            "id": "id of user",
-            "fullname": "fullname of user", 
-            "email": "email of user",
-            "username": "username"
+            "id": "id of user"
         }, 
         ...
     ]
@@ -1214,8 +1215,63 @@ Luồng của admin:
 
 
 
+
+
+
+
+### GET /admin/rejected-users 
+- Lấy tất cả các user bị từ chối. 
+
+
+**Request:**
+```raw
+{}
+```
+
+**Resonse:**
+```raw
+{
+    "rejectedUsers": [
+        {
+            "id": "id of user"
+        }, 
+        ...
+    ]
+}
+```
+
+
+
+### GET /admin/users/:id
+- lấy thông tin đầy đủ của user. 
+
+
+
+
+**Request:**
+```raw
+{}
+```
+
+**Resonse:**
+```raw
+{
+    "id": "", 
+    "fullname": "",
+    "email": ""
+}
+```
+
+
+
+
+
+
+
+
+
 ### PUT /admin/users/:id
-- Duyệt thành viên từ, đổi status từ "pending" lên "approved". 
+- đổi trạng thái cho thành viên. 
 
 
 **Request:**
@@ -1240,28 +1296,6 @@ Luồng của admin:
 
 
 ---------------------------------
-### GET /relations/origin?type={TO_TYPE}&id={TO_ID}
-- lấy origin là bối cảnh mà nó được sinh của thực thể TO_TYPE và TO_ID. 
-
-
-**Request:**
-```raw
-{}
-```
-
-**Resonse:**
-```raw
-{
-    "type": "'TEACHING_WORD' || 'LIFE_LESSON' || 'PURPOSE' || 'NOTE'",
-    "id": "id of object"
-}
-```
-
-
-// ? cân nhắc bỏ 
-
-
-
 ### GET /relations/born?type={FROM_TYPE}&id={FROM_ID}
 - lấy tất cả thực thể sinh ra từ bối cảnh FROM_TYPE và FROM_ID. 
 
