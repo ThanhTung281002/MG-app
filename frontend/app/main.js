@@ -318,13 +318,13 @@ async function getBornEntitiesFlow(type, id) {
 
 
 
-async function puropseFreeWriteFlow(type, id, purposeContext, hopeContext) {
+async function purposeFreeWriteFlow(type, id, purposeContext, hopeContext) {
     console.log(`${API_FLOW_LOG} vào hàm gửi purpose free write với origin: (${type}, ${id}) có purpose: ${purposeContext} và hope: ${hopeContext}`); 
 
     try {
-        const {message} = await purposeFreeWrite(type, id, purposeContext, hopeContext); 
+        const {id, createdAt} = await purposeFreeWrite(type, id, purposeContext, hopeContext); 
 
-        return {message}; 
+        return {id, createdAt}; 
     } catch (err) {
         console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
 
@@ -341,9 +341,9 @@ async function noteFreeWriteFlow(type, id, context) {
     console.log(`${API_FLOW_LOG} vào hàm gửi note free write có origin: (${type}, ${id}) và có context: ${context}`); 
 
     try {
-        const {message} = await noteFreeWrite(type, id, context); 
+        const {id, displayCode, title, createdAt} = await noteFreeWrite(type, id, context); 
 
-        return {message}; 
+        return {id, displayCode, title, createdAt}; 
     } catch (err) {
         console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
 
@@ -566,9 +566,9 @@ async function updateUserStatusFlow(id, status) {
     console.log(`${API_FLOW_LOG} cập nhập trạng thái ${status} của user ${id}`);
 
     try {
-        const {message} = await updateUserStatus(id, status); 
+        const {updatedAt} = await updateUserStatus(id, status); 
 
-        return {message}; 
+        return {updatedAt}; 
     } catch (err) {
         console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
 
@@ -583,9 +583,9 @@ async function updateTeachingWordFlow(id, title, content, date) {
     console.log(`${API_FLOW_LOG} cập nhập cho lời dạy: ${id}, với title ${title}, content: ${content}, date: ${date}`); 
 
     try {
-        const {message} = await updateTeachingWord(id, title, content, date); 
+        const {updatedAt} = await updateTeachingWord(id, title, content, date); 
 
-        return {message}; 
+        return {updatedAt}; 
     } catch (err) {
         console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
 
@@ -635,9 +635,9 @@ async function updateLifeLessonMainFlow(id, mainContent) {
     console.log(`${API_FLOW_LOG} vào hàm cập nhập lời dạy chính của admin có id: ${id}, và nội dung chính cần cập nhập: ${mainContent}`); 
 
     try {
-        const {message} = await updateLifeLessonMain(id, mainContent); 
+        const {updatedAt} = await updateLifeLessonMain(id, mainContent); 
 
-        return {message}; 
+        return {updatedAt}; 
     } catch (err) {
         console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
 
@@ -3526,7 +3526,7 @@ async function handlePfwMiniAction(miniAction, purposeContext, hopeContext) {
             // save thì làm gì? 
             // 1. gửi giá trị lên server.  
             // 2. overlayEntity rỗng. 
-            await puropseFreeWriteFlow(state.route.currentEntity.type, state.route.currentEntity.id, purposeContext, hopeContext); 
+            await purposeFreeWriteFlow(state.route.currentEntity.type, state.route.currentEntity.id, purposeContext, hopeContext); 
             
             // Clear born entities cache để force refetch
             const keyNameInRelations = `${state.route.currentEntity.type}-${state.route.currentEntity.id}`;

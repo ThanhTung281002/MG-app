@@ -855,7 +855,7 @@ export async function purposeFreeWrite(type, id, purposeContext, hopeContext) {
     }); 
 
     return {
-        id: fakePurposes.length + 1, 
+        id: fakePurposes.length, 
         createdAt: Date.now()
     }; 
 }

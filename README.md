@@ -692,7 +692,7 @@ Luồng của admin:
 
 
 
-### GET /life-lesssons-reflection?view=basic 
+### GET /life-lessons-reflection?view=basic 
 - Chỉ lấy id của tất bài học để hiển thị ở phía user. 
 
 
@@ -773,7 +773,7 @@ Luồng của admin:
 
 
 
-### GET /life-lesssons-main?view=basic 
+### GET /life-lessons-main?view=basic 
 - Chỉ lấy thông tin cơ bản như id. 
 - id của life-lessons-main 
 
