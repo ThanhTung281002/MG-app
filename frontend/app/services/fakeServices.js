@@ -586,7 +586,7 @@ export async function getMe(token) {
         email: user.email, 
         role: user.role, 
         status: user.status, 
-        updatedAt: user.updatedAt
+        updatedAt: user.updated_at
     }
 }
 
