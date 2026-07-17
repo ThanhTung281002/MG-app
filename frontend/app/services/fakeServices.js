@@ -538,6 +538,19 @@ export async function signup(fullname, email, username, password) {
         throw new Error("Username's already existed!"); 
     }
 
+    // thêm user mới vào fakeUsers
+    fakeUsers.push({
+        id: fakeUsers.length + 1, 
+        fullname: fullname, 
+        email: email, 
+        username: username, 
+        password: password, 
+        role: "USER", 
+        status: "PENDING", 
+        createdAt: Date.now(), 
+        updatedAt: Date.now()
+    }); 
+
     return {
         message: "Signup successfully"
     }
@@ -567,7 +580,14 @@ export async function getMe(token) {
     // 2. lấy user và trả về
     const user = fakeUsers.find(u => u.id === userId); 
 
-    return user; 
+    return {
+        id: user.id, 
+        fullname: user.fullname, 
+        email: user.email, 
+        role: user.role, 
+        status: user.status, 
+        updatedAt: user.updatedAt
+    }
 }
 
 
@@ -683,9 +703,11 @@ export async function getActivePurposes() {
 
     // 1. lọc trong fakePurposes các purpose mà có status active thôi 
     // 2. trả lại theo format yêu cầu 
-    const activePurposes = fakePurposes.filter(p => p.status === "ACTIVE"); 
+    const activePurposes = fakePurposes.filter(p => p.status === "ACTIVE").map(purpose => ({
+        id: purpose.id
+    })); 
     
-    return {activePurposes}; 
+    return {activePurposes};    
 }
 
 
@@ -742,7 +764,9 @@ export async function getUnresolvedNotes() {
 
     // 1. tìm các note có type là UNRESOLVED
     // 2. return lại theo format
-    const unresolvedNotes = fakeNotes.filter(note => note.type === "UNRESOLVED"); 
+    const unresolvedNotes = fakeNotes.filter(note => note.type === "UNRESOLVED").map(note => ({
+        id: note.id
+    })); 
 
     return {unresolvedNotes}; 
 }
@@ -831,7 +855,8 @@ export async function purposeFreeWrite(type, id, purposeContext, hopeContext) {
     }); 
 
     return {
-        message: "Create new purpose successfully"
+        id: fakePurposes.length + 1, 
+        createdAt: Date.now()
     }; 
 }
 
@@ -849,6 +874,11 @@ function getFirst5Words(text) {
 
 
 
+function createCode(number) {
+    return "N" + String(number).padStart(4, "0");
+}
+
+
 
 // HÀM GỬI NOTE
 export async function noteFreeWrite(type, id, context) {
@@ -864,7 +894,7 @@ export async function noteFreeWrite(type, id, context) {
     // 3. trả message tạo note mới thành công
     fakeNotes.push({
         id: fakeNotes.length + 1, 
-        displayCode: `N000${id}`, 
+        displayCode: createCode(fakeNotes.length + 1), 
         title: getFirst5Words(context),
         content: context, 
         type: "NONE", 
@@ -880,8 +910,14 @@ export async function noteFreeWrite(type, id, context) {
         createdAt: Date.now()
     }); 
 
+
+    const thisNote = fakeNotes[fakeNotes.length - 1]; 
+
     return {
-        message: "Create new note successfully"
+        id: thisNote.id, 
+        displayCode: thisNote.displayCode, 
+        title: thisNote.title,
+        createdAt: thisNote.updatedAt
     }; 
 }
 
@@ -1284,7 +1320,11 @@ export async function getUser(id) {
     }
 
     // 2. trả theo format 
-    return user; 
+    return {
+        id: user.id, 
+        fullname: user.fullname, 
+        email: user.email
+    }
 }
 
 
@@ -1316,7 +1356,7 @@ export async function updateUserStatus(id, status) {
 
     // 3. return theo yêu cầu
     return {
-        message: "updating successfully"
+        updatedAt: Date.now()
     }
 }
 
@@ -1348,7 +1388,7 @@ export async function updateTeachingWord(id, title, content, date) {
 
     // 3. trả theo yêu cầu 
     return {
-        message: "Update successfully"
+        updatedAt: Date.now()
     }
 }
 
@@ -1420,7 +1460,7 @@ export async function updateLifeLessonMain(id, mainContent) {
 
     // 3. trả theo yêu cầu 
     return {
-        message: "update successfully"
+        updatedAt: Date.now()
     }; 
 
 }   

@@ -288,7 +288,7 @@ def handle_get_life_lesson(id: str, user_id: str):
     return {
         "id": life_lesson_reflection["id"],
         "title": life_lesson_main["title"],
-        "main-content": life_lesson_main["main_content"],
+        "mainContent": life_lesson_main["main_content"],
         "reflection": life_lesson_reflection["reflection"],
         "updatedAt": life_lesson_reflection["updated_at"]
     }

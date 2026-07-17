@@ -731,7 +731,7 @@ Luồng của admin:
 {
     "id": "id of life lesson", 
     "title": "title of life lesson", 
-    "main-content": "main content of life lesson",
+    "mainContent": "main content of life lesson",
     "reflection": "personal reflection of user",
     "updatedAt": "updated time of life lesson reflection"
 }
@@ -838,7 +838,7 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "updateAt": "updated time"
+    "updatedAt": "updated time"
 }
 ```
 -------------------------------------
@@ -871,7 +871,7 @@ Luồng của admin:
 **Resonse:**
 ```raw
 {
-    "purposes": [
+    "activePurposes": [
         {
             "id": "id of purpose"
         }, 
