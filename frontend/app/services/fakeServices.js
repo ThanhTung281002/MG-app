@@ -547,8 +547,8 @@ export async function signup(fullname, email, username, password) {
         password: password, 
         role: "USER", 
         status: "PENDING", 
-        createdAt: Date.now(), 
-        updatedAt: Date.now()
+        created_at: Date.now(), 
+        updated_at: Date.now()
     }); 
 
     return {
