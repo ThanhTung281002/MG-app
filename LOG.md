@@ -4,8 +4,35 @@
 
 
 
+
+
 ## 18.07.2026 00h09
 - [ ] Hoàn thành 
+
+### Context
+- Đã làm xong phần UI động + fake API. 
+- Đã hoàn thành phần kết nối api thật. 
+
+### Đã làm
+- Đã làm: 
+    - Nhìn xuống log ở dưới là thấy rõ các phần mình đã làm và hoàn chỉnh. 
+
+### Đang kẹt / dở
+- không có gì để sửa nữa. 
+ 
+
+### Hướng làm tiếp
+- Deploy dự án. 
+
+
+
+-------------
+
+
+
+
+## 18.07.2026 00h09
+- [x] Hoàn thành 
 
 ### Context
 - Đã làm xong phần UI động + fake API. 
