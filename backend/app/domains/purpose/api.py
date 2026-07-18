@@ -293,7 +293,7 @@ def handle_get_purposes_all_basic(user_id: str):
     
     ### 3. return 
     return {
-        "purposes": result
+        "activePurposes": result
     }
 
 
