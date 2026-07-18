@@ -626,6 +626,9 @@ export async function getTeachingWord(id) {
     // 1. từ id lọc trong cơ sở dữ liệu thôi
     const teachingWord = fakeTeachingWords.find(tw => tw.id === id); 
 
+    if (!teachingWord) {
+        throw new Error("Teaching Word not found"); 
+    }
     // console.log(`${API_LOG} 🪛🪛🪛: teachingWord để trả lại cho api flow là: ${JSON.stringify(teachingWord, null, 2)}`); 
 
     return teachingWord; 
@@ -726,6 +729,11 @@ export async function getPurpose(id) {
     // 2. trả lại theo format yêu cầu
     const purpose = fakePurposes.find(p => p.id === id); 
 
+
+    if (!purpose) {
+        throw new Error("Purpose not found"); 
+    }
+
     return purpose; 
 }
 
@@ -786,6 +794,10 @@ export async function getNote(id) {
     // 1. tìm note theo id
     // 2. return theo format
     const note = fakeNotes.find(n => n.id === id); 
+
+    if (!note) {
+        throw new Error("Note not found"); 
+    }
 
     return note; 
 }
@@ -1004,7 +1016,12 @@ export async function updateAction(purposeId, actionId, context, status) {
         throw new Error("Action not found"); 
     }
 
-    // 3. cập nhập action 
+    // 3. kiểm tra action có thuộc đúng purpose không? 
+    if (action.purposeId !== purpose.id) {
+        throw new Error("Action not belong to purpose"); 
+    }
+
+    // 4. cập nhập action 
     action.context = context; 
     action.status = status; 
 
@@ -1464,6 +1481,32 @@ export async function updateLifeLessonMain(id, mainContent) {
     }; 
 
 }   
+
+
+
+
+
+
+
+
+export async function addTeachingWord(title, date, content) {
+    console.log(`${API_LOG} vào hàm thêm lời dạy mới với chủ đề: ${title}, ngày thêm: ${date}, nội dung: ${content}`); 
+
+    // thêm thôi 
+    fakeTeachingWords.push({
+        id: fakeTeachingWords.length + 1, 
+        displayCode: dateToDisplayCode(date), 
+        title: title, 
+        content: content, 
+        updatedAt: Date.now()
+    })
+
+
+    return {
+        id: fakeTeachingWords.length, 
+        createdAt: Date.now()
+    }
+}
 
 
 

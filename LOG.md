@@ -4,9 +4,41 @@
 
 
 
+## 18.07.2026 00h09
+- [ ] Hoàn thành 
+
+### Context
+- Đã làm xong phần UI động + fake API. 
+- Đang làm cho frontend phần thêm lời dạy mới. 
+
+### Đã làm
+- Đã làm: 
+    - Nhìn xuống log ở dưới là thấy rõ các phần mình đã làm và hoàn chỉnh. 
+
+### Đang kẹt / dở
+- Lỗi và sửa ở backend: 
+    1. khi người dùng rejected hoặc pending đăng nhập thì chuyện gì xảy ra. Backend đã tính tới trường hợp này chưa? 
+    
+
+- Lỗi ở frontend: 
+    1. Chưa làm cho phần thêm Lời Dạy mới của admin. 
+    2. Chưa làm phần loading khi thời gian giao tiếp giữa trình duyệt và server lâu hơn so với bình thường. 
+    3. Điều chỉnh khoảng trống, không gian, cỡ chữ, font chữ sao cho phù hợp với MG-app để sử dụng tuyệt vời hơn. Nhờ ai đây? 
+
+ 
+
+### Hướng làm tiếp
+- Làm phần thêm lời dạy mới của admin. 
+
+
+
+-------------
+
+
+
 
 ## 12.07.2026 16h50 
-- [ ] Hoàn thành 
+- [x] Hoàn thành 
 
 ### Context
 - Đã làm xong phần UI động + fake API. 

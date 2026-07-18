@@ -4,7 +4,7 @@ console.log("main.js loaded")
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain} from "./services/fakeServices.js";
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord} from "./services/fakeServices.js";
 
 
 const DOM_LOG = "                   0. DOM:"; 
@@ -318,11 +318,11 @@ async function getBornEntitiesFlow(type, id) {
 
 
 
-async function purposeFreeWriteFlow(type, id, purposeContext, hopeContext) {
-    console.log(`${API_FLOW_LOG} vào hàm gửi purpose free write với origin: (${type}, ${id}) có purpose: ${purposeContext} và hope: ${hopeContext}`); 
+async function purposeFreeWriteFlow(type, inputId, purposeContext, hopeContext) {
+    console.log(`${API_FLOW_LOG} vào hàm gửi purpose free write với origin: (${type}, ${inputId}) có purpose: ${purposeContext} và hope: ${hopeContext}`); 
 
     try {
-        const {id, createdAt} = await purposeFreeWrite(type, id, purposeContext, hopeContext); 
+        const {id, createdAt} = await purposeFreeWrite(type, inputId, purposeContext, hopeContext); 
 
         return {id, createdAt}; 
     } catch (err) {
@@ -337,11 +337,11 @@ async function purposeFreeWriteFlow(type, id, purposeContext, hopeContext) {
 
 
 
-async function noteFreeWriteFlow(type, id, context) {
-    console.log(`${API_FLOW_LOG} vào hàm gửi note free write có origin: (${type}, ${id}) và có context: ${context}`); 
+async function noteFreeWriteFlow(type, inputId, context) {
+    console.log(`${API_FLOW_LOG} vào hàm gửi note free write có origin: (${type}, ${inputId}) và có context: ${context}`); 
 
     try {
-        const {id, displayCode, title, createdAt} = await noteFreeWrite(type, id, context); 
+        const {id, displayCode, title, createdAt} = await noteFreeWrite(type, inputId, context); 
 
         return {id, displayCode, title, createdAt}; 
     } catch (err) {
@@ -647,7 +647,19 @@ async function updateLifeLessonMainFlow(id, mainContent) {
 
 
 
+async function addTeachingWordFlow(title, date, content) {
+    console.log(`${API_FLOW_LOG} vào hàm thêm lời dạy mới với chủ đề: ${title}, ngày thêm: ${date}, nội dung: ${content}`); 
 
+    try {
+        const {id, createdAt} = await addTeachingWord(title, date, content); 
+
+        return {id, createdAt}; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
 
 
 
@@ -1593,18 +1605,22 @@ async function renderPurposeEntity() {
             const {actions} = await getActionsFlow(purposeId); 
             const numIncompleteActions = actions.filter(action => action.status === "INCOMPLETE").length;
 
+            
+
             purposeServer.actions = actions; 
             purposeServer.numIncompleteActions = numIncompleteActions; 
 
             state.cache.purposes[purposeId] = purposeServer; 
         }
 
+
+        
         const purpose = state.cache.purposes[purposeId];
         const container = document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="PURPOSE"]');
         container.innerHTML = "";
         container.innerHTML += createPurposeEntity(purpose);
 
-
+        console.log("BUG: trước lỗi"); 
         // thêm actions 
         const completeActionsContainer = document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="PURPOSE"] .complete-actions');
         const completeActions = purpose.actions.filter(action => action.status === "COMPLETE");
@@ -1612,7 +1628,7 @@ async function renderPurposeEntity() {
         for (let action of completeActions) {
             completeActionsContainer.innerHTML += createCompleteAction(action);
         }
-
+        console.log("BUG: sau lỗi");
 
         const incompleteActionsContainer = document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="PURPOSE"] .incomplete-actions');
         const incompleteActions = purpose.actions.filter(action => action.status === "INCOMPLETE");
@@ -1889,7 +1905,7 @@ async function renderBornEntities() {
         // kiểm tra đã có trong cache chưa, nếu chưa thì gọi từ server 
         const bornEntities = state.cache.relations.born[keyNameInRelations]; 
 
-        console.log(`BUG: from cache | bornEntities: ${JSON.stringify(bornEntities, null, 2)}`); 
+        // console.log(`BUG: from cache | bornEntities: ${JSON.stringify(bornEntities, null, 2)}`); 
 
 
         if (!bornEntities) {
@@ -1949,7 +1965,14 @@ async function renderBornEntities() {
 
         for (let p of purposes) {
             if (!ExistsInCache(p.id, "PURPOSE")) {
-                const purpose = await getPurposeFlow(p.id); 
+                const purpose = await getPurposeFlow(p.id);
+                const {actions} = await getActionsFlow(p.id); 
+                const numIncompleteActions = actions.filter(action => action.status === "INCOMPLETE").length;
+
+                
+
+                purpose.actions = actions; 
+                purpose.numIncompleteActions = numIncompleteActions; 
 
                 state.cache.purposes[p.id] = purpose; 
             }
@@ -2453,7 +2476,7 @@ async function renderAdminTeachingWordEntity() {
         // 3. render ra DOM 
         const twEntity = state.route.currentEntity; 
 
-        if (!ExistsInCache(twEntity.id), "TEACHING_WORD") {
+        if (!ExistsInCache(twEntity.id, "TEACHING_WORD")) {
             const teachingWordServer = await getTeachingWordFlow(twEntity.id);
 
             state.cache.teachingWords[twEntity.id] = teachingWordServer; 
@@ -2769,13 +2792,14 @@ function renderOverlayEntity() {
     const noteFreeWrite = document.querySelector("#note-free-write"); 
     const purposeFreeWrite = document.querySelector("#purpose-free-write");
     const actionAddition = document.querySelector("#action-addition"); 
-
+    const teachingWordAddition = document.querySelector("#teaching-word-addition"); 
 
 
     if (state.ui.overlayEntity === null) {
         noteFreeWrite.classList.add("hidden"); 
         purposeFreeWrite.classList.add("hidden"); 
         actionAddition.classList.add("hidden"); 
+        teachingWordAddition.classList.add("hidden"); 
 
     } else if (state.ui.overlayEntity === "NOTE_FREE_WRITE") {
         noteFreeWrite.classList.remove("hidden"); 
@@ -2786,6 +2810,8 @@ function renderOverlayEntity() {
     } else if (state.ui.overlayEntity === "ACTION_ADDITION") {
         // console.log(`bug: actionAddition: ${JSON.stringify(actionAddition, null, 2)}`); 
         actionAddition.classList.remove("hidden"); 
+    } else if (state.ui.overlayEntity === "TEACHING_WORD_ADDITION") {
+        teachingWordAddition.classList.remove("hidden"); 
     }
     
 }
@@ -3999,8 +4025,6 @@ async function saveAdmin(contentType, content) {
 
 
 // ------------- ROUTE: ADMIN TEACHING WORDS ----------------
-
-
 function handleClickAdminTeachingWordMiniCard(id) {
     console.log(`${CONTROLLER_LOG} vào hàm xử click lời dạy mini card có id: ${id}`); 
 
@@ -4015,6 +4039,60 @@ function handleClickAdminTeachingWordMiniCard(id) {
     });
 
 }
+
+
+
+
+function handleClickAddTeachingWord() {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí click nút thêm lời dạy`); 
+
+    // làm gì? 
+    state.ui.overlayVisible = true; 
+    state.ui.overlayEntity = "TEACHING_WORD_ADDITION"; 
+    render(); 
+
+
+}
+
+
+
+
+function handleCloseTeachingWordAddition() {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí đóng trang thêm lời dạy mới`); 
+
+    state.ui.overlayVisible = false; 
+    state.ui.overlayEntity = null; 
+    render(); 
+}
+
+
+
+
+async function handleAddTeachingWord(title, date, content) {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí thêm lời dạy mới với chủ đề: ${title}, ngày thêm: ${date}, nội dung: ${content}`); 
+
+
+    state.error = null; 
+
+    try {
+        // làm gì? thì thêm vào server và sau đó quay ra thôi
+
+        await addTeachingWordFlow(title, date, content); 
+
+        state.ui.overlayVisible = false; 
+        state.ui.overlayEntity = null; 
+        render();
+
+
+    } catch (err) {
+        state.error = err.message; 
+
+        console.log(`${CONTROLLER_LOG} lỗi ở tầng controller: ${err.message}`); 
+
+        render(); 
+    }
+}
+
 
 
 
@@ -4767,6 +4845,40 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] .d
 
 }); 
 
+
+
+// click vào nút thêm lời dạy trong trang admin Lời dạy
+document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] #add-teaching-word-button').addEventListener("click", () => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào nút thêm lời dạy trong trang lời dạy của admin`); 
+
+    // làm gì? xử lí thôi 
+    handleClickAddTeachingWord(); 
+}); 
+
+
+
+
+// HÀM CLICK VÀO TRANG TEACHING WORD ADDITION 
+document.querySelector("#teaching-word-addition").addEventListener("click", async (e) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang thêm lời dạy`); 
+
+    const miniActionEl = e.target.closest('[data-mini-action]'); 
+
+    if (!miniActionEl) return; 
+
+    const miniAction = miniActionEl.dataset.miniAction; 
+
+    if (miniAction === "close") {
+        handleCloseTeachingWordAddition(); 
+
+
+    } else if (miniAction === "add") {
+        const title = document.querySelector('#teaching-word-addition [data-content-type="title"]').value; 
+        const date = inputDateToDate(document.querySelector('#teaching-word-addition [data-content-type="date"]').value); 
+        const content = document.querySelector('#teaching-word-addition [data-content-type="content"]').value; 
+        await handleAddTeachingWord(title, date, content); 
+    }
+}); 
 
 
 

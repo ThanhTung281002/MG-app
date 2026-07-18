@@ -625,7 +625,7 @@
                         </div>
                     </div>
                     <div class="content p-8 px-8">
-                        <button class="btn btn-ghost w-full h-40 create-box border-2 border-black border-dashed rounded-lg flex flex-col">
+                        <button id="add-teaching-word-button" class="btn btn-ghost w-full h-40 create-box border-2 border-black border-dashed rounded-lg flex flex-col">
                             <div class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-14">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
@@ -795,6 +795,10 @@
         </div>
     </div>
     
+
+
+
+
     <div id="purpose-free-write" class="hidden fixed inset-0 bg-white z-40">
         <div data-mini-action="close" class="btn btn-ghost fixed right-2 top-6 opacity-75">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-10">
@@ -815,6 +819,9 @@
         </div>
     </div>
 
+
+
+
     <div id="action-addition" class="hidden fixed h-1/2 w-full bottom-0 z-40 bg-white rounded-t-xl">
         <!-- làm lại từ đầu, mình có não để sử dụng và suy nghĩ -->
          <div data-mini-action="close" class="btn btn-ghost absolute right-0 top-4 opacity-75">
@@ -830,6 +837,27 @@
                 <button data-mini-action="save" class="btn btn-neutral">Thêm hành động mới</button>
             </div>
          </div>
+    </div>
+
+
+
+
+    <div id="teaching-word-addition" class="hidden fixed inset-0 bg-white z-40 flex flex-col justify-between px-10 pb-6 pt-24">
+        <div data-mini-action="close" class="btn btn-ghost absolute right-0 top-4 opacity-75">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-10">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </div>
+
+        <div class="input-section">
+            <textarea data-content-type="title" class="textarea textarea-neutral w-full h-24 border-2 border-gray-300 rounded-2xl placeholder:text-base text-base font-semibold" placeholder="Chủ đề của MG"></textarea>
+            <input data-content-type="date" type="date" class="w-full border-2 border-gray-300 rounded-2xl text-gray-400 p-2 pl-4 mt-2 text-base font-semibold">
+            <textarea data-content-type="content" class="textarea textarea-neutral w-full h-96 border-2 border-gray-300 rounded-2xl mt-6 placeholder:text-base text-base font-semibold" placeholder="Nội dung của Mg"></textarea>
+        </div>
+        <div class="action-section flex flex-col justify-between gap-2">
+            <button data-mini-action="close" class="btn btn-outline btn-ghost">Hủy</button>
+            <button data-mini-action="add" class="btn btn-neutral">Thêm Lời Dạy mới</button>
+        </div>
     </div>
 
 

@@ -163,8 +163,9 @@ const state = {
     ui: {
         loading: true || false, 
         disabled: true || false, 
-        fabState: 0 || 1 || 2
-        overlayEntity: "NOTE_FREE_WRITE" || "PURPOSE_FREE_WRITE" || "ACTION_ADDITION" || null || initial: null, 
+        fabState: 0 || 1 || 2,
+        overlayVisible: false || true || initial: false, 
+        overlayEntity: "NOTE_FREE_WRITE" || "PURPOSE_FREE_WRITE" || "ACTION_ADDITION" || "TEACHING_WORD_ADDITION" || null || initial: null, 
         saveStatus: "SAVED" || "SAVING" || "EDITTING", 
         noteTypeMenuOpen: true || false || initial: false, 
 
