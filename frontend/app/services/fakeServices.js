@@ -5,7 +5,7 @@ console.log("services/fakeServices.js loaded");
 import { checkFullname, checkEmail, checkUsername, checkPassword, isEmailExisted, isUsernameExisted, createToken, saveToken, getUserIdFromToken } from "../utils/utils.js"; // đây là chỗ khiến code bị sai. 
 
 
-const delay = 0; // 0ms - do ở giai đoạn hiện tại chưa làm loading hay gì cả nên chưa cần. Lúc làm thì sẽ set về 300ms 
+const delay = 400; // 0ms - do ở giai đoạn hiện tại chưa làm loading hay gì cả nên chưa cần. Lúc làm thì sẽ set về 300ms 
 
 
 
