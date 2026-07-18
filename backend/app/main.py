@@ -19,6 +19,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    "https://mg-app-iota.vercel.app"
 ]
 
 
