@@ -17,7 +17,6 @@ certifi==2020.6.20
 cffi==2.0.0
 chardet==4.0.0
 click==8.0.3
-cloud-init==25.2
 cloudinary==1.44.1
 colorama==0.4.4
 command-not-found==0.3
