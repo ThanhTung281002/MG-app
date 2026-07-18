@@ -2964,7 +2964,7 @@ function getRouteFromURL() {
             userRole: "USER", 
             currentEntity: {
                 type: parts[2].replaceAll("-", "_").toUpperCase(), 
-                id: Number(parts[3])
+                id: (parts[3])
             }
         }
     }
@@ -2975,7 +2975,7 @@ function getRouteFromURL() {
             userRole: "ADMIN", 
             currentEntity: {
                 type: parts[3].replaceAll("-", "_").toUpperCase(), 
-                id: Number(parts[4])
+                id: (parts[4])
             }
         }
     }
@@ -3698,7 +3698,7 @@ async function save(contentType, content) {
 
         } else if (entity.type === "PURPOSE") {
             const [ctType, contentIdString] = contentType.split("-"); 
-            const actionId = Number(contentIdString); 
+            const actionId = (contentIdString); 
 
             let title = state.cache.purposes[entity.id].title; 
             let hope = state.cache.purposes[entity.id].hope; 
@@ -4289,7 +4289,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .teaching-wor
     if (!button) return; 
 
     // xử lí việc navigate tới trang entity teaching word với id là gì gì đó. 
-    const entityId = Number(button.dataset.id); 
+    const entityId = (button.dataset.id); 
 
     await navigate({
         name: "ENTITY",
@@ -4315,7 +4315,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .life-lessons
     if (!button) return; 
 
     // xử lí việc navigate tới trang entity teaching word với id là gì gì đó. 
-    const entityId = Number(button.dataset.id); 
+    const entityId = (button.dataset.id); 
     await navigate({
         name: "ENTITY",
         userRole: "USER", 
@@ -4339,7 +4339,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .purposes-sec
         return; 
     }
 
-    const entityId = Number(card.dataset.id); 
+    const entityId = (card.dataset.id); 
 
     await navigate({
         name: "ENTITY", 
@@ -4367,7 +4367,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .notes-sectio
         return; 
     }
 
-    const entityId = Number(card.dataset.id); 
+    const entityId = (card.dataset.id); 
 
     await navigate({
         name: "ENTITY", 
@@ -4409,7 +4409,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-sid
     // đóng drawer 
     document.querySelector("#born-entities").checked = false; 
 
-    const entityId = Number(card.dataset.id); 
+    const entityId = (card.dataset.id); 
 
     await navigate({
         name: "ENTITY", 
@@ -4436,7 +4436,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-sid
     // đóng drawer 
     document.querySelector("#born-entities").checked = false; 
 
-    const entityId = Number(card.dataset.id); 
+    const entityId = (card.dataset.id); 
 
     await navigate({
         name: "ENTITY", 
@@ -4592,7 +4592,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventL
     if (!completeActionBtn) {
         // return; 
     } else {
-        const actionId = Number(completeActionBtn.dataset.id); 
+        const actionId = (completeActionBtn.dataset.id); 
         await handleClickActionStatusBtn(actionId, "COMPLETE"); 
     } 
 
@@ -4604,7 +4604,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventL
     if (!incompleteActionBtn) {
         // return; 
     } else {
-        const actionId = Number(incompleteActionBtn.dataset.id); 
+        const actionId = (incompleteActionBtn.dataset.id); 
         await handleClickActionStatusBtn(actionId, "INCOMPLETE"); 
     }
 }); 
@@ -4762,7 +4762,7 @@ document.querySelector(`[data-user-role="ADMIN"] [data-page="HOME"]`).addEventLi
     if (!seeMoreBtn) return; 
 
 
-    const userId = Number(seeMoreBtn.dataset.id); 
+    const userId = (seeMoreBtn.dataset.id); 
     await handleClickSeeMoreUser(userId); 
 }); 
 
@@ -4809,7 +4809,7 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"]').
 
     if (!teachingWordMiniCard) return; 
     
-    const id = Number(teachingWordMiniCard.dataset.id); 
+    const id = (teachingWordMiniCard.dataset.id); 
 
     await handleClickAdminTeachingWordMiniCard(id); 
 }); 
@@ -4895,7 +4895,7 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"]').ad
 
     if (!lifeLessonMainMiniCard) return; 
 
-    const id = Number(lifeLessonMainMiniCard.dataset.id); 
+    const id = (lifeLessonMainMiniCard.dataset.id); 
 
     await handleClickAdminLifeLessonMainMiniCard(id); 
 }); 
