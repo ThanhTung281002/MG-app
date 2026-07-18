@@ -4,7 +4,7 @@ console.log("main.js loaded")
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord} from "./services/fakeServices.js";
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord} from "./services/services.js";
 
 
 const DOM_LOG = "                   0. DOM:"; 

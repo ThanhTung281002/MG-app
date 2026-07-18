@@ -1,5 +1,9 @@
 # ==================== 4. APP =====================
 from fastapi import FastAPI, HTTPException 
+from fastapi.middleware.cors import CORSMiddleware
+
+
+
 from app.domains.teaching_word.api import router as teaching_word_router    
 from app.domains.auth.api import router as auth_router
 from app.domains.life_lesson_reflection.api import router as life_lesson_reflection_router
@@ -12,6 +16,22 @@ from app.domains.relation.api import router as relation_router
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+]
+
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 app.include_router(teaching_word_router)
 app.include_router(auth_router)
 app.include_router(life_lesson_reflection_router)
