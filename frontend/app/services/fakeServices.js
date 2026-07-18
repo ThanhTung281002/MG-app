@@ -1075,6 +1075,10 @@ export async function addAction(purposeId, context) {
 export async function updateNote(id, content, type) {
     console.log(`${API_LOG} vào hàm cập nhập ghi chú với nội dung: ${content}, type: ${type}`); 
 
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+
     // 1. check note có tồn tại không
     const note = fakeNotes.find(n => n.id === id); 
 
@@ -1463,6 +1467,10 @@ export async function getLifeLessonMain(id) {
 export async function updateLifeLessonMain(id, mainContent) {
     console.log(`${API_LOG} vào hàm cập nhập lời dạy chính của admin có id: ${id}, và nội dung chính cần cập nhập: ${mainContent}`); 
 
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+
     // 1. nếu không có trong csdl thì báo not found
     const llm = fakeLifeLessonsMain.find(el => el.id === id); 
 
@@ -1491,6 +1499,10 @@ export async function updateLifeLessonMain(id, mainContent) {
 
 export async function addTeachingWord(title, date, content) {
     console.log(`${API_LOG} vào hàm thêm lời dạy mới với chủ đề: ${title}, ngày thêm: ${date}, nội dung: ${content}`); 
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
 
     // thêm thôi 
     fakeTeachingWords.push({

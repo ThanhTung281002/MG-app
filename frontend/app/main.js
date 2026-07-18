@@ -695,7 +695,7 @@ async function addTeachingWordFlow(title, date, content) {
 
 // ============== 2. RENDER ===============
 // hàm mà render toàn bộ trang web từ nguồn sự thật, mình nghĩ là mình sẽ viết pseudo code trước 
-function render() {
+async function render() {
     console.log(`${RENDER_LOG} vào hàm lớn render`); 
 
     // 1. render error 
@@ -704,7 +704,7 @@ function render() {
 
     } else {
         // 1. render page phù hợp
-        renderRoute(); 
+        await renderRoute(); 
 
         // 2. render ui state như loading, disabled, fabOpen. 
         renderUIState(); 
@@ -1076,7 +1076,7 @@ async function renderReflectionTeachingWord() {
 
     } catch(err) {
         state.error = err.message; 
-        render(); 
+        await render(); 
     }
 
 }
@@ -1226,7 +1226,7 @@ async function renderlatestLifeLessons() {
 
         console.log(`${RENDER_LOG}  1. lỗi ở tầng render: ${state.error}`); 
 
-        render(); 
+        await render(); 
     }
 
 
@@ -1304,7 +1304,7 @@ async function renderActivePurposes() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.5.2 lỗi ở tầng render: ${state.error}`); 
-        render(); 
+        await render(); 
     }
 }
 
@@ -1372,7 +1372,7 @@ async function renderUnresolvedNotes() {
         state.error = err.message; 
         console.log(`${RENDER_LOG}      1.6.9 lỗi ở tầng render: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 }
 
@@ -1429,7 +1429,7 @@ async function renderTeachingWordEntity() {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.5.1 lỗi ở tầng render: ${state.error}`); 
 
-        render(); 
+        await render(); 
     }
 
 
@@ -1524,7 +1524,7 @@ async function renderLifeLessonEntity() {
         state.error = err.message; 
 
         console.log(`${RENDER_LOG}          1.6.9 lỗi ở tầng render: ${err.message}`); 
-        render(); 
+        await render(); 
     }
         
 }
@@ -1643,7 +1643,7 @@ async function renderPurposeEntity() {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.9 lỗi ở tầng render: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 }
 
@@ -1786,7 +1786,7 @@ async function renderNoteEntity() {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.9 lỗi ở tầng render: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 }
 
@@ -1999,7 +1999,7 @@ async function renderBornEntities() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
     
 }
@@ -2113,7 +2113,7 @@ async function renderUserTeachingWordsPage() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
 
 }
@@ -2188,7 +2188,7 @@ async function renderUserLifeLessonsPage() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
 }
 
@@ -2267,7 +2267,7 @@ async function renderAdminHomePage() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
 }
 
@@ -2331,7 +2331,7 @@ async function renderAdminTeachingWordsPage() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
 
 }
@@ -2384,7 +2384,7 @@ async function renderAdminLifeLessonsPage() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
 }
 
@@ -2440,7 +2440,7 @@ async function renderAdminUserEntity() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
 }
 
@@ -2491,7 +2491,7 @@ async function renderAdminTeachingWordEntity() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
 }
 
@@ -2553,7 +2553,7 @@ async function renderAdminLifeLessonEntity() {
     } catch (err) {
         state.error = err.message; 
         console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
-        render(); 
+        await render(); 
     }
     
 
@@ -3047,7 +3047,7 @@ function toURL(route) {
 
 
 // ------- hàm điều hướng 
-function navigate(route) {
+async function navigate(route) {
     console.log(`${CONTROLLER_LOG}  1. hàm người dùng điều hướng tới route: ${JSON.stringify(route, null, 2)}`)
 
     // 1. update state
@@ -3067,10 +3067,10 @@ function navigate(route) {
     history.pushState(route, "", url); 
 
     // 4. render 
-    render(); 
+    await render(); 
 }
 
-function redirect(route) {
+async function redirect(route) {
     console.log(`${CONTROLLER_LOG}  1. hàm hệ thống tự điều hướng về route: ${JSON.stringify(route, null, 2)}`); 
 
     // 1. update state
@@ -3089,7 +3089,7 @@ function redirect(route) {
     history.replaceState(route, "", url); 
 
     // 4. render 
-    render(); 
+    await render(); 
 }
 
 
@@ -3118,11 +3118,11 @@ async function initApp() {
         if (route.name !== "LOG_IN" && route.name !== "SIGN_UP") {
             console.log(`${CONTROLLER_LOG}      1.1 route.name không phải là login và sign_up, route.name: ${route.name}`)
 
-            redirect({name: "LOG_IN"}); 
+            await redirect({name: "LOG_IN"}); 
         } else {
             console.log(`${CONTROLLER_LOG}      1.1 route.name là login hoặc signup, route.name: ${route.name}`)
 
-            redirect(route); 
+            await redirect(route); 
         }
     } else { // TH: có token
         console.log(`${CONTROLLER_LOG}  1. có token: ${token}`)
@@ -3145,16 +3145,16 @@ async function initApp() {
                 // 1. route.name khớp với các route name hợp lệ thì đi vào đó, không thì vào "HOME"
                 if (VALID_ROUTE_NAME.has(route.name)) {
                     console.log('BUG: route.name khớp với ROUTE NAME hợp lệ'); 
-                    redirect(route); 
+                    await redirect(route); 
                 } else {
                     console.log('BUG: route.name không khớp với ROUTE NAME hợp lệ'); 
-                    redirect({name: "HOME", userRole: user.role}); 
+                    await redirect({name: "HOME", userRole: user.role}); 
                 }
             } else {
                 console.log(`BUG: route.userRole không khớp với user.role`); 
 
                 // nếu không đúng thì sao? Vì về trang home của user.role
-                redirect({name: "HOME", userRole: user.role}); 
+                await redirect({name: "HOME", userRole: user.role}); 
             }
 
 
@@ -3162,7 +3162,7 @@ async function initApp() {
             console.log(`${CONTROLLER_LOG}      1.1 user không hợp lệ`)
 
             localStorage.removeItem("accessToken"); 
-            redirect({name: "LOG_IN"}); 
+            await redirect({name: "LOG_IN"}); 
         }
     }
 
@@ -3171,7 +3171,7 @@ async function initApp() {
 
 
 // ----- hàm để xử lí sự kiện popState
-function handlePopState(currRoute) {
+async function handlePopState(currRoute) {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí pop state với currRoute: ${JSON.stringify(currRoute, null, 2)}`); 
 
     // 1. kiểm tra xem còn token không? 
@@ -3182,12 +3182,12 @@ function handlePopState(currRoute) {
 
     if (!token) {
         if (currRoute.userRole)  {
-            redirect({name: "LOG_IN"}); 
+            await redirect({name: "LOG_IN"}); 
         } else {
-            redirect(currRoute); 
+            await redirect(currRoute); 
         }
     } else {
-        redirect(currRoute); 
+        await redirect(currRoute); 
     }
 
     // nói chung là nó đơn giản hơn cả cái initAPP nhưng tương tự
@@ -3229,25 +3229,25 @@ async function handleLogin(username, password) {
         state.user = user;
 
         // 6. điều hướng sang home tương ứng với user
-        redirect({name: "HOME", userRole: user.role}); 
+        await redirect({name: "HOME", userRole: user.role}); 
 
     } catch(err) {
         state.error = err.message; 
 
         console.log(`${CONTROLLER_LOG} lỗi ở handleLogin: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 
 }
 
 
 // ------ hàm xử lí chuyển hướng sang trang đăng kí ----
-function handleRedirectToSignUpPage() {
+async function handleRedirectToSignUpPage() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí chuyển hướng đăng kí trong trang đăng nhập`); 
 
     state.error = null; 
-    navigate({name: "SIGN_UP"}); 
+    await navigate({name: "SIGN_UP"}); 
 }
 
 
@@ -3265,11 +3265,11 @@ function handleRedirectToSignUpPage() {
 
 
 // ------ hàm xử lí chuyển hướng sang trang đăng nhập ------
-function handleRedirectToLogInPage() {
+async function handleRedirectToLogInPage() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí chuyển hướng đăng nhập trong trang đăng kí`); 
 
     state.error = null; 
-    navigate({name: "LOG_IN"}); 
+    await navigate({name: "LOG_IN"}); 
 }
 
 
@@ -3288,13 +3288,13 @@ async function handleSignup(fullname, email, username, password) {
     try {
         const {message} = await signupFlow(fullname, email, username, password); 
 
-        navigate({name: "LOG_IN"}); 
+        await navigate({name: "LOG_IN"}); 
     } catch (err) {
         state.error = err.message; 
 
         console.log(`${CONTROLLER_LOG} 1. lỗi ở handleSignup: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 }
 
@@ -3302,7 +3302,7 @@ async function handleSignup(fullname, email, username, password) {
 
 
 // ======= ROUTE: HOME USER ========
-function handleLogOut() {
+async function handleLogOut() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí đăng xuất`); 
 
     state.error = null; 
@@ -3312,7 +3312,7 @@ function handleLogOut() {
     state.user = null; 
 
     // 2. điều hướng về login 
-    redirect({name: "LOG_IN"}); 
+    await redirect({name: "LOG_IN"}); 
 
 }
 
@@ -3333,7 +3333,7 @@ function handleLogOut() {
 let stateOneTimer = null;
 let stateOneTime = 3000; // 3s
 
-function handleClickFab() {
+async function handleClickFab() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí click vào nút fab trong thực thể lời dạy`); 
 
     clearTimeout(stateOneTimer); 
@@ -3344,18 +3344,18 @@ function handleClickFab() {
         state.ui.fabState = 1; 
         state.ui.overlayVisible = false; 
 
-        render(); 
+        await render(); 
 
-        stateOneTimer = setTimeout(() => {
+        stateOneTimer = setTimeout(async () => {
             // state 0
             state.ui.fabState = 0; 
-            render(); 
+            await render(); 
         }, stateOneTime); 
     } else if (state.ui.fabState === 1) {
         // state 2
         state.ui.fabState = 2; 
         state.ui.overlayVisible = true; 
-        render(); 
+        await render(); 
     } 
 }
 
@@ -3370,17 +3370,17 @@ async function handleAction(action) {
     if (action === "note-free-write") {
         state.ui.overlayVisible = true; 
         state.ui.overlayEntity = "NOTE_FREE_WRITE";
-        render(); 
+        await render(); 
 
     } else if (action === "purpose-free-write") {
         state.ui.overlayVisible = true; 
         state.ui.overlayEntity = "PURPOSE_FREE_WRITE"; 
-        render(); 
+        await render(); 
 
     } else if (action === "action-add") {
         state.ui.overlayVisible = true; 
         state.ui.overlayEntity = "ACTION_ADDITION"; 
-        render(); 
+        await render(); 
 
     } else if (action === "note-delete") {
         state.ui.overlayVisible = false; 
@@ -3416,7 +3416,7 @@ async function deleteCurrentNote() {
         if (history.length > 1) {
             history.back();
         } else {
-            redirect({
+            await redirect({
                 name: "HOME",
                 userRole: "USER"
             });
@@ -3426,7 +3426,7 @@ async function deleteCurrentNote() {
 
         console.log(`${CONTROLLER_LOG}  1. lỗi ở tầng controller: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 }
 
@@ -3524,13 +3524,13 @@ async function handleNfwMiniAction(miniAction, content) {
         }
 
         state.ui.overlayVisible = false;
-        render(); 
+        await render(); 
     } catch (err) {
         state.error = err.message; 
 
         console.log(`${CONTROLLER_LOG}  1. lỗi ở tầng controller: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
     
 }
@@ -3562,13 +3562,13 @@ async function handlePfwMiniAction(miniAction, purposeContext, hopeContext) {
         }
 
         state.ui.overlayVisible = false; 
-        render(); 
+        await render(); 
     } catch (err) {
         state.error = err.message; 
 
         console.log(`${CONTROLLER_LOG}  1. lỗi ở tầng controller: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
     
 }
@@ -3609,14 +3609,14 @@ async function handleAaMiniAction(miniAction, content) {
             state.ui.overlayVisible = false; 
         }
 
-        render(); 
+        await render(); 
 
     } catch (err) {
         state.error = err.message; 
 
         console.log(`${CONTROLLER_LOG}  1. lỗi ở tầng controller: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 
 }
@@ -3654,23 +3654,23 @@ async function handleInput(contentType, content) {
 
         saveTimer = setTimeout(async () => {
             state.ui.saveStatus = "SAVING"; 
-            render(); 
+            await render(); 
             
             await save(contentType, content); 
             
             state.ui.saveStatus = "SAVED"; 
-            render(); 
+            await render(); 
         }, saveTime); 
     } else if (state.ui.saveStatus === "EDITTING") {
         // nếu nhập trong lúc đang nhập thì reset timer 
         saveTimer = setTimeout(async () => {
             state.ui.saveStatus = "SAVING"; 
-            render(); 
+            await render(); 
             
             await save(contentType, content); 
             
             state.ui.saveStatus = "SAVED"; 
-            render(); 
+            await render(); 
         }, saveTime); 
     } 
 
@@ -3732,7 +3732,7 @@ async function save(contentType, content) {
         state.error = err.message; 
         console.log(`${CONTROLLER_LOG}      1.9 lỗi ở tầng controller: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 }
 
@@ -3758,12 +3758,12 @@ async function handleClickActionStatusBtn(id, status) {
         await updateActionFlow(purposeId, id, action.context, status); 
         action.status = status; 
 
-        render(); 
+        await render(); 
     } catch (err) {
         console.log(`${CONTROLLER_LOG}  1. lỗi ở tầng controller: ${err.message}`); 
 
         state.error = err.message; 
-        render(); 
+        await render(); 
     }
 }
 
@@ -3776,7 +3776,7 @@ async function handleClickActionStatusBtn(id, status) {
 
 
 // ----------- HÀM XỬ LÍ CLICK VÀO NOTE TYPE SELECTED ------
-function handleClickNoteTypeSelected() {
+async function handleClickNoteTypeSelected() {
     console.log(`${CONTROLLER_LOG} hàm xử lí click vào nhãn loại ghi chú`); 
 
     // nếu open thì close và ngược lại 
@@ -3787,7 +3787,7 @@ function handleClickNoteTypeSelected() {
         state.ui.noteTypeMenuOpen = true; 
     }
 
-    render(); 
+    await render(); 
 }
 
 
@@ -3817,12 +3817,12 @@ async function handleClickNoteTypeOption(noteType) {
 
         state.ui.noteTypeMenuOpen = false; 
         
-        render(); 
+        await render(); 
     } catch (err) {
         console.log(`${CONTROLLER_LOG}  1. lỗi ở tầng controller: ${err.message}`); 
 
         state.error = err.message; 
-        render(); 
+        await render(); 
     }
 }
 
@@ -3831,12 +3831,12 @@ async function handleClickNoteTypeOption(noteType) {
 
 
 // --------------------- ROUTE: USER - TEACHING WORDS ----------------------
-function handleClickMiniCardTeachingWord(id) {
+async function handleClickMiniCardTeachingWord(id) {
     console.log(`${CONTROLLER_LOG} hàm xử lí click vào mini card Lời Dạy có id: ${id}`); 
 
     // làm gì? 
     // chuyển route thôi 
-    navigate({
+    await navigate({
         name: "ENTITY", 
         userRole: "USER", 
         currentEntity: {
@@ -3853,12 +3853,12 @@ function handleClickMiniCardTeachingWord(id) {
 
 
 // --------------------- ROUTE: USER - LIFE LESSONS ----------------------
-function handleClickMiniCardLifeLesson(id) {
+async function handleClickMiniCardLifeLesson(id) {
     console.log(`${CONTROLLER_LOG} hàm xử lí click vào mini card bài học có id: ${id}`); 
 
 
     // chuyển route thôi 
-    navigate({
+    await navigate({
         name: "ENTITY", 
         userRole: "USER", 
         currentEntity: {
@@ -3881,11 +3881,11 @@ function handleClickMiniCardLifeLesson(id) {
 
 
 // HÀM XỬ LÍ CLICK VÀO NÚT XEM THÊM Ở CARD USER 
-function handleClickSeeMoreUser(id) {
+async function handleClickSeeMoreUser(id) {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí khi click vào nút xem thêm của card user: ${id}`); 
 
     // 1. navigate sang page entity user đó
-    navigate({
+    await navigate({
         name: "ENTITY", 
         userRole: "ADMIN", 
         currentEntity: {
@@ -3930,7 +3930,7 @@ async function handleUserMiniAction(miniAction) {
         console.log(`${CONTROLLER_LOG}  1. lỗi ở tầng controller: ${err.message}`); 
 
         state.error = err.message; 
-        render(); 
+        await render(); 
     }
 }
 
@@ -3950,23 +3950,23 @@ async function handleAdminInput(contentType, content) {
 
         saveTimer = setTimeout(async () => {
             state.ui.saveStatus = "SAVING"; 
-            render(); 
+            await render(); 
             
             await saveAdmin(contentType, content); 
             
             state.ui.saveStatus = "SAVED"; 
-            render(); 
+            await render(); 
         }, saveTime); 
     } else if (state.ui.saveStatus === "EDITTING") {
         // nếu nhập trong lúc đang nhập thì reset timer 
         saveTimer = setTimeout(async () => {
             state.ui.saveStatus = "SAVING"; 
-            render(); 
+            await render(); 
             
             await saveAdmin(contentType, content); 
             
             state.ui.saveStatus = "SAVED"; 
-            render(); 
+            await render(); 
         }, saveTime); 
     } 
 }
@@ -4025,11 +4025,11 @@ async function saveAdmin(contentType, content) {
 
 
 // ------------- ROUTE: ADMIN TEACHING WORDS ----------------
-function handleClickAdminTeachingWordMiniCard(id) {
+async function handleClickAdminTeachingWordMiniCard(id) {
     console.log(`${CONTROLLER_LOG} vào hàm xử click lời dạy mini card có id: ${id}`); 
 
     
-    navigate({
+    await navigate({
         name: "ENTITY", 
         userRole: "ADMIN", 
         currentEntity: {
@@ -4043,13 +4043,13 @@ function handleClickAdminTeachingWordMiniCard(id) {
 
 
 
-function handleClickAddTeachingWord() {
+async function handleClickAddTeachingWord() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí click nút thêm lời dạy`); 
 
     // làm gì? 
     state.ui.overlayVisible = true; 
     state.ui.overlayEntity = "TEACHING_WORD_ADDITION"; 
-    render(); 
+    await render(); 
 
 
 }
@@ -4057,12 +4057,12 @@ function handleClickAddTeachingWord() {
 
 
 
-function handleCloseTeachingWordAddition() {
+async function handleCloseTeachingWordAddition() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí đóng trang thêm lời dạy mới`); 
 
     state.ui.overlayVisible = false; 
     state.ui.overlayEntity = null; 
-    render(); 
+    await render(); 
 }
 
 
@@ -4081,7 +4081,7 @@ async function handleAddTeachingWord(title, date, content) {
 
         state.ui.overlayVisible = false; 
         state.ui.overlayEntity = null; 
-        render();
+        await render();
 
 
     } catch (err) {
@@ -4089,7 +4089,7 @@ async function handleAddTeachingWord(title, date, content) {
 
         console.log(`${CONTROLLER_LOG} lỗi ở tầng controller: ${err.message}`); 
 
-        render(); 
+        await render(); 
     }
 }
 
@@ -4104,10 +4104,10 @@ async function handleAddTeachingWord(title, date, content) {
 
 
 // --------------- ROUTE: ADMIN LIFE LESSONS ------------------
-function handleClickAdminLifeLessonMainMiniCard(id) {
+async function handleClickAdminLifeLessonMainMiniCard(id) {
     console.log(`${CONTROLLER_LOG} hàm xử lí click vào mini card bài học của admin có id: ${id}`); 
 
-    navigate({
+    await navigate({
         name: "ENTITY",
         userRole: "ADMIN",
         currentEntity: {
@@ -4200,10 +4200,10 @@ document.getElementById("login-button").addEventListener("click", () => {
 
 
 // ----- sự kiện click vào nút đăng kí trong trang login -----
-document.getElementById("sign-up-helper").addEventListener("click", () => {
+document.getElementById("sign-up-helper").addEventListener("click", async () => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào nút chuyển hướng đăng kí trong trang đăng nhập`); 
 
-    handleRedirectToSignUpPage(); 
+    await handleRedirectToSignUpPage(); 
 });
 
 
@@ -4220,10 +4220,10 @@ document.getElementById("sign-up-helper").addEventListener("click", () => {
 
 // ========== ROUTE: SIGN_UP ==========
 // ----- sự kiện click vào nút đăng nhập ----------
-document.getElementById("log-in-helper").addEventListener("click", () => {
+document.getElementById("log-in-helper").addEventListener("click", async () => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào nút chuyển hướng đăng nhập trong trang đăng kí`); 
 
-    handleRedirectToLogInPage(); 
+    await handleRedirectToLogInPage(); 
 }); 
 
 
@@ -4249,7 +4249,7 @@ document.getElementById("signup-button").addEventListener("click", () => {
 
 
 // ------- sự kiện click vào sidenav của trang home user -------
-document.querySelector('[data-user-role="USER"] [data-page="HOME"] .drawer-side').addEventListener("click", (event) => {
+document.querySelector('[data-user-role="USER"] [data-page="HOME"] .drawer-side').addEventListener("click", async (event) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang user home`); 
 
     const target = event.target.closest("li, button"); 
@@ -4264,13 +4264,13 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .drawer-side'
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
         console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
 
-        navigate({name: target.dataset.route, userRole: "USER"}); 
+        await navigate({name: target.dataset.route, userRole: "USER"}); 
     }
 
     if (target.matches("button")) {
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
 
-        handleLogOut(); 
+        await handleLogOut(); 
     }
 
 }); 
@@ -4281,7 +4281,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .drawer-side'
 
 
 // ------- sự kiện click vào nút xem thêm của lời dạy section -------
-document.querySelector('[data-user-role="USER"] [data-page="HOME"] .teaching-words-section').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="HOME"] .teaching-words-section').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} click vào mục lời dạy trong trang home user`); 
 
     const button = e.target.closest("button"); 
@@ -4291,7 +4291,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .teaching-wor
     // xử lí việc navigate tới trang entity teaching word với id là gì gì đó. 
     const entityId = Number(button.dataset.id); 
 
-    navigate({
+    await navigate({
         name: "ENTITY",
         userRole: "USER", 
         currentEntity: {
@@ -4307,7 +4307,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .teaching-wor
 
 
 // ------- hàm click vào section của bài học ---------
-document.querySelector('[data-user-role="USER"] [data-page="HOME"] .life-lessons-section').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="HOME"] .life-lessons-section').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} click vào mục bài học trong trang home user`); 
 
     const button = e.target.closest("button"); 
@@ -4316,7 +4316,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .life-lessons
 
     // xử lí việc navigate tới trang entity teaching word với id là gì gì đó. 
     const entityId = Number(button.dataset.id); 
-    navigate({
+    await navigate({
         name: "ENTITY",
         userRole: "USER", 
         currentEntity: {
@@ -4330,7 +4330,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .life-lessons
 
 
 // ------ hàm click vào mục mục đích --------
-document.querySelector('[data-user-role="USER"] [data-page="HOME"] .purposes-section').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="HOME"] .purposes-section').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} click vào mục mục đích trong trang home user`); 
 
     const card = e.target.closest(".card"); 
@@ -4341,7 +4341,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .purposes-sec
 
     const entityId = Number(card.dataset.id); 
 
-    navigate({
+    await navigate({
         name: "ENTITY", 
         userRole: "USER", 
         currentEntity: {
@@ -4358,7 +4358,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .purposes-sec
 
 
 // ------ hàm click vào mục ghi chú --------
-document.querySelector('[data-user-role="USER"] [data-page="HOME"] .notes-section').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="HOME"] .notes-section').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} click vào mục ghi chú trong trang home user`); 
 
     const card = e.target.closest(".card"); 
@@ -4369,7 +4369,7 @@ document.querySelector('[data-user-role="USER"] [data-page="HOME"] .notes-sectio
 
     const entityId = Number(card.dataset.id); 
 
-    navigate({
+    await navigate({
         name: "ENTITY", 
         userRole: "USER", 
         currentEntity: {
@@ -4399,7 +4399,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .back-icon'
 
 
 // hàm click vào thực thể mục đích trong mục thực thể sinh ra
-document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-side .purposes').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-side .purposes').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào mục mục đích trong phần thực thể sinh ra của trang thực thể của user`); 
 
     const card = e.target.closest(".card"); 
@@ -4411,7 +4411,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-sid
 
     const entityId = Number(card.dataset.id); 
 
-    navigate({
+    await navigate({
         name: "ENTITY", 
         userRole: "USER", 
         currentEntity: {
@@ -4426,7 +4426,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-sid
 
 
 // hàm click vào thực thể ghi chép trong mục thực thể sinh ra
-document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-side .notes').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-side .notes').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào mục ghi chép trong phần thực thể sinh ra của trang thực thể của user`); 
 
     const card = e.target.closest(".card"); 
@@ -4438,7 +4438,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-sid
 
     const entityId = Number(card.dataset.id); 
 
-    navigate({
+    await navigate({
         name: "ENTITY", 
         userRole: "USER", 
         currentEntity: {
@@ -4458,14 +4458,14 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] .drawer-sid
 
 
 // hàm click vào nút fab-open trong trang thực thể 
-document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang thực thể để lắng nghe click nút fab open`);
 
     const fab = e.target.closest(".floating-action-button-open-btn"); 
 
     if (!fab) return; 
 
-    handleClickFab(); 
+    await handleClickFab(); 
 }); 
 
 
@@ -4473,14 +4473,14 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventL
 
 
 // hàm click vào nút fab-close trong trang thực thể 
-document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang thực thể để lắng nghe click nút fab close`);
 
     const fab = e.target.closest(".floating-action-button-close-btn"); 
 
     if (!fab) return; 
 
-    handleClickFab(); 
+    await handleClickFab(); 
 }); 
 
 
@@ -4617,14 +4617,14 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"]').addEventL
 
 
 // ------ LẮNG NGHE SỰ KIỆN CLICK VÀO NOTE TYPE SELECTED TRONG NOTE ENTITY ---------
-document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="NOTE"]').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="NOTE"]').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} lắng nghe sự kiện click vào note type selected trong entity-type="NOTE"`); 
 
     const noteTypeSelected = e.target.closest(".note-type-selected"); 
 
     if (!noteTypeSelected) return; 
 
-    handleClickNoteTypeSelected(); 
+    await handleClickNoteTypeSelected(); 
 }); 
 
 
@@ -4653,7 +4653,7 @@ document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entit
 
 
 // ------------------- ROUTE: USER - TEACHING WORDS -------------
-document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"]').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"]').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} lắng nghe sự kiện click trong trang Lời dạy của user khi click vào mini Card Lời dạy`); 
 
     const miniCard = e.target.closest(".mini-card"); 
@@ -4661,13 +4661,13 @@ document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"]').a
     if (!miniCard) return; 
     
     const id = miniCard.dataset.id; 
-    handleClickMiniCardTeachingWord(id); 
+    await handleClickMiniCardTeachingWord(id); 
 });
 
 
 
 // ------- sự kiện click vào sidenav của trang teaching word user -------
-document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"] .drawer-side').addEventListener("click", (event) => {
+document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"] .drawer-side').addEventListener("click", async (event) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang user teaching words`); 
 
     const target = event.target.closest("li, button"); 
@@ -4681,13 +4681,13 @@ document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"] .dr
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
         console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
 
-        navigate({name: target.dataset.route, userRole: "USER"}); 
+        await navigate({name: target.dataset.route, userRole: "USER"}); 
     }
 
     if (target.matches("button")) {
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
 
-        handleLogOut(); 
+        await handleLogOut(); 
     }
 
 }); 
@@ -4697,7 +4697,7 @@ document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"] .dr
 
 
 // ------------------- ROUTE: USER - LIFE LESSONS -------------
-document.querySelector('[data-user-role="USER"] [data-page="LIFE_LESSONS"]').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="USER"] [data-page="LIFE_LESSONS"]').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} lắng nghe sự kiện click trong trang bài học của user khi click vào mini card bài học`); 
 
     const miniCard = e.target.closest(".mini-card"); 
@@ -4705,14 +4705,14 @@ document.querySelector('[data-user-role="USER"] [data-page="LIFE_LESSONS"]').add
     if (!miniCard) return; 
     
     const id = miniCard.dataset.id; 
-    handleClickMiniCardLifeLesson(id); 
+    await handleClickMiniCardLifeLesson(id); 
 });
 
 
 
 
 // ------- sự kiện click vào sidenav của trang home life lessons -------
-document.querySelector('[data-user-role="USER"] [data-page="LIFE_LESSONS"] .drawer-side').addEventListener("click", (event) => {
+document.querySelector('[data-user-role="USER"] [data-page="LIFE_LESSONS"] .drawer-side').addEventListener("click", async (event) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang user life lessons`); 
 
     const target = event.target.closest("li, button"); 
@@ -4727,13 +4727,13 @@ document.querySelector('[data-user-role="USER"] [data-page="LIFE_LESSONS"] .draw
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
         console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
 
-        navigate({name: target.dataset.route, userRole: "USER"}); 
+        await navigate({name: target.dataset.route, userRole: "USER"}); 
     }
 
     if (target.matches("button")) {
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
 
-        handleLogOut(); 
+        await handleLogOut(); 
     }
 
 }); 
@@ -4754,7 +4754,7 @@ document.querySelector('[data-user-role="USER"] [data-page="LIFE_LESSONS"] .draw
 
 
 // HÀM CLICK VÀO USER VÀ VÀO ENTITY USER ĐÓ 
-document.querySelector(`[data-user-role="ADMIN"] [data-page="HOME"]`).addEventListener("click", (e) => {
+document.querySelector(`[data-user-role="ADMIN"] [data-page="HOME"]`).addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang admin home để lắng nghe sự kiện click vào xem thêm ở user`); 
 
     const seeMoreBtn = e.target.closest(".user button"); 
@@ -4763,7 +4763,7 @@ document.querySelector(`[data-user-role="ADMIN"] [data-page="HOME"]`).addEventLi
 
 
     const userId = Number(seeMoreBtn.dataset.id); 
-    handleClickSeeMoreUser(userId); 
+    await handleClickSeeMoreUser(userId); 
 }); 
 
 
@@ -4771,7 +4771,7 @@ document.querySelector(`[data-user-role="ADMIN"] [data-page="HOME"]`).addEventLi
 
 
 // HÀM CLICK VÀO SIDE NAV CỦA ADMIN HOME 
-document.querySelector('[data-user-role="ADMIN"] [data-page="HOME"] .drawer-side').addEventListener("click", (event) => {
+document.querySelector('[data-user-role="ADMIN"] [data-page="HOME"] .drawer-side').addEventListener("click", async (event) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang admin home`); 
 
     const target = event.target.closest("li, button"); 
@@ -4786,13 +4786,13 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="HOME"] .drawer-side
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
         console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
 
-        navigate({name: target.dataset.route, userRole: "ADMIN"}); 
+        await navigate({name: target.dataset.route, userRole: "ADMIN"}); 
     }
 
     if (target.matches("button")) {
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
 
-        handleLogOut(); 
+        await handleLogOut(); 
     }
 
 }); 
@@ -4802,7 +4802,7 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="HOME"] .drawer-side
 
 
 // --------------- ROUTE: ADMIN TEACHING WORDS ----------------
-document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"]').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"]').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang lời dạy của admin`); 
 
     const teachingWordMiniCard = e.target.closest(".teaching-words .teaching-word"); 
@@ -4811,7 +4811,7 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"]').
     
     const id = Number(teachingWordMiniCard.dataset.id); 
 
-    handleClickAdminTeachingWordMiniCard(id); 
+    await handleClickAdminTeachingWordMiniCard(id); 
 }); 
 
 
@@ -4819,7 +4819,7 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"]').
 
 
 // HÀM CLICK VÀO SIDE NAV 
-document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] .drawer-side').addEventListener("click", (event) => {
+document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] .drawer-side').addEventListener("click", async (event) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang admin lời dạy`); 
 
     const target = event.target.closest("li, button"); 
@@ -4834,13 +4834,13 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] .d
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
         console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
 
-        navigate({name: target.dataset.route, userRole: "ADMIN"}); 
+        await navigate({name: target.dataset.route, userRole: "ADMIN"}); 
     }
 
     if (target.matches("button")) {
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
 
-        handleLogOut(); 
+        await handleLogOut(); 
     }
 
 }); 
@@ -4848,11 +4848,11 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] .d
 
 
 // click vào nút thêm lời dạy trong trang admin Lời dạy
-document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] #add-teaching-word-button').addEventListener("click", () => {
+document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] #add-teaching-word-button').addEventListener("click", async () => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào nút thêm lời dạy trong trang lời dạy của admin`); 
 
     // làm gì? xử lí thôi 
-    handleClickAddTeachingWord(); 
+    await handleClickAddTeachingWord(); 
 }); 
 
 
@@ -4869,7 +4869,7 @@ document.querySelector("#teaching-word-addition").addEventListener("click", asyn
     const miniAction = miniActionEl.dataset.miniAction; 
 
     if (miniAction === "close") {
-        handleCloseTeachingWordAddition(); 
+        await handleCloseTeachingWordAddition(); 
 
 
     } else if (miniAction === "add") {
@@ -4888,7 +4888,7 @@ document.querySelector("#teaching-word-addition").addEventListener("click", asyn
 
 
 // ---------------- ROUTE: ADMIN LIFE LESSONS ---------------------
-document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"]').addEventListener("click", (e) => {
+document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"]').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang bài học của admin`); 
 
     const lifeLessonMainMiniCard = e.target.closest(".life-lesson");
@@ -4897,7 +4897,7 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"]').ad
 
     const id = Number(lifeLessonMainMiniCard.dataset.id); 
 
-    handleClickAdminLifeLessonMainMiniCard(id); 
+    await handleClickAdminLifeLessonMainMiniCard(id); 
 }); 
 
 
@@ -4905,7 +4905,7 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"]').ad
 
 
 // HÀM CLICK VÀO SIDE NAV CỦA ADMIN HOME 
-document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"] .drawer-side').addEventListener("click", (event) => {
+document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"] .drawer-side').addEventListener("click", async (event) => {
     console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang admin bài học`); 
 
     const target = event.target.closest("li, button"); 
@@ -4920,13 +4920,13 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="LIFE_LESSONS"] .dra
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
         console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
 
-        navigate({name: target.dataset.route, userRole: "ADMIN"}); 
+        await navigate({name: target.dataset.route, userRole: "ADMIN"}); 
     }
 
     if (target.matches("button")) {
         console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
 
-        handleLogOut(); 
+        await handleLogOut(); 
     }
 
 }); 
