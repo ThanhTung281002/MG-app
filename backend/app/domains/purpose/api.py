@@ -141,7 +141,7 @@ def db_get_note_by_id(id: str):
 
     ### 2. đổi format rồi gửi trả lại 
     n["id"] = str(n["_id"])
-    del p["_id"]
+    del n["_id"]
     n["user_id"] = str(n["user_id"])
 
     return n
