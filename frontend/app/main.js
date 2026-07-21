@@ -2160,11 +2160,15 @@ async function renderUserLifeLessonsPage() {
 
 
     try {
-        // 1. lấy toàn bộ life lessons 
-        // 2. render ra DOM 
+        // 1. lấy toàn bộ life lessons reflection 
         const {lifeLessonsReflection} = await getAllLifeLessonsReflectionFlow(); 
 
         const lls = lifeLessonsReflection; 
+
+
+        // 2. kiểm tra có trong cache chưa, nếu chưa thì lấy rồi load ra DOM 
+        const container = document.querySelector(`[data-user-role="USER"] [data-page="LIFE_LESSONS"] .drawer .drawer-content .content`); 
+        container.innerHTML = ""; 
 
         for (let ll of lls) {
             if (!ExistsInCache(ll.id, "LIFE_LESSON_REFLECTION")) {
@@ -2172,18 +2176,16 @@ async function renderUserLifeLessonsPage() {
 
                 state.cache.lifeLessonsReflection[ll.id] = lifeLesson; 
             }
+
+            const lifeLessonReflection = state.cache.lifeLessonsReflection[ll.id]; 
+
+            container.innerHTML += createLifeLessonReflectionMiniCard(lifeLessonReflection); 
         }
 
         
 
 
-        const container = document.querySelector(`[data-user-role="USER"] [data-page="LIFE_LESSONS"] .drawer .drawer-content .content`); 
-        container.innerHTML = ""; 
-        for (let ll of lls) {
-            const lifeLesson = state.cache.lifeLessonsReflection[ll.id]; 
-
-            container.innerHTML += createLifeLessonReflectionMiniCard(lifeLesson); 
-        }
+        
 
     } catch (err) {
         state.error = err.message; 
@@ -2197,7 +2199,7 @@ async function renderUserLifeLessonsPage() {
 
 
 function createLifeLessonReflectionMiniCard(lifeLesson) {
-    return `<button data-id="${lifeLesson.id}" class="mini-card btn flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold">${lifeLesson.title}</button>`;
+    return `<div data-id="${lifeLesson.id}" class="mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold">${lifeLesson.title}</div>`;
 }
 
 
