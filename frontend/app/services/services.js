@@ -1,6 +1,6 @@
 console.log("services/services.js loaded");
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://mg-app-0hvn.onrender.com"; // https://mg-app-0hvn.onrender.com
 
 function getStoredToken() {
     return localStorage.getItem("accessToken");
