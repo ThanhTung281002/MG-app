@@ -89,7 +89,9 @@ const state = {
 
 
 
-
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
 
@@ -2180,6 +2182,8 @@ async function renderUserLifeLessonsPage() {
             const lifeLessonReflection = state.cache.lifeLessonsReflection[ll.id]; 
 
             container.innerHTML += createLifeLessonReflectionMiniCard(lifeLessonReflection); 
+
+            await delay(65); // chờ 65ms
         }
 
         
@@ -2199,7 +2203,7 @@ async function renderUserLifeLessonsPage() {
 
 
 function createLifeLessonReflectionMiniCard(lifeLesson) {
-    return `<div data-id="${lifeLesson.id}" class="mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold">${lifeLesson.title}</div>`;
+    return `<div data-id="${lifeLesson.id}" class="mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold px-4 text-center">${lifeLesson.title}</div>`;
 }
 
 
