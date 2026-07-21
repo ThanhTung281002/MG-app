@@ -3644,7 +3644,7 @@ async function handleAaMiniAction(miniAction, content) {
 
 // hàm xử lí khi nhập input 
 let saveTimer = null; 
-const saveTime = 1500; // 5s
+const saveTime = 2500; // 2.5s
 
 
 async function handleInput(contentType, content) {
