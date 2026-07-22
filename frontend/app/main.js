@@ -2807,15 +2807,32 @@ function renderOverlayEntity() {
         actionAddition.classList.add("hidden"); 
         teachingWordAddition.classList.add("hidden"); 
 
+
+
     } else if (state.ui.overlayEntity === "NOTE_FREE_WRITE") {
+        // xóa nội dung trước đó trong các input 
+        document.querySelector("#note-free-write textarea").value = ""; 
+
         noteFreeWrite.classList.remove("hidden"); 
 
+
+
     } else if (state.ui.overlayEntity === "PURPOSE_FREE_WRITE") {
+        // xóa nội dung trước đó trong các input
+        document.querySelector("#purpose-free-write .purpose-context").value = ""; 
+        document.querySelector("#purpose-free-write .hope-context").value = ""; 
+
         purposeFreeWrite.classList.remove("hidden"); 
 
+
+
     } else if (state.ui.overlayEntity === "ACTION_ADDITION") {
-        // console.log(`bug: actionAddition: ${JSON.stringify(actionAddition, null, 2)}`); 
+        // xóa nội dung trước đó trong các input
+        document.querySelector("#action-addition .textarea").value = ""; 
+
         actionAddition.classList.remove("hidden"); 
+
+
     } else if (state.ui.overlayEntity === "TEACHING_WORD_ADDITION") {
         teachingWordAddition.classList.remove("hidden"); 
     }
