@@ -1451,7 +1451,7 @@ function createTeachingWordEntity(teachingWord) {
                     
                     
                     
-                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-25">
+                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-20">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
@@ -1554,7 +1554,7 @@ function createLifeLessonEntity(lifeLesson) {
                     
                         
 
-                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-25">
+                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-20">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
@@ -1681,7 +1681,7 @@ function createPurposeEntity(purpose) {
 
 
 
-                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-25">
+                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-20">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
@@ -1835,7 +1835,7 @@ function createNoteEntity(note) {
                         <div data-content-type="content" class="outline-none text-2xl mt-16 whitespace-pre-wrap" contenteditable="true">${note.content}</div>
 
 
-                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-25">
+                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-20">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
@@ -2730,8 +2730,8 @@ function renderFabStateZero() {
     if (!fabOpenBtn) return; 
 
 
-    fabOpenBtn.classList.remove("opacity-75", "opacity-25"); 
-    fabOpenBtn.classList.add("opacity-25");
+    fabOpenBtn.classList.remove("opacity-85", "opacity-20"); 
+    fabOpenBtn.classList.add("opacity-20");
 }
 
 
@@ -2749,8 +2749,8 @@ function renderFabStateOne() {
     fabClose.classList.add("hidden");
     fabOpenBtn.classList.remove("hidden"); 
 
-    fabOpenBtn.classList.remove("opacity-75", "opacity-25"); 
-    fabOpenBtn.classList.add("opacity-75");
+    fabOpenBtn.classList.remove("opacity-85", "opacity-20"); 
+    fabOpenBtn.classList.add("opacity-85");
     
 }
 
