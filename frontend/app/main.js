@@ -63,7 +63,8 @@ const state = {
         noteTypeMenuOpen: false
     }, 
 
-    error: null
+    error: null, 
+    systemInitializing: true
 
 }
 
@@ -703,12 +704,14 @@ async function render() {
     // 1. render error 
     if (state.error) {
         renderError(); 
-
     } else {
-        // 1. render page phù hợp
+        // 1. render system initializing
+        renderSystemInitializing(); 
+
+        // 2. render page phù hợp
         await renderRoute(); 
 
-        // 2. render ui state như loading, disabled, fabOpen. 
+        // 3. render ui state như loading, disabled, fabOpen. 
         renderUIState(); 
     }
 
@@ -724,6 +727,21 @@ function renderError() {
     console.log(`${RENDER_LOG}  1. render error: ${state.error}`); 
 
     alert(state.error); 
+}
+
+
+
+
+function renderSystemInitializing() {
+    console.log(`${RENDER_LOG} 1. render khởi tạo hệ thống`); 
+
+    const systemInitializing = document.querySelector("#system-initializing"); 
+
+    if (state.systemInitializing === true) {
+        systemInitializing.classList.remove("hidden"); 
+    } else {
+        systemInitializing.classList.add("hidden"); 
+    }
 }
 
 
@@ -3075,7 +3093,7 @@ async function navigate(route) {
 
     // 1. update state
     state.route = route; 
-
+    state.systemInitializing = false; 
     state.ui.fabState = null; 
 
     if (state.route.name === "ENTITY" && state.route.userRole === "USER") {
@@ -3098,7 +3116,7 @@ async function redirect(route) {
 
     // 1. update state
     state.route = route; 
-
+    state.systemInitializing = false; 
     state.ui.fabState = null; 
 
     if (state.route.name === "ENTITY" && state.route.userRole === "USER") {
@@ -3124,6 +3142,10 @@ async function initApp() {
     console.log(`${CONTROLLER_LOG} vào hàm khởi tạo app`); 
 
     state.error = null; 
+    state.systemInitializing = true; 
+
+    await render(); 
+
 
     const route = getRouteFromURL(); 
     console.log(`${CONTROLLER_LOG} 1. route: ${JSON.stringify(route, null, 2)}`); 

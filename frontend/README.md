@@ -171,7 +171,8 @@ const state = {
 
 
     }, 
-    error: "network error" || null
+    error: "network error" || null,
+    systemInitializing: true || false, initial: true
 
 }
 
