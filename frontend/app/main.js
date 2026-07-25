@@ -2226,7 +2226,7 @@ async function renderUserLifeLessonsPage() {
 
 
 function createLifeLessonReflectionMiniCard(lifeLesson) {
-    return `<button data-id="${lifeLesson.id}" class="btn mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold text-center">${lifeLesson.title}</div>`;
+    return `<button data-id="${lifeLesson.id}" class="btn mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold text-center">${lifeLesson.title}</button>`;
 }
 
 
