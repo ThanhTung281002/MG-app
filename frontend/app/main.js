@@ -4,7 +4,7 @@ console.log("main.js loaded")
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord} from "./services/services.js";
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord} from "./services/fakeServices.js";
 
 
 const DOM_LOG = "                   0. DOM:"; 
@@ -2187,9 +2187,6 @@ async function renderUserLifeLessonsPage() {
 
 
         // 2. kiểm tra có trong cache chưa, nếu chưa thì lấy rồi load ra DOM 
-        const container = document.querySelector(`[data-user-role="USER"] [data-page="LIFE_LESSONS"] .drawer .drawer-content .content`); 
-        container.innerHTML = ""; 
-
         for (let ll of lls) {
             if (!ExistsInCache(ll.id, "LIFE_LESSON_REFLECTION")) {
                 const lifeLesson = await getLifeLessonReflection(ll.id); 
@@ -2197,14 +2194,22 @@ async function renderUserLifeLessonsPage() {
                 state.cache.lifeLessonsReflection[ll.id] = lifeLesson; 
             }
 
-            const lifeLessonReflection = state.cache.lifeLessonsReflection[ll.id]; 
-
-            container.innerHTML += createLifeLessonReflectionMiniCard(lifeLessonReflection); 
-
-            await delay(65); // chờ 65ms
+            
         }
 
         
+        // 3. render ra DOM đồng thời 
+        const container = document.querySelector(`[data-user-role="USER"] [data-page="LIFE_LESSONS"] .drawer .drawer-content .content`); 
+        container.innerHTML = ""; 
+
+        for (let ll of lls) {
+            const lifeLessonReflection = state.cache.lifeLessonsReflection[ll.id]; 
+
+            container.innerHTML += createLifeLessonReflectionMiniCard(lifeLessonReflection); 
+        }
+
+        
+
 
 
         
@@ -2221,7 +2226,7 @@ async function renderUserLifeLessonsPage() {
 
 
 function createLifeLessonReflectionMiniCard(lifeLesson) {
-    return `<div data-id="${lifeLesson.id}" class="mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold px-4 text-center">${lifeLesson.title}</div>`;
+    return `<button data-id="${lifeLesson.id}" class="btn mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold text-center">${lifeLesson.title}</div>`;
 }
 
 
