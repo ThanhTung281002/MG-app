@@ -263,3 +263,11 @@ export async function addTeachingWord(title, date, content) {
         body: { title, content, date }
     });
 }
+
+
+
+export async function checkHealth() {
+    return request("/health", {
+        auth: false
+    });
+}

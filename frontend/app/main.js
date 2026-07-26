@@ -4,7 +4,7 @@ console.log("main.js loaded")
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord} from "./services/services.js";
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord, checkHealth} from "./services/services.js";
 
 
 const DOM_LOG = "                   0. DOM:"; 
@@ -97,6 +97,36 @@ function delay(ms) {
 
 
 // ================== 1. API FLOW ================
+
+
+
+
+
+async function checkHealthFlow() {
+    console.log(`${API_FLOW_LOG} vào check health flow`); 
+
+    try {
+        const {status} = await checkHealth(); 
+
+        return {status}; 
+    } catch(err) {
+        console.log(`lỗi ở loginFlow: ${err.message}`); 
+        throw err; 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 // gọi và lấy dữ liệu từ api 
 async function loginFlow(username, password) {
     console.log(`${API_FLOW_LOG} vào login flow với username: ${username}, password: ${password}`); 
@@ -3150,6 +3180,10 @@ async function initApp() {
     state.systemInitializing = true; 
 
     await render(); 
+
+    // 1. một bước để check server là health để sử dụng cái gọi là system initialization trong trường hợp không có token. 
+    await checkHealthFlow(); 
+
 
 
     const route = getRouteFromURL(); 
