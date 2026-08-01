@@ -751,7 +751,7 @@ async function render() {
 
         if (state.ui.adminSaveActions === null) {
             lastAdminSaveActions = null; 
-            renderAdminHomePage(); 
+            renderAdminSaveActions(); 
         }
 
 
