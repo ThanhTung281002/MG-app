@@ -60,7 +60,8 @@ const state = {
         overlayVisible: false, 
         overlayEntity: null,
         saveStatus: "SAVED",
-        noteTypeMenuOpen: false
+        noteTypeMenuOpen: false,
+        adminSaveActions: null, 
     }, 
 
     error: null, 
@@ -69,6 +70,7 @@ const state = {
 }
 
 
+let lastAdminSaveActions = null; 
 
 
 
@@ -738,6 +740,21 @@ async function render() {
         // 1. render system initializing
         renderSystemInitializing(); 
 
+        // x. mình muốn là nếu như từ null chuyển sang gì đó thì render nó và không render route và renderUI
+        if (lastAdminSaveActions === null && state.ui.adminSaveActions !== null) {
+            lastAdminSaveActions = state.ui.adminSaveActions; 
+
+            renderAdminSaveActions(); 
+
+            return; 
+        }
+
+        if (state.ui.adminSaveActions === null) {
+            lastAdminSaveActions = null; 
+            renderAdminHomePage(); 
+        }
+
+
         // 2. render page phù hợp
         await renderRoute(); 
 
@@ -773,6 +790,57 @@ function renderSystemInitializing() {
         systemInitializing.classList.add("hidden"); 
     }
 }
+
+
+
+
+
+function renderAdminSaveActions() {
+    console.log(`${RENDER_LOG} 1,5 render actions button trong admin entity`); 
+
+
+    const twTitle =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] .title .actions'); 
+    const twDate =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] .date .actions'); 
+    const twContent =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] .content .actions'); 
+    const llMainContent =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] .main-content .actions'); 
+    
+
+
+
+    if (state.ui.adminSaveActions === null) {
+        if (twTitle) {
+            twTitle.classList.add("hidden"); 
+        }
+
+        if (twDate) {
+            twDate.classList.add("hidden"); 
+        }
+
+        if (twContent) {
+            twContent.classList.add("hidden"); 
+        }
+
+        if (llMainContent) {
+            llMainContent.classList.add("hidden"); 
+        }
+
+        
+
+    } else if (state.ui.adminSaveActions === "TW_TITLE") {
+        twTitle.classList.remove("hidden"); 
+
+    } else if (state.ui.adminSaveActions === "TW_DATE") {
+        twDate.classList.remove("hidden"); 
+
+    } else if (state.ui.adminSaveActions === "TW_CONTENT") {
+        twContent.classList.remove("hidden"); 
+
+    } else if (state.ui.adminSaveActions === "LL_MAIN_CONTENT") {
+        llMainContent.classList.remove("hidden"); 
+
+    } 
+}
+
 
 
 
@@ -2561,17 +2629,32 @@ function createAdminTeachingWordEntity(teachingWord) {
     const date = displayCodeToDate(teachingWord.displayCode); 
     const inputDate = dateToInputDate(date); 
 
-    return `<div class="">
+    return `<div class="relative title">
+                    <div class="hidden actions absolute right-0 -top-2 flex gap-2">
+                        <button data-action="cancel" class="btn btn-sm btn-outline btn-ghost">Loại bỏ</button>    
+                        <button data-action="save" class="btn btn-sm btn-neutral">Lưu</button>    
+                    </div> 
+
                     <div class="text-base font-semibold">Tiêu đề</div>
                     <div data-content-type="title" contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 mt-2 p-2 px-4">${teachingWord.title}</div>
                 </div>
 
-                <div>
+                <div class="relative date">
+                    <div class="hidden actions absolute right-0 -top-2 flex gap-2">
+                        <button data-action="cancel" class="btn btn-sm btn-outline btn-ghost">Loại bỏ</button>    
+                        <button data-action="save" class="btn btn-sm btn-neutral">Lưu</button>    
+                    </div>
+
                     <div class="font-semibold mt-10">Ngày truyền</div>
                     <input data-content-type="date" type="date" value="${inputDate}" class="p-2 px-4 text-xl border border-black rounded-lg mt-2 w-full h-12 ">
                 </div>
 
-                <div class="">
+                <div class="relative content">
+                    <div class="hidden actions absolute right-0 -top-2 flex gap-2">
+                        <button data-action="cancel" class="btn btn-sm btn-outline btn-ghost">Loại bỏ</button>    
+                        <button data-action="save" class="btn btn-sm btn-neutral">Lưu</button>    
+                    </div>
+
                     <div class="text-base font-semibold mt-10">Nội dung</div>
                     <div data-content-type="content" contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${teachingWord.content}</div>
                 </div>`; 
@@ -2623,7 +2706,12 @@ async function renderAdminLifeLessonEntity() {
 
 function createAdminLifeLessonEntity(lifeLessonMain) {
     return `<h1 class="text-2xl text-center">${lifeLessonMain.title}</h1>
-                <div class="mt-10">
+                <div class="mt-10 relative main-content">
+                    <div class="hidden actions absolute right-0 -top-2 flex gap-2">
+                        <button data-action="cancel" class="btn btn-sm btn-outline btn-ghost">Loại bỏ</button>    
+                        <button data-action="save" class="btn btn-sm btn-neutral">Lưu</button>    
+                    </div>
+
                     <div class="font-semibold">Nội dung chính</div>
                     <div data-content-type="main-content" contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${lifeLessonMain.mainContent}</div>
                 </div>`; 
@@ -3739,7 +3827,7 @@ async function handleInput(contentType, content) {
         saveTimer = setTimeout(async () => {
             state.ui.saveStatus = "SAVING"; 
             await render(); 
-            
+
             await save(contentType, content); 
             
             state.ui.saveStatus = "SAVED"; 
@@ -4021,40 +4109,6 @@ async function handleUserMiniAction(miniAction) {
 
 
 
-async function handleAdminInput(contentType, content) {
-    console.log(`${CONTROLLER_LOG} xử lí nhập cho entity (${state.route.currentEntity.type}, ${state.route.currentEntity.id}) với loại content: ${contentType}, nội dung: ${content}`); 
-
-    // làm gì đây, vào hàm này nghĩa là người dùng đang nhập gì đó
-    // 1. xóa timer
-    // 2. đặt lại timer mới là sau một khoảng thời gian thì sẽ save. 
-    clearTimeout(saveTimer); 
-
-    if (state.ui.saveStatus === "SAVED" || state.ui.saveStatus === "SAVING") {
-        state.ui.saveStatus = "EDITTING"; 
-
-        saveTimer = setTimeout(async () => {
-            state.ui.saveStatus = "SAVING"; 
-            await render(); 
-            
-            await saveAdmin(contentType, content); 
-            
-            state.ui.saveStatus = "SAVED"; 
-            await render(); 
-        }, saveTime); 
-    } else if (state.ui.saveStatus === "EDITTING") {
-        // nếu nhập trong lúc đang nhập thì reset timer 
-        saveTimer = setTimeout(async () => {
-            state.ui.saveStatus = "SAVING"; 
-            await render(); 
-            
-            await saveAdmin(contentType, content); 
-            
-            state.ui.saveStatus = "SAVED"; 
-            await render(); 
-        }, saveTime); 
-    } 
-}
-
 
 
 
@@ -4098,6 +4152,105 @@ async function saveAdmin(contentType, content) {
         delete state.cache.lifeLessonsMain[entity.id]; 
     }
 }
+
+
+
+
+
+async function handleAdminInput2(contentType) {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí input admin`); 
+
+    // làm gì? Tùy vào entity và contentType mà bật adminSaveActions phù hợp 
+
+    if (state.ui.adminSaveActions === null) {
+        const entity = state.route.currentEntity; 
+
+        if (entity.type === "TEACHING_WORD") {
+            if (contentType === "title") {
+                state.ui.adminSaveActions = "TW_TITLE"; 
+
+            } else if (contentType === "content") {
+                state.ui.adminSaveActions = "TW_CONTENT"; 
+
+            } else if (contentType === "date") {
+                state.ui.adminSaveActions = "TW_DATE"; 
+
+            }
+
+            await render(); 
+
+        } else if (entity.type === "LIFE_LESSON") {
+            if (contentType === "main-content") {
+                state.ui.adminSaveActions = "LL_MAIN_CONTENT"; 
+
+            }
+
+            await render(); 
+        }
+
+    } else {
+        return; 
+    }
+
+}
+
+
+
+
+
+
+async function handleAdminCancelEdit() {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí hủy khi edit của admin`); 
+
+    // làm gì? 
+    state.ui.adminSaveActions = null; 
+    await render(); 
+}
+
+
+
+
+
+async function handleAdminSaveEdit() {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí lưu khi edit của admin`); 
+
+    // làm gì? sử dụng saveAdmin thôi 
+
+    // 1. lấy contentType và content
+    let contentType; 
+    let content; 
+
+    if (state.ui.adminSaveActions === "LL_MAIN_CONTENT") {
+        contentType = "main-content"; 
+
+        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-content-type="main-content"]').innerText; 
+    } else if (state.ui.adminSaveActions === "TW_TITLE") {
+        contentType = "title"; 
+
+        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-content-type="title"]').innerText; 
+    } else if (state.ui.adminSaveActions === "TW_CONTENT") {
+        contentType = "content"; 
+
+        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-content-type="content"]').innerText; 
+    } else if (state.ui.adminSaveActions === "TW_DATE") {
+        contentType = "date"; 
+
+        content = inputDateToDate(document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-content-type="date"]').value); 
+    }
+
+    state.ui.saveStatus = "SAVING"; 
+    await render(); 
+
+    await saveAdmin(contentType, content); 
+
+    state.ui.saveStatus = "SAVED"; 
+    state.ui.adminSaveActions = null; 
+    await render(); 
+
+}
+
+
+
 
 
 
@@ -5075,17 +5228,15 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"]').addEvent
     if (!content) return; 
 
     if (content.matches("input")) {
-        const context = inputDateToDate(content.value);
         const contentType = content.dataset.contentType; 
 
-        await handleAdminInput(contentType, context); 
+        await handleAdminInput2(contentType); 
 
 
     } else if (content.matches("div")) {
-        const context = content.innerText; 
         const contentType = content.dataset.contentType; 
 
-        await handleAdminInput(contentType, context); 
+        await handleAdminInput2(contentType); 
     }
 
     
@@ -5093,6 +5244,23 @@ document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"]').addEvent
 
 
 
+
+
+document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"]').addEventListener("click", async (e) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang thực thể của admin để lắng nghe sự kiện click vào nút actions`); 
+
+    const btn = e.target.closest("[data-action]"); 
+
+    if (!btn) return; 
+
+    const action = btn.dataset.action; 
+
+    if (action === "cancel") {
+        await handleAdminCancelEdit(); 
+    } else if (action === "save") {
+        await handleAdminSaveEdit(); 
+    }
+}); 
 
 
 
