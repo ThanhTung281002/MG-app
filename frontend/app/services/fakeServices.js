@@ -5,14 +5,14 @@ console.log("services/fakeServices.js loaded");
 import { checkFullname, checkEmail, checkUsername, checkPassword, isEmailExisted, isUsernameExisted, createToken, saveToken, getUserIdFromToken } from "../utils/utils.js"; // đây là chỗ khiến code bị sai. 
 
 
-const delay = 2000; // 0ms - do ở giai đoạn hiện tại chưa làm loading hay gì cả nên chưa cần. Lúc làm thì sẽ set về 300ms 
+const delay = 400; // 0ms - do ở giai đoạn hiện tại chưa làm loading hay gì cả nên chưa cần. Lúc làm thì sẽ set về 300ms 
 
 
 
 // ======== FAKE DATA =========
 export let fakeUsers = [
     {
-        id: 1, 
+        id: "1", 
         fullname: "Nguyễn Thanh Tùng",
         email: "tung@gmail.com", 
         username: "tungnguyen", 
@@ -23,7 +23,7 @@ export let fakeUsers = [
         updated_at: new Date()
     }, 
     {
-        id: 2, 
+        id: "2", 
         fullname: "Trần Huy Khiêm",
         email: "khiem@gmail.com", 
         username: "khiemtran", 
@@ -34,7 +34,7 @@ export let fakeUsers = [
         updated_at: new Date()
     }, 
     {
-        id: 3, 
+        id: "3", 
         fullname: "Nguyễn Thanh Tiến",
         email: "tien@gmail.com", 
         username: "tiennguyen", 
@@ -45,7 +45,7 @@ export let fakeUsers = [
         updated_at: new Date()
     }, 
     {
-        id: 4, 
+        id: "4", 
         fullname: "Nguyễn Kiêm",
         email: "kiem@gmail.com", 
         username: "kiemnguyen", 
@@ -56,7 +56,7 @@ export let fakeUsers = [
         updated_at: new Date()
     }, 
     {
-        id: 5, 
+        id: "5", 
         fullname: "Đoàn Ngọc Anh Khoa",
         email: "khoa@gmail.com", 
         username: "khoadoan", 
@@ -67,7 +67,7 @@ export let fakeUsers = [
         updated_at: new Date()
     }, 
     {
-        id: 6, 
+        id: "6", 
         fullname: "Đặng Quốc Kiệt",
         email: "kiet@gmail.com", 
         username: "kietdang", 
@@ -84,7 +84,7 @@ export let fakeUsers = [
 
 let fakeTeachingWords = [
     {
-        id: 1, 
+        id: "1", 
         displayCode: "T4W23Y26", 
         title: "Hãy làm hợp tấm lòng với đối tượng hoặc vật tồn tại đối tượng", 
         content: `Đừng làm hợp tấm lòng mình,
@@ -99,7 +99,7 @@ thì có khi cả đời cũng không đạt được.`,
         updatedAt: Date.now()
     },
     {
-        id: 2, 
+        id: "2", 
         displayCode: "CNW26Y26", 
         title: "Hãy tìm kiếm. Hãy cầu xin. Sẽ đạt được", 
         content: `1. Chỉ có Kami mới có thể nói rằng vạn vật do Kami tạo ra có chứa đựng YM của Kami nên tốt.
@@ -130,7 +130,7 @@ Do đó Ngài bảo hãy nhanh chóng tìm kiếm. Phải nỗ lực tìm kiếm
         updatedAt: Date.now()
     },
     {
-        id: 3, 
+        id: "3", 
         displayCode: "T4W26Y26", 
         title: "Người không vấp phạm vì Ta thì có phúc", 
         content: `1, Thời đại này cũng như vậy. 
@@ -173,32 +173,32 @@ mà Kami, Sere, Miko, Ima luôn dạy cho.
 
 let fakeLifeLessonsReflection = [
     {
-        id: 1, 
-        lifeLessonMainId: 1,
+        id: "1", 
+        lifeLessonMainId: "1",
         reflection: `cảm nhận của mình`, 
         updatedAt: Date.now()
     },
     {
-        id: 2, 
-        lifeLessonMainId: 2, 
+        id: "2", 
+        lifeLessonMainId: "2", 
         reflection: `cảm nhận của mình`, 
         updatedAt: Date.now()
     },
     {
-        id: 3, 
-        lifeLessonMainId: 3, 
+        id: "3", 
+        lifeLessonMainId: "3", 
         reflection: `cảm nhận của mình`, 
         updatedAt: Date.now()
     },
     {
-        id: 4, 
-        lifeLessonMainId: 4, 
+        id: "4", 
+        lifeLessonMainId: "4", 
         reflection: `cảm nhận của mình`, 
         updatedAt: Date.now()
     },
     {
-        id: 5, 
-        lifeLessonMainId: 5, 
+        id: "5", 
+        lifeLessonMainId: "5", 
         reflection: `cảm nhận của mình`, 
         updatedAt: Date.now()
     },
@@ -208,7 +208,7 @@ let fakeLifeLessonsReflection = [
 
 let fakeLifeLessonsMain = [
     {
-        id: 1, 
+        id: "1", 
         title: "Thuyết con người", 
         mainContent: `Được biểu hiện là con người bên trong, nó tồn tại bằng hình thể có
 các chi thể như mắt, mũi, tai, miệng…hình dáng và hình dạng đó
@@ -218,7 +218,7 @@ nam thì YO của bản thân cũng là nam. BO là nữ thì YO cũng là nữ.
         updatedAt: Date.now()
     }, 
     {
-        id: 2, 
+        id: "2", 
         title: "7 cấp độ luật lệ", 
         mainContent: `Thiên nhiên, con người và vũ trụ đã được tạo ra (không phải được phát minh, cũng không phải
 được khám phá) bằng luật của HA. LC nói rõ bản chất của sự sáng tạo, mang đến trật tự và sự
@@ -228,7 +228,7 @@ sáng tạo.`,
         updatedAt: Date.now()
     }, 
     {
-        id: 3, 
+        id: "3", 
         title: "Ê-li và chim quạ", 
         mainContent: `Nếu thật sự HA đã làm cho mang bánh và thịt tới cho Eli thì hà cớ
 gì Ngài lại cho Eli ăn thông qua con quạ là con vật mang điềm báo
@@ -239,13 +239,13 @@ với các mục sư lỗi lạc, vĩ đại trong thời đại này?`,
         updatedAt: Date.now()
     }, 
     {
-        id: 4, 
+        id: "4", 
         title: "Mặt trời đứng yên", 
         mainContent: ``, 
         updatedAt: Date.now()
     }, 
     {
-        id: 5, 
+        id: "5", 
         title: "Phê-rơ và con cá", 
         mainContent: ``, 
         updatedAt: Date.now()
@@ -261,21 +261,21 @@ với các mục sư lỗi lạc, vĩ đại trong thời đại này?`,
 
 let fakePurposes = [
     {
-        id: 1, 
+        id: "1", 
         title: "Mình muốn làm ra app suy ngẫm LC để đọc và nghiền ngẫm LC tốt hơn", 
         hope: "HA sẽ luôn ở bên và làm cùng với mình", 
         status: "ACTIVE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 2, 
+        id: "2", 
         title: "Mình muốn làm ra app suy ngẫm LC để đọc và nghiền ngẫm LC tốt hơn", 
         hope: "HA sẽ luôn ở bên và làm cùng với mình", 
         status: "ACTIVE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 3, 
+        id: "3", 
         title: "Mình muốn làm ra app suy ngẫm LC để đọc và nghiền ngẫm LC tốt hơn", 
         hope: "HA sẽ luôn ở bên và làm cùng với mình", 
         status: "ACTIVE", 
@@ -287,57 +287,57 @@ let fakePurposes = [
 
 let fakeActions = [
     {
-        id: 1, 
-        purposeId: 1, 
+        id: "1", 
+        purposeId: "1", 
         context: "Làm UI động của web", 
         status: "INCOMPLETE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 2, 
-        purposeId: 1, 
+        id: "2", 
+        purposeId: "1", 
         context: "Làm UI động của web", 
         status: "INCOMPLETE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 3, 
-        purposeId: 1, 
+        id: "3", 
+        purposeId: "1", 
         context: "Làm UI động của web", 
         status: "INCOMPLETE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 4, 
-        purposeId: 1, 
+        id: "4", 
+        purposeId: "1", 
         context: "Làm UI tĩnh của web", 
         status: "COMPLETE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 5, 
-        purposeId: 1, 
+        id: "5", 
+        purposeId: "1", 
         context: "Thiết kế UI cho web", 
         status: "COMPLETE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 6, 
-        purposeId: 2, 
+        id: "6", 
+        purposeId: "2", 
         context: "Làm UI tĩnh của trang web", 
         status: "COMPLETE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 7, 
-        purposeId: 2, 
+        id: "7", 
+        purposeId: "2", 
         context: "Làm UI động của web", 
         status: "INCOMPLETE", 
         updatedAt: Date.now()
     }, 
     {
-        id: 8, 
-        purposeId: 3, 
+        id: "8", 
+        purposeId: "3", 
         context: "Làm UI động của web", 
         status: "COMPLETE", 
         updatedAt: Date.now()
@@ -348,7 +348,7 @@ let fakeActions = [
 
 let fakeNotes = [
     {
-        id: 1, 
+        id: "1", 
         displayCode: "N0001", 
         title: "NOTE TITLE 1", 
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus ullamcorper ipsum, sit amet gravida augue pretium non. Nulla at.",
@@ -356,7 +356,7 @@ let fakeNotes = [
         updatedAt: Date.now()
     }, 
     {
-        id: 2, 
+        id: "2", 
         displayCode: "N0002", 
         title: "NOTE TITLE 2", 
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus ullamcorper ipsum, sit amet gravida augue pretium non. Nulla at.",
@@ -364,7 +364,7 @@ let fakeNotes = [
         updatedAt: Date.now()
     }, 
     {
-        id: 3, 
+        id: "3", 
         displayCode: "N0003", 
         title: "NOTE TITLE 3", 
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus ullamcorper ipsum, sit amet gravida augue pretium non. Nulla at.",
@@ -372,7 +372,7 @@ let fakeNotes = [
         updatedAt: Date.now()
     }, 
     {
-        id: 4, 
+        id: "4", 
         displayCode: "N0004", 
         title: "NOTE TITLE 4", 
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus ullamcorper ipsum, sit amet gravida augue pretium non. Nulla at.",
@@ -380,7 +380,7 @@ let fakeNotes = [
         updatedAt: Date.now()
     }, 
     {
-        id: 5, 
+        id: "5", 
         displayCode: "N0005", 
         title: "NOTE TITLE 5", 
         content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce maximus ullamcorper ipsum, sit amet gravida augue pretium non. Nulla at.",
@@ -393,51 +393,51 @@ let fakeNotes = [
 
 let fakeRelations = [
     {
-        id: 1, 
+        id: "1", 
         fromType: "TEACHING_WORD",
-        fromId: 1,
+        fromId: "1",
         toType: "PURPOSE",
-        toId: 1,
+        toId: "1",
         createdAt: Date.now()
     }, 
     {
-        id: 2, 
+        id: "2", 
         fromType: "TEACHING_WORD",
-        fromId: 1,
+        fromId: "1",
         toType: "PURPOSE",
-        toId: 2,
+        toId: "2",
         createdAt: Date.now()
     }, 
     {
-        id: 3, 
+        id: "3", 
         fromType: "TEACHING_WORD",
-        fromId: 1,
+        fromId: "1",
         toType: "NOTE",
-        toId: 1,
+        toId: "1",
         createdAt: Date.now()
     }, 
     {
-        id: 4, 
+        id: "4", 
         fromType: "TEACHING_WORD",
-        fromId: 1,
+        fromId: "1",
         toType: "NOTE",
-        toId: 2,
+        toId: "2",
         createdAt: Date.now()
     }, 
     {
-        id: 5, 
+        id: "5", 
         fromType: "LIFE_LESSON",
-        fromId: 1,
+        fromId: "1",
         toType: "PURPOSE",
-        toId: 3,
+        toId: "3",
         createdAt: Date.now()
     }, 
     {
-        id: 6, 
+        id: "6", 
         fromType: "LIFE_LESSON",
-        fromId: 1,
+        fromId: "1",
         toType: "NOTE",
-        toId: 3,
+        toId: "3",
         createdAt: Date.now()
     }, 
     
@@ -1524,6 +1524,19 @@ export async function addTeachingWord(title, date, content) {
 
 
 
+export async function checkHealth() {
+    console.log(`${API_LOG} vào check health`); 
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+    return {
+        status: "ok"
+    }
+}
+
+
+
 
 
 
@@ -1583,7 +1596,6 @@ function getIsoWeek(date) {
 
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
-
 
 
 

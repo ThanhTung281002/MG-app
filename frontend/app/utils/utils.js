@@ -91,6 +91,6 @@ export function saveToken(token, userId) {
 }
 
 export function getUserIdFromToken(token) {
-    return Number(localStorage.getItem(token)); 
+    return localStorage.getItem(token); 
 }
 
