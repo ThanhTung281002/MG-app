@@ -167,7 +167,8 @@ const state = {
         overlayVisible: false || true || initial: false, 
         overlayEntity: "NOTE_FREE_WRITE" || "PURPOSE_FREE_WRITE" || "ACTION_ADDITION" || "TEACHING_WORD_ADDITION" || null || initial: null, 
         saveStatus: "SAVED" || "SAVING" || "EDITTING", 
-        noteTypeMenuOpen: true || false || initial: false, 
+        noteTypeMenuOpen: true || false || initial: false,
+        adminSaveActions: null || "TW_TITLE" || "TW_CONTENT" || "TW_DATE" || "LL_MAIN_CONTENT" || initial: null 
 
 
     }, 
