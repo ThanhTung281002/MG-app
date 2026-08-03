@@ -291,6 +291,9 @@ def db_get_relation_origin(to_type: str, to_id: str):
 
 
 
+
+
+
 ### hàm này mình đọc cũng thấy ổn 
 def db_get_relations_born(from_type: str, from_id: str): 
     print(f"{LOG_DATABASE} vao ham lay cac relation sinh ra tu object: {from_id} ({from_type})")

@@ -540,7 +540,7 @@ export async function signup(fullname, email, username, password) {
 
     // thêm user mới vào fakeUsers
     fakeUsers.push({
-        id: fakeUsers.length + 1, 
+        id: String(fakeUsers.length + 1), 
         fullname: fullname, 
         email: email, 
         username: username, 
@@ -850,7 +850,7 @@ export async function purposeFreeWrite(type, id, purposeContext, hopeContext) {
     // 2. thêm relation vào fakeRelations
     // 3. trả message tạo purpose thành công. 
     fakePurposes.push({
-        id: fakePurposes.length + 1, 
+        id: String(fakePurposes.length + 1), 
         title: purposeContext, 
         hope: hopeContext, 
         status: "ACTIVE", 
@@ -858,16 +858,16 @@ export async function purposeFreeWrite(type, id, purposeContext, hopeContext) {
     }); 
 
     fakeRelations.push({
-        id: fakeRelations.length + 1, 
+        id: String(fakeRelations.length + 1), 
         fromType: type, 
         fromId: id, 
         toType: "PURPOSE", 
-        toId: fakePurposes.length, 
+        toId: String(fakePurposes.length), 
         createdAt: Date.now()
     }); 
 
     return {
-        id: fakePurposes.length, 
+        id: String(fakePurposes.length), 
         createdAt: Date.now()
     }; 
 }
@@ -905,7 +905,7 @@ export async function noteFreeWrite(type, id, context) {
     // 2. thêm relation vào fakeRelations
     // 3. trả message tạo note mới thành công
     fakeNotes.push({
-        id: fakeNotes.length + 1, 
+        id: String(fakeNotes.length + 1), 
         displayCode: createCode(fakeNotes.length + 1), 
         title: getFirst5Words(context),
         content: context, 
@@ -914,11 +914,11 @@ export async function noteFreeWrite(type, id, context) {
     })
 
     fakeRelations.push({
-        id: fakeRelations.length + 1, 
+        id: String(fakeRelations.length + 1), 
         fromType: type, 
         fromId: id, 
         toType: "NOTE", 
-        toId: fakeNotes.length, 
+        toId: String(fakeNotes.length), 
         createdAt: Date.now()
     }); 
 
@@ -1050,7 +1050,7 @@ export async function addAction(purposeId, context) {
 
 
     // 2. thêm action vào fakeAction thôi
-    const actionId = fakeActions.length + 1; 
+    const actionId = String(fakeActions.length + 1); 
 
     fakeActions.push({
         id: actionId, 
@@ -1160,7 +1160,9 @@ export async function deleteNote(id) {
 
 
 
-async function deletePurpose(id) {
+
+
+export async function deletePurpose(id) {
     console.log(`${API_LOG} xóa purpose ${id}`);
 
     // 0. giả lập delay
@@ -1506,7 +1508,7 @@ export async function addTeachingWord(title, date, content) {
 
     // thêm thôi 
     fakeTeachingWords.push({
-        id: fakeTeachingWords.length + 1, 
+        id: String(fakeTeachingWords.length + 1), 
         displayCode: dateToDisplayCode(date), 
         title: title, 
         content: content, 
@@ -1515,7 +1517,7 @@ export async function addTeachingWord(title, date, content) {
 
 
     return {
-        id: fakeTeachingWords.length, 
+        id: String(fakeTeachingWords.length), 
         createdAt: Date.now()
     }
 }

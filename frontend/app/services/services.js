@@ -130,6 +130,15 @@ export async function getPurpose(id) {
     return request(`/purposes/${encodeURIComponent(id)}`);
 }
 
+
+export async function deletePurpose(id) {
+    return request(`/purposes/${encodeURIComponent(id)}`, {
+        method: "DELETE"
+    });
+}
+
+
+
 export async function getActions(id) {
     return request(`/purposes/${encodeURIComponent(id)}/actions`);
 }

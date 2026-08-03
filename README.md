@@ -961,6 +961,38 @@ Luồng của admin:
 
 
 
+### DELETE /purposes/:id
+- xóa purpose và các thực thể sinh ra từ nó và các relations có nó. 
+
+
+**Request:**
+```raw
+{
+
+}
+```
+
+**Resonse:**
+```raw
+{
+    "message": "response message"
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

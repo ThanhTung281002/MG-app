@@ -235,6 +235,126 @@ def db_update_purpose(id: str, updating_title: str, updating_hope: str, updating
 
 
 
+def db_delete_purpose(id: str): 
+    print(f"{LOG_DATABASE} vào hàm db xóa purpose: {id}")
+
+    try: 
+        object_id = ObjectId(id)
+    except InvalidId: 
+        return 0
+
+    ### xóa
+    result = db.purposes.delete_one({"_id": object_id})
+
+    return result.deleted_count
+
+
+
+
+
+
+def db_get_relation_origin(to_type: str, to_id: str): 
+    print(f"{LOG_DATABASE} vao ham lay relation goc cua object: {to_id} ({to_type})")
+
+    try: 
+        object_to_id = ObjectId(to_id)
+    except InvalidId: 
+        return None
+
+    relation = db.relations.find_one({
+        "to_type": to_type, 
+        "to_id": object_to_id
+    })
+
+    if not relation: 
+        return None
+
+    relation["id"] = str(relation["_id"])
+    del relation["_id"]
+    relation["user_id"] = str(relation["user_id"])
+    relation["from_id"] = str(relation["from_id"])
+    relation["to_id"] = str(relation["to_id"])
+
+    return relation
+
+
+
+
+
+
+def db_delete_relation(id: str): 
+    print(f"{LOG_DATABASE} vao ham xoa relation: {id}")
+
+    try: 
+        object_id = ObjectId(id)
+    except InvalidId: 
+        return 0
+
+    result = db.relations.delete_one({"_id": object_id})
+
+    return result.deleted_count
+
+
+
+
+
+
+
+def db_get_relations_born(from_type: str, from_id: str): 
+    print(f"{LOG_DATABASE} vao ham lay cac relation sinh ra tu object: {from_id} ({from_type})")
+
+    try: 
+        object_from_id = ObjectId(from_id)
+    except InvalidId: 
+        return []
+
+    relations = db.relations.find({
+        "from_type": from_type, 
+        "from_id": object_from_id
+    })
+
+    result = []
+
+    for relation in relations: 
+        relation["id"] = str(relation["_id"])
+        del relation["_id"]
+        relation["user_id"] = str(relation["user_id"])
+        relation["from_id"] = str(relation["from_id"])
+        relation["to_id"] = str(relation["to_id"])
+        result.append(relation)
+
+    return result
+
+
+
+
+
+
+
+def db_delete_note(id: str): 
+    print(f"{LOG_DATABASE} vào hàm db xóa note: {id}")
+
+    try: 
+        object_id = ObjectId(id)
+    except InvalidId: 
+        return 0
+
+    ### xóa
+    result = db.notes.delete_one({"_id": object_id})
+
+    return result.deleted_count
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -436,8 +556,86 @@ def handle_put_purpose(id: str, user_id: str, updating_title: str, updating_hope
 
 
 
+def handle_delete_purpose(id: str, user_id: str): 
+    print(f"{LOG_DOMAIN} vào hàm xử lí xóa purpose: {id} của user: {user_id}")
 
 
+    """
+    DOMAIN RULES:
+    1. purpose phải tồn tại 
+    2. purpose phải thuộc cùng user 
+    """
+
+    ### 1. check rules
+    purpose = db_get_purpose_by_id(id)
+
+    if not purpose: 
+        raise DomainError("Purpose not found")
+
+    if user_id != purpose["user_id"]:
+        raise DomainError("User does not have the right to this purpose")
+
+
+    ### 2. xóa purpose 
+    ### 2.1 xóa chính purpose đó
+    deleted_count = db_delete_purpose(id)
+
+    if deleted_count == 0: 
+        raise DomainError("Failed to delete")
+
+
+    ### 2.2 xóa relation mà có purpose đó là to_type, to_id
+    origin_relation = db_get_relation_origin("PURPOSE", id); 
+
+    if not origin_relation: 
+        raise DomainError("Origin relation not found")
+
+    deleted_count = db_delete_relation(origin_relation["id"])
+
+    if deleted_count == 0: 
+        raise DomainError("Failed to delete origin relation")
+        
+
+
+
+    ### 2.3 xóa tất cả các thực thể sinh ra từ purpose đó, và sau đó xóa relation đó. 
+    delete_born_entities("PURPOSE", id)
+
+
+
+
+    ### 3. return theo api contract 
+    return {
+        "message": "Delete successfully"
+    }
+
+
+
+
+
+
+
+
+def delete_born_entities(from_type, from_id): 
+    ### Đây là hàm đệ quy 
+
+    ### 1. tìm các relation có from type, from id nhập vào
+    born_relations = db_get_relations_born(from_type, from_id)
+
+
+    ### 2. từng relation, nếu là note thì xóa note, xóa relation rồi xóa thực thể sinh ra từ nó, nếu là purpose cũng như vậy
+    for relation in born_relations: 
+        if relation["to_type"] == "NOTE": 
+            db_delete_note(relation["to_id"])
+            db_delete_relation(relation["id"])
+            delete_born_entities("NOTE", relation["to_id"])
+        
+        elif relation["to_type"] == "PURPOSE": 
+            db_delete_purpose(relation["to_id"])
+            db_delete_relation(relation["id"])
+            delete_born_entities("PURPOSE", relation["to_id"])
+
+        
 
 
 
@@ -604,3 +802,22 @@ def put_purpose(request: putPurposeRequest, id: str, current_user = Depends(requ
 
 
 
+
+
+
+@router.delete("/purposes/{id}")
+def delete_purpose(id: str, current_user = Depends(require_login)):
+    print(f"{LOG_API} vào delete /purposes/{id}")
+
+    try: 
+        return handle_delete_purpose(id, current_user["id"])
+
+    except APIError as e: 
+        raise HTTPException(status_code=400, detail=str(e))
+
+    except DomainError as e: 
+        raise HTTPException(status_code=400, detail=str(e))
+  
+    except Exception as e: 
+        print(f"SERVER ERROR: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")

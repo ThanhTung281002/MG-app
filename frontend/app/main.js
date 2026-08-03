@@ -4,7 +4,7 @@ console.log("main.js loaded")
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord, checkHealth} from "./services/services.js";
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord, checkHealth, deletePurpose} from "./services/services.js";
 
 
 const DOM_LOG = "                   0. DOM:"; 
@@ -465,7 +465,7 @@ async function addActionFlow(purposeId, context) {
 
 
 async function updateNoteFlow(id, content, type) {
-    console.log(`${API_FLOW_LOG} vào hàm cập nhập ghi chú với nội dung: ${content}, type: ${type}`); 
+    console.log(`${API_FLOW_LOG} vào hàm cập nhập ghi chú ${id} với nội dung: ${content}, type: ${type}`); 
 
     try {
         const {title, updatedAt} = await updateNote(id, content, type); 
@@ -699,6 +699,20 @@ async function addTeachingWordFlow(title, date, content) {
 
 
 
+
+async function deletePurposeFlow(id) {
+    console.log(`${API_FLOW_LOG} xóa purpose ${id}`); 
+
+    try {
+        const {message} = await deletePurpose(id); 
+
+        return {message}; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
 
 
 
@@ -1804,6 +1818,15 @@ function createPurposeEntity(purpose) {
                         </button>
                         
                         <div class="floating-action-button-close z-50 fixed bottom-32 right-14 flex flex-col gap-20 items-end hidden">
+                            <div class="flex items-center relative left-2">
+                                <div class="relative top-4 text-2xl font-semibold">Xóa mục đích</div>
+
+                                <button data-action="purpose-delete" class="action btn btn-ghost btn-sm">
+                                    <img src="/image/delete-document.png" alt="tạo ghi chép" class="w-16 opacity-70">
+                                </button>
+                            </div>
+
+
                             <div class="flex items-center relative left-2">
                                 <div class="relative top-4 text-2xl font-semibold">tạo hành động</div>
 
@@ -3557,6 +3580,10 @@ async function handleAction(action) {
     } else if (action === "note-delete") {
         state.ui.overlayVisible = false; 
         await deleteCurrentNote(); 
+
+    } else if (action === "purpose-delete") {
+        state.ui.overlayVisible = false; 
+        await deleteCurrentPurpose(); 
     }
 
     
@@ -3658,6 +3685,52 @@ function deleteBornEntities(entity) {
 
     delete state.cache.relations.born[key]; 
 }
+
+
+
+
+async function deleteCurrentPurpose() {
+    console.log(`${CONTROLLER_LOG}  1. xóa purpose hiện tại`); 
+
+    state.error = null; 
+
+    try {
+        const entity = state.route.currentEntity; 
+
+        await deletePurposeFlow(entity.id); 
+        delete state.cache.purposes[entity.id]; 
+
+        // xóa triệt để
+        deleteBornRelationOfOrigin(entity); 
+        deleteBornEntities(entity); 
+
+
+        if (history.length > 1) {
+            history.back();
+        } else {
+            await redirect({
+                name: "HOME",
+                userRole: "USER"
+            });
+        }
+    } catch (err) {
+        state.error = err.message; 
+
+        console.log(`${CONTROLLER_LOG}  1. lỗi ở tầng controller: ${err.message}`); 
+
+        await render(); 
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
