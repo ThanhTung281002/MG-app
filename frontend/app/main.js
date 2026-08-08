@@ -2275,7 +2275,7 @@ async function renderUserTeachingWordsPage() {
 
         // 2. sử dụng cho render. Render như thế nào? 
         const container = document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"] .drawer .drawer-content .content');
-        container.innerHTML = '<h1 class="text-2xl font-semibold text-center">Năm <span>2026</span>: <span>Năm chạy như ngựa</span></h1>'; 
+        container.innerHTML = '<h1 class="text-2xl font-semibold text-center text-[#302F29]">Năm <span>2026</span>: <span>Năm chạy như ngựa</span></h1>'; 
 
         for (let week of state.cache.teachingWordsByWeek) {
             container.innerHTML += createTeachingWordsByWeek(week); 
@@ -2297,7 +2297,7 @@ async function renderUserTeachingWordsPage() {
 
 
 function createTeachingWordsByWeek(week) {
-    let result = `<h3 class="text-lg font-semibold mt-4">Tuần <span>${week.week}</span></h3> <div class="flex flex-col gap-6 text-lg mt-4">`; 
+    let result = `<h3 class="text-lg mt-10 text-[#302F29]">Tuần <span>${week.week}</span></h3> <div class="flex flex-col gap-6 text-lg mt-3">`; 
 
     for (let twId of week.ids) {
         const teachingWord = state.cache.teachingWords[twId]; 
@@ -2313,7 +2313,7 @@ function createTeachingWordsByWeek(week) {
 
 
 function createTeachingWordMiniCard(teachingWord) {
-    return `<div data-id="${teachingWord.id}" class="mini-card min-h-28 bg-white p-4 rounded-xl font-semibold"><span class="mr-2 font-normal opacity-50">${teachingWord.displayCode}:</span> ${teachingWord.title}</div>`; 
+    return `<div data-id="${teachingWord.id}" class="mini-card min-h-28 p-4 pb-8 font-medium rounded-xl bg-[#FFFDF5] border border-[#E7DFAF] text-[#45443D] text-xl leading-tight"><span class="mr-2 font-normal text-[#858277]">${teachingWord.displayCode}:</span> ${teachingWord.title}</div>`; 
 }
 
 
@@ -2379,7 +2379,7 @@ async function renderUserLifeLessonsPage() {
 
 
 function createLifeLessonReflectionMiniCard(lifeLesson) {
-    return `<button data-id="${lifeLesson.id}" class="btn mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold text-center">${lifeLesson.title}</button>`;
+    return `<button data-id="${lifeLesson.id}" class="btn mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold text-center text-[#315566] border border-[#B8E5EA]">${lifeLesson.title}</button>`;
 }
 
 
