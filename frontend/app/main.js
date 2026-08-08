@@ -879,6 +879,7 @@ async function renderRoute() {
         }
     } else {
         if (state.route.userRole === "USER") {
+            // nếu khi vào một trong trang lớn của user thì render nhưng không show 2 trang còn lại
             if (state.route.name === "HOME") {
                 showUserHomePage(); 
                 await renderReflectionTeachingWord(); 
@@ -886,16 +887,34 @@ async function renderRoute() {
                 await renderActivePurposes(); 
                 await renderUnresolvedNotes(); 
 
-
+                // render luôn cho 2 trang còn lại
+                await renderUserTeachingWordsPage(); 
+                await renderUserLifeLessonsPage(); 
 
             } else if (state.route.name === "TEACHING_WORDS") {
                 showUserTeachingWordsPage(); 
                 await renderUserTeachingWordsPage(); 
 
+                // render luôn cho 2 trang còn lại 
+                await renderReflectionTeachingWord(); 
+                await renderlatestLifeLessons(); 
+                await renderActivePurposes(); 
+                await renderUnresolvedNotes(); 
+
+                await renderUserLifeLessonsPage(); 
+            
 
             } else if (state.route.name === "LIFE_LESSONS") {
                 showUserLifeLessonsPage(); 
                 await renderUserLifeLessonsPage(); 
+
+                // render cho 2 trang lớn còn lại
+                await renderReflectionTeachingWord(); 
+                await renderlatestLifeLessons(); 
+                await renderActivePurposes(); 
+                await renderUnresolvedNotes(); 
+
+                await renderUserTeachingWordsPage(); 
 
 
             } else {
@@ -932,19 +951,32 @@ async function renderRoute() {
 
 
         } else {
+            // cũng giống như vậy đối với user, vào trang lớn nào thì render cho 2 trang lớn còn lại ngay lúc đó nhưng không show luôn. 
             if (state.route.name === "HOME") {
                 showAdminHomePage(); 
                 await renderAdminHomePage(); 
+
+                // render cho 2 trang lớn còn lại 
+                await renderAdminLifeLessonsPage(); 
+                await renderAdminTeachingWordsPage(); 
 
 
             } else if (state.route.name === "TEACHING_WORDS") {
                 showAdminTeachingWordsPage(); 
                 await renderAdminTeachingWordsPage(); 
 
+                // render cho 2 trang lớn còn lại 
+                await renderAdminHomePage(); 
+                await renderAdminLifeLessonsPage(); 
+
 
             } else if (state.route.name === "LIFE_LESSONS") {
                 showAdminLifeLessonsPage(); 
                 await renderAdminLifeLessonsPage(); 
+
+                // render cho 2 trang lớn còn lại
+                await renderAdminHomePage(); 
+                await renderAdminTeachingWordsPage(); 
 
 
             } else if (state.route.name === "ENTITY"){
