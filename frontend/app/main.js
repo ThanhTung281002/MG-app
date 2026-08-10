@@ -1254,10 +1254,10 @@ function createTeachingWordCard(teachingWord) {
                                 <div class="card-body relative">
                                     <h1 class="card-title text-2xl">${teachingWord.title}</h1>
                                     <h2 class="text-xl">${teachingWord.displayCode}</h2>
-                                    <p class="whitespace-pre-wrap mt-4 line-clamp-[22]">${teachingWord.content}</p>
+                                    <p class="whitespace-pre-wrap mt-4 line-clamp-[16]">${teachingWord.content}</p>
 
 
-                                    <p class="absolute bottom-0 right-0 w-full h-full bg-gradient-to-b from-transparent to-white flex items-end justify-center rounded-3xl">
+                                    <p class="absolute bottom-0 right-0 w-full h-full bg-gradient-to-b from-white/10 to-white flex items-end justify-center rounded-3xl">
                                         <button data-id="${teachingWord.id}" class="btn btn-outline flex gap-2 mb-6 font-bold text-lg items-center">
                                             <div class="icon">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -1404,7 +1404,7 @@ function createLifeLessonReflectionCard(lifeLessonFull) {
                                 <div class="card-body relative">
                                     <h1 class="card-title text-2xl">${lifeLessonFull.title}</h1>
                                     <h3 class="mt-4 font-semibold">Nội dung chính</h3>
-                                    <p class="whitespace-pre-wrap line-clamp-[22]">${lifeLessonFull.mainContent}</p>
+                                    <p class="whitespace-pre-wrap line-clamp-[18]">${lifeLessonFull.mainContent}</p>
 
                                     
                                     <p class="absolute bottom-0 right-0 w-full h-full bg-gradient-to-b from-transparent to-white flex items-end justify-center rounded-3xl">
@@ -1549,9 +1549,9 @@ function createNoteCard(note) {
     return `<div data-id="${note.id}" class="card mb-48 shadow-md bg-white rounded-4xl">
                                 <div class="card-body relative">
                                     <h1 class="card-title text-2xl font-semibold">${note.title}</h1>
-                                    <p class="whitespace-pre-wrap">${note.content}</p>
+                                    <p class="whitespace-pre-wrap line-clamp-[10]">${note.content}</p>
 
-                                    <p class="absolute bottom-0 right-0 w-full h-full bg-gradient-to-b from-transparent to-white flex items-end justify-center rounded-full">
+                                    <p class="absolute bottom-0 right-0 w-full h-full bg-gradient-to-b from-transparent to-white flex items-end justify-center rounded-2xl">
                                     </p>
                                 </div>
                             </div>`; 
