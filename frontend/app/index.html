@@ -292,6 +292,7 @@
                                 </div>
                             </a></li>
 
+
                             <li data-route="LIFE_LESSONS"><a class="flex gap-4 justify-start items-center">
                                 <div class="fire-icon">
                                     <img src="/image/fire-flame.png" alt="fire-flame" class="size-6">
@@ -300,6 +301,18 @@
                                     Trang BG
                                 </div>
                             </a></li>
+
+                            <div class="divider"></div>
+
+                            <li data-route="EDUCATIONAL_TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="burning-heart-icon">
+                                    <img src="/image/burning-heart.png" alt="burning-heart" class="size-6">
+                                </div>
+                                <div>
+                                    Trang GD
+                                </div>
+                            </a></li>
+
                         </ul>
                         
 
@@ -314,7 +327,7 @@
 
 
 
-        <div data-page="ENTITY" class="min-h-screen bg-[#FAFAF7]">
+        <div data-page="ENTITY" class="min-h-screen bg-[#FAFAF7] hidden">
             <div class="drawer min-h-screen">
                 <input id="born-entities" type="checkbox" class="drawer-toggle" value="checked"/>
                 <div class="drawer-content ">
@@ -518,6 +531,17 @@
                                     Trang BG
                                 </div>
                             </a></li>
+
+                            <div class="divider"></div>
+
+                            <li data-route="EDUCATIONAL_TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="burning-heart-icon">
+                                    <img src="/image/burning-heart.png" alt="burning-heart" class="size-6">
+                                </div>
+                                <div>
+                                    Trang GD
+                                </div>
+                            </a></li>
                         </ul>
                         
 
@@ -625,6 +649,17 @@
                                 </div>
                                 <div>
                                     Trang BG
+                                </div>
+                            </a></li>
+
+                            <div class="divider"></div>
+
+                            <li data-route="EDUCATIONAL_TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="burning-heart-icon">
+                                    <img src="/image/burning-heart.png" alt="burning-heart" class="size-6">
+                                </div>
+                                <div>
+                                    Trang GD
                                 </div>
                             </a></li>
                         </ul>
@@ -858,6 +893,17 @@
                                     Trang BG
                                 </div>
                             </a></li>
+
+                            <div class="divider"></div>
+
+                            <li data-route="EDUCATIONAL_TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="burning-heart-icon">
+                                    <img src="/image/burning-heart.png" alt="burning-heart" class="size-6">
+                                </div>
+                                <div>
+                                    Trang GD
+                                </div>
+                            </a></li>
                         </ul>
                         
 
@@ -947,6 +993,17 @@
                                     Trang BG
                                 </div>
                             </a></li>
+
+                            <div class="divider"></div>
+
+                            <li data-route="EDUCATIONAL_TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="burning-heart-icon">
+                                    <img src="/image/burning-heart.png" alt="burning-heart" class="size-6">
+                                </div>
+                                <div>
+                                    Trang GD
+                                </div>
+                            </a></li>
                         </ul>
                         
 
@@ -970,11 +1027,35 @@
                 </button>
             </div>
 
-            <div data-entity-type="USER"  class="flex-1 flex flex-col">
+            <div data-entity-type="USER"  class="flex-1 flex flex-col hidden">
             </div>
 
             <div data-entity-type="TEACHING_WORD" class="p-8 hidden">
             </div>
+
+
+            <div data-entity-type="EDUCATIONAL_TEACHING_WORD" class="p-8 hidden">
+                <div class="relative title">
+                    <div class="hidden actions absolute right-0 -top-2 flex gap-2">
+                        <button data-action="cancel" class="btn btn-sm btn-outline btn-ghost">Loại bỏ</button>    
+                        <button data-action="save" class="btn btn-sm btn-neutral">Lưu</button>    
+                    </div> 
+
+                    <div class="text-base font-semibold">Tiêu đề</div>
+                    <div data-content-type="title" contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 mt-2 p-2 px-4">MG giáo dục bóng đá 2026</div>
+                </div>
+
+                <div class="relative content">
+                    <div class="hidden actions absolute right-0 -top-2 flex gap-2">
+                        <button data-action="cancel" class="btn btn-sm btn-outline btn-ghost">Loại bỏ</button>    
+                        <button data-action="save" class="btn btn-sm btn-neutral">Lưu</button>    
+                    </div>
+
+                    <div class="text-base font-semibold mt-10">Nội dung</div>
+                    <div data-content-type="content" contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">Tinh thần xem bóng như là sự sống. SERE đã dạy rằng những ai xem bóng như là sự sống thì rất khó mất bóng.</div>
+                </div>
+            </div>
+
 
             <div data-entity-type="LIFE_LESSON" class="p-8 hidden">
             </div>
@@ -1054,6 +1135,17 @@
                                     Trang BG
                                 </div>
                             </a></li>
+
+                            <div class="divider"></div>
+
+                            <li data-route="EDUCATIONAL_TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="burning-heart-icon">
+                                    <img src="/image/burning-heart.png" alt="burning-heart" class="size-6">
+                                </div>
+                                <div>
+                                    Trang GD
+                                </div>
+                            </a></li>
                         </ul>
                         
 
@@ -1070,6 +1162,129 @@
                     
         </div>
 
+
+        <div data-page="EDUCATIONAL_TEACHING_WORDS" class="min-h-screen hidden">
+            <div class="drawer min-h-screen">
+                <input id="my-sidebar-8" type="checkbox" class="drawer-toggle" />
+                <div class="drawer-content">
+                    <div class="navbar sticky top-0 z-10 bg-white shadow-sm py-2 px-0 flex justify-between">
+                        <div class="logo">
+                            <a href="#" class="btn btn-ghost h-fit">
+                                <img src="/image/logo.png" alt="logo" class="w-20">
+                            </a>
+                        </div>
+
+                        <div>
+                            <label for="my-sidebar-8" class="btn btn-ghost drawer-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                </svg>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="content p-8 px-8">
+                        <button id="add-teaching-word-button" class="btn btn-ghost w-full h-40 create-box border-2 border-black border-dashed rounded-lg flex flex-col">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-14">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 2.25 2.25h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25H15m0-3-3-3m0 0-3 3m3-3V15" />
+                                </svg>
+                            </div>  
+                            <div class="helper font-light">Đăng MG giáo dục mới</div>
+                        </button>
+                        <h3 class="font-semibold mt-16 relative right-4 text-xl">Các Lời Dạy đã đăng</h3>
+                        <div class="teaching-words flex flex-col gap-4 mt-6">
+                            <div class="teaching-word min-h-24 border-2 border-black rounded-lg p-2 text-lg px-4 shadow-sm">
+                                MG giáo dục bóng đá
+                            </div>
+
+
+                            <div class="teaching-word min-h-24 border-2 border-black rounded-lg p-2 text-lg px-4 shadow-sm">
+                                MG giáo dục bóng đá
+                            </div>
+
+
+                            <div class="teaching-word min-h-24 border-2 border-black rounded-lg p-2 text-lg px-4 shadow-sm">
+                                MG giáo dục bóng đá
+                            </div>
+
+
+                            <div class="teaching-word min-h-24 border-2 border-black rounded-lg p-2 text-lg px-4 shadow-sm">
+                                MG giáo dục bóng đá
+                            </div>
+
+
+                            <div class="teaching-word min-h-24 border-2 border-black rounded-lg p-2 text-lg px-4 shadow-sm">
+                                MG giáo dục bóng đá
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="drawer-side z-50">
+                    <label for="my-sidebar-8" class="drawer-overlay"></label>
+                    <div class="w-80 min-h-full bg-base-200 flex flex-col p-4">
+                        <!-- App title -->
+                        <div class="text-3xl font-semibold mb-6 text-center">
+                            Suy ngẫm LC
+                        </div>
+
+                        <ul class="menu flex-1 text-2xl">
+                            <li data-route="HOME"><a class="flex gap-4 justify-start items-center">
+                                <div class="home-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                        <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+                                        <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    Trang chủ
+                                </div>
+                            </a></li>
+
+                            <li data-route="TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="sun-icon">
+                                    <img src="/image/sun.png" alt="sun" class="size-6">
+                                </div>
+                                <div>
+                                    Trang MG
+                                </div>
+                            </a></li>
+
+                            <li data-route="LIFE_LESSONS"><a class="flex gap-4 justify-start items-center">
+                                <div class="fire-icon">
+                                    <img src="/image/fire-flame.png" alt="fire-flame" class="size-6">
+                                </div>
+                                <div>
+                                    Trang BG
+                                </div>
+                            </a></li>
+
+                            <div class="divider"></div>
+
+                            <li data-route="EDUCATIONAL_TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="burning-heart-icon">
+                                    <img src="/image/burning-heart.png" alt="burning-heart" class="size-6">
+                                </div>
+                                <div>
+                                    Trang GD
+                                </div>
+                            </a></li>
+
+                        </ul>
+                        
+
+                        <!-- Logout -->
+                        <button class="btn btn-outline btn-error">
+                            Đăng xuất
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            
+
+                    
+        </div>
 
 
         <div data-page="LIFE_LESSONS" class="min-h-screen hidden">
@@ -1135,6 +1350,19 @@
                                     Trang BG
                                 </div>
                             </a></li>
+
+                            <div class="divider"></div>
+
+                            <li data-route="EDUCATIONAL_TEACHING_WORDS"><a class="flex gap-4 justify-start items-center">
+                                <div class="burning-heart-icon">
+                                    <img src="/image/burning-heart.png" alt="burning-heart" class="size-6">
+                                </div>
+                                <div>
+                                    Trang GD
+                                </div>
+                            </a></li>
+
+
                         </ul>
                         
 
@@ -1238,6 +1466,27 @@
             </div>
         </div>   
     </div>
+
+
+    <div id="educational-teaching-word-addition" class="hidden fixed inset-0 bg-white z-40">
+        <div data-mini-action="close" class="btn btn-ghost absolute right-0 top-4 opacity-75">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-10">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </div>
+
+        <div class="flex flex-col gap-4 h-dvh px-10 pb-6 pt-24">
+            <div class="input-section flex-1 min-h-0 overflow-y-auto">
+                <textarea data-content-type="title" class="textarea textarea-neutral w-full h-24 border-2 border-gray-300 rounded-2xl placeholder:text-base text-base font-semibold" placeholder="Chủ đề của MG"></textarea>
+                <textarea data-content-type="content" class="textarea textarea-neutral w-full h-64 border-2 border-gray-300 rounded-2xl mt-6 placeholder:text-base text-base font-semibold" placeholder="Nội dung của Mg"></textarea>
+            </div>
+            <div class="action-section shrink-0 flex flex-col gap-2">
+                <button data-mini-action="close" class="btn btn-outline btn-ghost">Hủy</button>
+                <button data-mini-action="add" class="btn btn-neutral">Thêm MG giáo dục mới</button>
+            </div>
+        </div>   
+    </div>
+
 
 
     <div id="saved" class="hidden fixed bottom-12 w-full flex items-center justify-center text-xl font-semibold">
