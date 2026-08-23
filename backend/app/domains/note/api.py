@@ -458,31 +458,26 @@ def generate_new_note_display_index(user_id):
     return result
 
 
-### lấy nhiều nhất 5 từ từ content để tạo thành title cho note
+### lấy câu đầu tiên của nội dung note để tạo thành title của note
 def generate_note_title_from_content(content: str):
     print(f"    {LOG_DOMAIN} tạo note title từ content: {content}")
 
-    if not content:
-        return ""
+    # 1. Content rỗng
+    if not content or not content.strip():
+        return "Chưa có tiêu đề"
 
-    # bỏ khoảng trắng đầu/cuối
-    content = content.strip().replace("\n", " ")
+    content = content.strip()
 
-    # tách thành list các từ
-    words = content.split()
+    # 2. Tìm dấu kết thúc câu đầu tiên
+    for index, char in enumerate(content):
+        if char in ".?!":
+            title = content[:index + 1]
+            print(f"    {LOG_DOMAIN} kết quả: {title}")
+            return title
 
-    if not words: 
-        return ""
-
-    # lấy tối đa 5 từ đầu
-    first_words = words[:5]
-
-    # ghép lại thành chuỗi
-    title = " ".join(first_words)
-
-    print(f"    {LOG_DOMAIN} kết quả: {title}")
-
-    return title
+    # 3. Không có dấu kết thúc câu -> lấy toàn bộ content
+    print(f"    {LOG_DOMAIN} kết quả: {content}")
+    return content
 
 
 
