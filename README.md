@@ -668,6 +668,126 @@ Luồng của admin:
 
 
 
+
+
+
+
+
+---
+
+### GET /educational-teaching-words?view=basic
+- lấy toàn bộ MG giáo dục 
+
+
+**Request:**
+```raw
+{}
+```
+
+**Resonse:**
+```raw
+{
+    "educationalTeachingWords": [
+        {
+            "id": "id of educational teaching word"
+        }, 
+        ... 
+    ]
+}
+```
+
+
+
+
+
+
+---
+
+### GET /educational-teaching-words/:id
+- lấy nội dung đầy đủ của MG giáo dục. 
+
+
+**Request:**
+```raw
+{}
+```
+
+**Resonse:**
+```raw
+{
+    "id": "id of educational teaching word", 
+    "title": "title of edu teaching word", 
+    "content": "content of edu teaching word", 
+    "updatedAt": "updated time of teaching word"
+}
+```
+
+
+
+
+
+
+---
+
+### POST /educational-teaching-words
+- Đăng MG giáo dục mới. 
+
+
+**Request:**
+```raw
+{
+    "title": "title of new edu teaching word", 
+    "content": "content of new edu teaching word"
+}
+```
+
+**Resonse:**
+```raw
+{
+    "id": "id of newly created edu teaching word", 
+    "createdAt": "created time of new edu teaching word"
+}
+```
+
+
+
+
+
+---
+
+### PUT /educational-teaching-words/:id
+- Chỉnh sửa title hoặc content của MG giáo dục. 
+
+
+**Request:**
+```raw
+{
+    "title": "new title of edu teaching word", 
+    "content": "new content of edu teaching word"
+}
+```
+
+**Resonse:**
+```raw
+{
+    "updatedAt": "updated time"
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 ### GET /life-lessons-reflection/reflection 
@@ -1381,6 +1501,18 @@ created_at
 updated_at
 
 
+
+educational_teaching_words
+--------------------------
+id (PK)
+title
+content 
+created_at
+updated_at
+
+
+
+
 life_lessons_main
 ------------
 id (PK)
@@ -1462,6 +1594,10 @@ erDiagram
 
     TEACHING_WORDS {
         int id PK 
+    }
+
+    EDUCATION_TEACHING_WORDS {
+        int id PK
     }
 
     LIFE_LESSONS {
