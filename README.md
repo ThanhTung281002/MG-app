@@ -1061,7 +1061,7 @@ Luồng của admin:
 ```raw
 {
     "originContext": {
-        "type": "`TEACHING_WORD' || 'LIFE_LESSON' || 'PURPOSE' || 'NOTE', 
+        "type": "`TEACHING_WORD' || 'LIFE_LESSON' || 'PURPOSE' || 'NOTE' || 'EDUCATIONAL_TEACHING_WORD', 
         "id": "id of origin context"
     },
     "title": "title of purpose",
@@ -1273,7 +1273,7 @@ Luồng của admin:
 ```raw
 {
     "originContext": {
-        "type": "`TEACHING WORD' || 'LIFE LESSON' || 'PURPOSE' || 'NOTE'", 
+        "type": "`TEACHING WORD' || 'LIFE LESSON' || 'PURPOSE' || 'NOTE' || 'EDUCATIONAL_TEACHING_WORD'", 
         "id": "id of origin context"
     },
     "content": "content of note"
@@ -1575,7 +1575,7 @@ relations
 ---------
 id (PK)
 user_id (FK -> users)
-from_type       -- TEACHING_WORD | LIFE_LESSON | PURPOSE | NOTE
+from_type       -- TEACHING_WORD | LIFE_LESSON | PURPOSE | NOTE | EDUCATIONAL_TEACHING_WORD
 from_id 
 to_type
 to_id 

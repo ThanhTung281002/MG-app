@@ -352,6 +352,34 @@ def db_delete_note(id: str):
 
 
 
+def db_get_educational_teaching_word(id): 
+    print(f"{LOG_DATABASE} lấy MG giáo dục mà có id: {id}")
+
+
+    ### 1. Tìm lời dạy có id như id nhập vào, và nếu có thì trả chính lời dạy đó
+    ## 1.1 kiểm tra xem id có hợp format với ObjectId hay không? 
+    try: 
+        object_id = ObjectId(id)
+    except: 
+        # id không đúng format ObjectId
+        return None
+
+    ## 1.2 lấy lời dạy đó 
+    educational_teaching_word = db.educational_teaching_words.find_one({"_id": object_id})
+
+    ## 1.3 đổi format của _id thành id cho đúng api contract
+    if educational_teaching_word: 
+        educational_teaching_word["id"] = str(educational_teaching_word["_id"])
+        del educational_teaching_word["_id"]
+
+        return educational_teaching_word
+
+    ### 2. nếu không tìm thấy thì trả None 
+    return None
+
+
+
+
 
 
 
@@ -424,7 +452,7 @@ def handle_post_purpose_free(user_id: str, origin_context_type: str, origin_cont
 
     """
     DOMAIN RULES:nhưllr
-    1. origin_context_type phải là một trong 4 loại như "TEACHING_WORD", "LIFE_LESSON", "PURPOSE", "NOTE"
+    1. origin_context_type phải là một trong 5 loại như "TEACHING_WORD", "EDUCATIONAL_TEACHING_WORD", "LIFE_LESSON", "PURPOSE", "NOTE"
     2. id của bất cứ loại nào thì phải tồn tại trong database 
     3. thực thể bối cảnh như llr, purpose và note thì phải thuộc về cùng user
     4. title và hope có thể trống, không có yêu cầu gì cả. 
@@ -437,6 +465,12 @@ def handle_post_purpose_free(user_id: str, origin_context_type: str, origin_cont
 
         if not tw: 
             raise DomainError("Teaching Word not found")
+
+    elif origin_context_type == "EDUCATIONAL_TEACHING_WORD": 
+        edu_tw = db_get_educational_teaching_word(origin_context_id)
+
+        if not edu_tw: 
+            raise DomainError("Educational teaching word not found")
 
     elif origin_context_type == "LIFE_LESSON": 
         llr = db_get_life_lesson_reflection_by_id(origin_context_id)

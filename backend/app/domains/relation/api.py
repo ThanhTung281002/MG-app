@@ -153,7 +153,7 @@ def get_born_objects(type: str, id: str, current_user = Depends(require_login)):
     print(f"{LOG_API} vào get /relations/born?type={type}&id={id}")
 
     try: 
-        VALID_TYPES = {"TEACHING_WORD", "LIFE_LESSON", "PURPOSE", "NOTE"}
+        VALID_TYPES = {"TEACHING_WORD", "EDUCATIONAL_TEACHING_WORD", "LIFE_LESSON", "PURPOSE", "NOTE"}
         if type not in VALID_TYPES: 
             raise APIError("Invalid type type")
         else: 

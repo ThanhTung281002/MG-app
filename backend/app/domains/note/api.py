@@ -365,6 +365,38 @@ def db_delete_purpose(id: str):
 
 
 
+def db_get_educational_teaching_word(id): 
+    print(f"{LOG_DATABASE} lấy MG giáo dục mà có id: {id}")
+
+
+    ### 1. Tìm lời dạy có id như id nhập vào, và nếu có thì trả chính lời dạy đó
+    ## 1.1 kiểm tra xem id có hợp format với ObjectId hay không? 
+    try: 
+        object_id = ObjectId(id)
+    except: 
+        # id không đúng format ObjectId
+        return None
+
+    ## 1.2 lấy lời dạy đó 
+    educational_teaching_word = db.educational_teaching_words.find_one({"_id": object_id})
+
+    ## 1.3 đổi format của _id thành id cho đúng api contract
+    if educational_teaching_word: 
+        educational_teaching_word["id"] = str(educational_teaching_word["_id"])
+        del educational_teaching_word["_id"]
+
+        return educational_teaching_word
+
+    ### 2. nếu không tìm thấy thì trả None 
+    return None
+
+
+
+
+
+
+
+
 
 
 
@@ -498,7 +530,7 @@ def handle_post_note_free_write(user_id: str, origin_context_type: str, origin_c
 
     """
     DOMAIN RULES: 
-    1. loại bối cảnh phải là 4 loại đã có 
+    1. loại bối cảnh phải là 5 loại đã có 
     2. thực thể bối cảnh phải tồn tại 
     3. thực thể bối cảnh nếu như là life-lesson reflection, purpose, note thì phải thuộc về cùng user nhập vào 
     4. content không được để trống 
@@ -510,6 +542,12 @@ def handle_post_note_free_write(user_id: str, origin_context_type: str, origin_c
 
         if not tw: 
             raise DomainError("Teaching word not found")
+
+    elif origin_context_type == "EDUCATIONAL_TEACHING_WORD": 
+        edu_tw = db_get_educational_teaching_word(origin_context_id)
+
+        if not edu_tw: 
+            raise DomainError("Educational teachign word not found")
 
     elif origin_context_type == "LIFE_LESSON": 
         llr = db_get_life_lesson_reflection_by_id(origin_context_id)
@@ -546,7 +584,7 @@ def handle_post_note_free_write(user_id: str, origin_context_type: str, origin_c
         raise DomainError("Invalid input note content")
 
 
-    ### 1. tạo note, ở đây thì phải generate title (lấy 5 kí tự đầu từ note), generate display_index (đếm tăng dần theo từng user)
+    ### 1. tạo note, ở đây thì phải generate title, generate display_index (đếm tăng dần theo từng user)
     display_index = generate_new_note_display_index(user_id)
     title = generate_note_title_from_content(content)
     created_time = datetime.now()
