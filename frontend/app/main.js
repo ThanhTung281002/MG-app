@@ -1,6 +1,7 @@
 console.log("main.js loaded")
 
 
+import { cache } from "react";
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
@@ -3969,8 +3970,8 @@ async function save(contentType, content) {
         const entity = state.route.currentEntity; 
 
         if (entity.type === "LIFE_LESSON") {
-                await updateLifeLessonReflectionFlow(entity.id, content); 
-            state.cache.lifeLessonsReflection[entity.id].reflection = content; 
+            await updateLifeLessonReflectionFlow(entity.id, content); 
+            delete state.cache.lifeLessonsReflection[entity.id];
 
 
         } else if (entity.type === "PURPOSE") {
@@ -3996,14 +3997,14 @@ async function save(contentType, content) {
             }
 
             await updatePurposeFlow(entity.id, title, hope); 
-            state.cache.purposes[entity.id].title = title; 
-            state.cache.purposes[entity.id].hope = hope; 
+            delete state.cache.purposes[entity.id]; 
+
         } else if (entity.type === "NOTE") {
             const noteCache = state.cache.notes[entity.id]; 
 
 
             await updateNoteFlow(entity.id, content, noteCache.type); 
-            state.cache.notes[entity.id].content = content; 
+            delete state.cache.notes[entity.id];
         }
     } catch (err) {
         state.error = err.message; 
