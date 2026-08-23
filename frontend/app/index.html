@@ -1091,8 +1091,18 @@
 
 
     <div id="saved" class="hidden fixed bottom-12 w-full flex items-center justify-center text-xl font-semibold">
-        <div class="bg-white/90">Đã lưu!</div>    
+        <div class="bg-white/90 rounded-full p-4">Đã lưu!</div>    
     </div>
+
+
+    <div id="saving" class="hidden fixed bottom-12 w-full flex items-center justify-center text-xl font-semibold">
+        <div class="bg-white/90 flex gap-2 rounded-full items-center p-4">
+            <span class="loading loading-spinner loading-md"></span>
+            <div class="">Đang lưu</div>    
+        </div>
+        
+    </div>
+
 
 
     <div id="system-initializing" class="hidden fixed inset-0 bg-gradient-to-b from-white to-amber-50 z-40 flex flex-col justify-center items-center gap-6">

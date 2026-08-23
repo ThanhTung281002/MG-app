@@ -768,6 +768,13 @@ async function render() {
             renderAdminSaveActions(); 
         }
 
+        if (state.ui.saveStatus === "SAVING") {
+            renderSaveStatus(); 
+
+            return; 
+        } else {
+            renderSaveStatus(); 
+        }
 
         // 2. render page phù hợp
         await renderRoute(); 
@@ -1016,7 +1023,6 @@ function renderUIState() {
     renderFabState(); 
     renderOverlayVisible(); 
     renderOverlayEntity(); 
-    renderSaveStatus(); 
     renderNoteTypeMenuOpen(); 
 }
 
@@ -3068,10 +3074,20 @@ function renderSaveStatus() {
     // nếu last là saving và hiện tại saved thì mới làm 
     if (lastSaveStatus === "SAVING" && state.ui.saveStatus === "SAVED") {
         const savedEl = document.getElementById("saved");
+        const savingEl = document.getElementById("saving"); 
+
+        savingEl.classList.add("hidden"); 
         savedEl.classList.remove("hidden"); 
+
+
         setTimeout(() => {
             savedEl.classList.add("hidden"); 
         }, displaySavedtime); 
+
+    } else if (lastSaveStatus === "SAVED" && state.ui.saveStatus === "SAVING") {
+        const savingEl = document.getElementById("saving"); 
+
+        savingEl.classList.remove("hidden"); 
     }
 
     lastSaveStatus = state.ui.saveStatus; 
@@ -3529,6 +3545,24 @@ async function handleSignup(fullname, email, username, password) {
 
 
 // ======= ROUTE: HOME USER ========
+function clearCache() {
+    state.cache = {
+        teachingWords: {}, 
+        lifeLessonsReflection: {}, 
+        lifeLessonsMain: {}, 
+        purposes: {}, 
+        notes: {}, 
+        relations: {
+            origin: {}, 
+            born: {}
+        }, 
+        users: {}
+    }
+}
+
+
+
+
 async function handleLogOut() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí đăng xuất`); 
 
@@ -3538,7 +3572,10 @@ async function handleLogOut() {
     localStorage.removeItem("accessToken"); 
     state.user = null; 
 
-    // 2. điều hướng về login 
+    // 2. xóa toàn bộ cache 
+    clearCache(); 
+
+    // 3. điều hướng về login 
     await redirect({name: "LOG_IN"}); 
 
 }
