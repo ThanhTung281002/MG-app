@@ -2197,7 +2197,7 @@ function createNotePreviewCard(note) {
 
     return `<div data-id="${note.id}" class="card bg-white rounded-4xl border-2 border-green-200">
                                 <div class="card-body relative">
-                                    <h3 class="card-title text-2xl font-semibold">${note.title}</h3>
+                                    <h3 class="card-title text-xl font-semibold">${note.title}</h3>
                                 </div>
                             </div>`; 
 }
