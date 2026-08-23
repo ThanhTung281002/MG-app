@@ -13,7 +13,7 @@ from app.domains.action.api import router as action_router
 from app.domains.note.api import router as note_router
 from app.domains.admin.api import router as admin_router
 from app.domains.relation.api import router as relation_router
-
+from app.domains.educational_teaching_word.api import router as educational_teaching_word_router
 
 app = FastAPI()
 
@@ -42,6 +42,7 @@ app.include_router(action_router)
 app.include_router(note_router)
 app.include_router(admin_router)
 app.include_router(relation_router)
+app.include_router(educational_teaching_word_router)
 
 
 
