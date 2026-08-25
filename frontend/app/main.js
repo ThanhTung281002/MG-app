@@ -4,7 +4,7 @@ console.log("main.js loaded")
 // 1. HA HƯỚNG DẪN LÀ ĐỂ ÔN LẠI THÌ LÀM ĐÓ LÀ CLICK THÌ ĐỔI TRẠNG THÁI STATE PAGE 
 // 2. HA hướng dẫn là để viết tốt hàm render thì hãy thử với nhiều giá trị state khác nhau và chạy thử trong tầng 5 init
 
-import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord, checkHealth, deletePurpose} from "./services/services.js";
+import {login, getMe, signup, getTeachingWordReflection, getTeachingWord, getLifeLessonsReflectionReflection, getLifeLessonReflection, getActivePurposes, getPurpose, getActions, getUnresolvedNotes, getNote, getBornEntities, purposeFreeWrite, noteFreeWrite, updateLifeLessonReflection, updatePurpose, updateAction, addAction, updateNote, deleteNote, getAllTeachingWords, getAllLifeLessonsReflection, getPendingUsers, getRejectedUsers, getUser, updateUserStatus, updateTeachingWord, getAllLifeLessonsMain, getLifeLessonMain, updateLifeLessonMain, addTeachingWord, checkHealth, deletePurpose, getAllEducationalTeachingWords, getEducationalTeachingWord, addEducationalTeachingWord, updateEducationalTeachingWord} from "./services/fakeServices.js";
 
 
 const DOM_LOG = "                   0. DOM:"; 
@@ -42,6 +42,7 @@ const state = {
 
     cache: {
         teachingWords: {}, 
+        educationalTeachingWords: {},
         lifeLessonsReflection: {}, 
         lifeLessonsMain: {}, 
         purposes: {}, 
@@ -716,6 +717,94 @@ async function deletePurposeFlow(id) {
 
 
 
+async function getAllEducationalTeachingWordsFlow() {
+    console.log(`${API_FLOW_LOG} lấy toàn bộ MG giáo dục`); 
+
+    try {
+        const {educationalTeachingWords} = await getAllEducationalTeachingWords(); 
+
+        return {educationalTeachingWords}; 
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+
+async function getEducationalTeachingWordFlow(id) {
+    console.log(`${API_FLOW_LOG} lấy MG giáo dục có ${id}`); 
+
+    try {
+        const educationalTeachingWord = await getEducationalTeachingWord(id); 
+
+        return educationalTeachingWord; 
+
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+
+
+async function addEducationalTeachingWordFlow(title, content) {
+    console.log(`${API_FLOW_LOG} thêm MG giáo dục mới có title: ${title} và content: ${content}`); 
+
+    try {
+        const {id, createdAt} = await addEducationalTeachingWord(title, content); 
+
+        return {id, createdAt}; 
+
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+
+
+async function updateEducationalTeachingWordFlow(id, title, content) {
+    console.log(`${API_FLOW_LOG} cập nhập MG giáo dục có id: ${id} có title mới: ${title}, content mới: ${content}`); 
+
+    try {
+        const {updatedAt} = await updateEducationalTeachingWord(id, title, content); 
+
+        return {updatedAt}; 
+
+    } catch (err) {
+        console.log(`${API_FLOW_LOG}    1. lỗi ở tầng api flow: ${err.message}`); 
+
+        throw err; 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -820,12 +909,12 @@ function renderAdminSaveActions() {
     console.log(`${RENDER_LOG} 1,5 render actions button trong admin entity`); 
 
 
-    const twTitle =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] .title .actions'); 
-    const twDate =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] .date .actions'); 
-    const twContent =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] .content .actions'); 
-    const llMainContent =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] .main-content .actions'); 
-    
-
+    const twTitle =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="TEACHING_WORD"] .title .actions'); 
+    const twDate =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="TEACHING_WORD"] .date .actions'); 
+    const twContent =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="TEACHING_WORD"] .content .actions'); 
+    const llMainContent =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="LIFE_LESSON"] .main-content .actions'); 
+    const etwTitle =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="EDUCATIONAL_TEACHING_WORD"] .title .actions'); 
+    const etwContent =  document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="EDUCATIONAL_TEACHING_WORD"] .content .actions'); 
 
 
     if (state.ui.adminSaveActions === null) {
@@ -845,7 +934,15 @@ function renderAdminSaveActions() {
             llMainContent.classList.add("hidden"); 
         }
 
-        
+        if (etwTitle) {
+            etwTitle.classList.add("hidden"); 
+        }
+
+        if (etwContent) {
+            etwContent.classList.add("hidden"); 
+        }
+
+
 
     } else if (state.ui.adminSaveActions === "TW_TITLE") {
         twTitle.classList.remove("hidden"); 
@@ -859,7 +956,13 @@ function renderAdminSaveActions() {
     } else if (state.ui.adminSaveActions === "LL_MAIN_CONTENT") {
         llMainContent.classList.remove("hidden"); 
 
-    } 
+    } else if (state.ui.adminSaveActions === "ETW_TITLE") {
+        etwTitle.classList.remove("hidden"); 
+
+    } else if (state.ui.adminSaveActions === "ETW_CONTENT") {
+        etwContent.classList.remove("hidden"); 
+
+    }
 }
 
 
@@ -911,6 +1014,11 @@ async function renderRoute() {
                 await renderUserLifeLessonsPage(); 
             
 
+            } else if (state.route.name === "EDUCATIONAL_TEACHING_WORDS") {
+                showUserEducationalTeachingWordsPage(); 
+                await renderUserEducationalTeachingWordsPage(); 
+
+
             } else if (state.route.name === "LIFE_LESSONS") {
                 showUserLifeLessonsPage(); 
                 await renderUserLifeLessonsPage(); 
@@ -928,11 +1036,17 @@ async function renderRoute() {
 
                 showUserEntityPage(); 
                 hideAllEntityType(); 
+
                 // tùy thuộc vào entity type mà show và render phù hợp 
                 if (state.route.currentEntity.type === "TEACHING_WORD") {
                     showTeachingWordEntity(); 
                     await renderTeachingWordEntity(); 
 
+
+                } else if (state.route.currentEntity.type === "EDUCATIONAL_TEACHING_WORD") {
+                    showEducationalTeachingWordEntity(); 
+                    await renderEducationalTeachingWordEntity(); 
+                    
 
                 } else if (state.route.currentEntity.type === "LIFE_LESSON") {
                     showLifeLessonEntity(); 
@@ -963,16 +1077,28 @@ async function renderRoute() {
                 showAdminHomePage(); 
                 await renderAdminHomePage(); 
 
-                // render cho 2 trang lớn còn lại 
+                // render cho 3 trang lớn còn lại 
                 await renderAdminLifeLessonsPage(); 
                 await renderAdminTeachingWordsPage(); 
+                await renderAdminEducationalTeachingWordsPage();
 
 
             } else if (state.route.name === "TEACHING_WORDS") {
                 showAdminTeachingWordsPage(); 
                 await renderAdminTeachingWordsPage(); 
 
-                // render cho 2 trang lớn còn lại 
+                // render cho 3 trang lớn còn lại 
+                await renderAdminHomePage(); 
+                await renderAdminLifeLessonsPage(); 
+                await renderAdminEducationalTeachingWordsPage();
+
+
+            } else if (state.route.name === "EDUCATIONAL_TEACHING_WORDS") {
+                showAdminEducationalTeachingWordsPage(); 
+                await renderAdminEducationalTeachingWordsPage(); 
+
+                // render cho 3 trang lớn còn lại 
+                await renderAdminTeachingWordsPage(); 
                 await renderAdminHomePage(); 
                 await renderAdminLifeLessonsPage(); 
 
@@ -981,9 +1107,10 @@ async function renderRoute() {
                 showAdminLifeLessonsPage(); 
                 await renderAdminLifeLessonsPage(); 
 
-                // render cho 2 trang lớn còn lại
+                // render cho 3 trang lớn còn lại
                 await renderAdminHomePage(); 
                 await renderAdminTeachingWordsPage(); 
+                await renderAdminEducationalTeachingWordsPage();
 
 
             } else if (state.route.name === "ENTITY"){
@@ -997,6 +1124,10 @@ async function renderRoute() {
                 } else if (state.route.currentEntity.type === "TEACHING_WORD") {
                     showAdminTeachingWordEntity(); 
                     await renderAdminTeachingWordEntity(); 
+
+                } else if (state.route.currentEntity.type === "EDUCATIONAL_TEACHING_WORD") {
+                    showAdminEducationalTeachingWordEntity(); 
+                    await renderAdminEducationalTeachingWordEntity(); 
 
                 } else if (state.route.currentEntity.type === "LIFE_LESSON") {
                     showAdminLifeLessonEntity(); 
@@ -1065,6 +1196,14 @@ function showUserTeachingWordsPage() {
 }
 
 
+function showUserEducationalTeachingWordsPage() {
+    console.log(`${RENDER_LOG}      1.2 hiện trang user educational teaching words`); 
+
+    document.querySelector('[data-user-role="USER"] [data-page="EDUCATIONAL_TEACHING_WORDS"]').classList.remove("hidden"); 
+}
+
+
+
 function showUserLifeLessonsPage() {
     console.log(`${RENDER_LOG}      1.2 hiện trang user life lessons`); 
 
@@ -1094,6 +1233,14 @@ function showTeachingWordEntity() {
     console.log(`${RENDER_LOG}      1.4 hiển thị entity lời dạy`); 
 
     document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="TEACHING_WORD"]').classList.remove("hidden");
+}
+
+
+
+function showEducationalTeachingWordEntity() {
+    console.log(`${RENDER_LOG}      1.4 hiển thị entity MG giáo dục`); 
+
+    document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="EDUCATIONAL_TEACHING_WORD"]').classList.remove("hidden");
 }
 
 
@@ -1143,6 +1290,15 @@ function showAdminTeachingWordsPage() {
 
 
 
+function showAdminEducationalTeachingWordsPage() {
+    console.log(`${RENDER_LOG}      1.2 hiện trang admin MG giáo dục`); 
+
+    document.querySelector(`[data-user-role="ADMIN"] [data-page="EDUCATIONAL_TEACHING_WORDS"]`).classList.remove("hidden"); 
+}
+
+
+
+
 function showAdminLifeLessonsPage() {
     console.log(`${RENDER_LOG}      1.2 hiện trang admin life lessons`); 
 
@@ -1184,6 +1340,17 @@ function showAdminTeachingWordEntity() {
 
     document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="TEACHING_WORD"]').classList.remove("hidden"); 
 }
+
+
+
+function showAdminEducationalTeachingWordEntity() {
+    console.log(`${RENDER_LOG}      1.4 hiển thị loại thực thể MG giáo dục của admin`); 
+
+    document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="EDUCATIONAL_TEACHING_WORD"]').classList.remove("hidden"); 
+}
+
+
+
 
 
 
@@ -1295,6 +1462,15 @@ function ExistsInCache(id, type) {
 
         return true; 
 
+
+    } else if (type === "EDUCATIONAL_TEACHING_WORD") {
+        const edu_tw = state.cache.educationalTeachingWords[id]; 
+
+        if (!edu_tw) {
+            return false; 
+        }
+
+        return true; 
 
     } else if (type === "LIFE_LESSON_REFLECTION") {
         const ll = state.cache.lifeLessonsReflection[id]; 
@@ -1650,6 +1826,93 @@ function createTeachingWordEntity(teachingWord) {
                             </button>
 
                         </div>`
+}
+
+
+
+
+
+
+
+
+
+
+
+async function renderEducationalTeachingWordEntity() {
+    console.log(`${RENDER_LOG}      1.5 render nội dung cho trang thực thể MG giáo dục`); 
+
+
+    try {
+        // 1. lấy eduTw từ route 
+        const eduTwId = state.route.currentEntity.id; 
+
+        if (!ExistsInCache(eduTwId, "EDUCATIONAL_TEACHING_WORD")) {
+            const educationalTeachingWord = await getEducationalTeachingWordFlow(eduTwId); 
+
+            state.cache.educationalTeachingWords[eduTwId] = educationalTeachingWord; 
+        }
+
+
+        const educational_teaching_word = state.cache.educationalTeachingWords[eduTwId]; 
+
+
+        const container = document.querySelector('[data-user-role="USER"] [data-page="ENTITY"] [data-entity-type="EDUCATIONAL_TEACHING_WORD"]'); 
+        container.innerHTML = ""; 
+        container.innerHTML += createEducationalTeachingWordEntity(educational_teaching_word); 
+        
+
+
+    } catch (err) {
+        state.error = err.message; 
+        console.log(`${RENDER_LOG}          1.5.1 lỗi ở tầng render: ${state.error}`); 
+
+        await render(); 
+    }
+
+
+}
+
+
+
+
+
+function createEducationalTeachingWordEntity(educational_teaching_word) {
+    return `<h1 class="text-3xl">${educational_teaching_word.title}</h1>
+                        <div class="mt-8 text-xl whitespace-pre-wrap">${educational_teaching_word.content}</div>
+                    
+                    
+                    
+                        <button class="floating-action-button-open-btn fixed bottom-32 right-14 btn btn-circle btn-lg btn-outline bg-white opacity-15">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </button>
+
+                        
+                        <div class="floating-action-button-close z-50 fixed bottom-32 right-14 flex flex-col gap-20 items-end hidden">
+                            <div class="flex items-center relative left-4">
+                                <div class="relative top-4 text-2xl font-semibold">tạo mục đích</div>
+
+                                <button data-action="purpose-free-write" class="action btn btn-ghost btn-sm">
+                                    <img src="/image/purpose.png" alt="tạo mục đích" class="w-20">
+                                </button>
+                            </div>
+
+                            <div class="flex items-center relative left-2">
+                                <div class="relative top-4 text-2xl font-semibold">tạo ghi chú</div>
+
+                                <button data-action="note-free-write" class="action btn btn-ghost btn-sm">
+                                    <img src="/image/note.png" alt="tạo ghi chép" class="w-16 opacity-75">
+                                </button>
+                            </div>
+
+                            <button class="floating-action-button-close-btn btn btn-circle btn-lg btn-ghost bg-zinc-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+
+                        </div>`; 
 }
 
 
@@ -2218,7 +2481,8 @@ function createNotePreviewCard(note) {
 
 
 
-// ----------- ROUTE: USER TEACHING WORD ----------
+// ----------- ROUTE: USER TEACHING WORDS
+//  ----------
 async function renderUserTeachingWordsPage() {
     console.log(`${RENDER_LOG} render trang LC của user`); 
 
@@ -2321,6 +2585,67 @@ function createTeachingWordsByWeek(week) {
 function createTeachingWordMiniCard(teachingWord) {
     return `<div data-id="${teachingWord.id}" class="mini-card min-h-28 p-4 pb-8 font-medium rounded-xl bg-[#FFFDF5] border border-[#E7DFAF] text-[#45443D] text-xl leading-tight"><span class="mr-2 font-normal text-[#858277]">${teachingWord.displayCode}:</span> ${teachingWord.title}</div>`; 
 }
+
+
+
+
+
+
+
+
+
+
+
+// -------------- ROUTE: USER - EDUCATIONAL TEACHING WORDS -------------
+async function renderUserEducationalTeachingWordsPage() {
+    console.log(`${RENDER_LOG} render trang MG giáo dục của user`); 
+
+
+    state.error = null; 
+
+
+    try {
+        // 1. lấy toàn bộ MG giáo dục 
+        const {educationalTeachingWords} = await getAllEducationalTeachingWordsFlow(); 
+
+        // 2. kiểm tra đã có trong cache chưa? Nếu chưa thì gọi từ server và lưu vào cache 
+        for (const edu_tw of educationalTeachingWords) {
+            if (!ExistsInCache(edu_tw.id, "EDUCATIONAL_TEACHING_WORD")) {
+                const edu_tw_server = await getEducationalTeachingWordFlow(edu_tw.id); 
+
+                state.cache.educationalTeachingWords[edu_tw.id] = edu_tw_server; 
+            }
+        }
+
+        // 3. render ra DOM 
+        const container = document.querySelector('[data-user-role="USER"] [data-page="EDUCATIONAL_TEACHING_WORDS"] .drawer-content .content'); 
+        container.innerHTML = ""; 
+
+        for (const edu_tw of educationalTeachingWords) {
+            const educational_teaching_word = state.cache.educationalTeachingWords[edu_tw.id]; 
+
+            container.innerHTML += createEducationalTeachingWordMiniCard(educational_teaching_word);
+        }
+
+        
+
+    } catch (err) {
+        state.error = err.message; 
+        console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
+        await render(); 
+    }
+}
+
+
+
+function createEducationalTeachingWordMiniCard(educational_teaching_word) {
+    return `<button data-id="${educational_teaching_word.id}" class="btn mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold text-center text-[#4A462F] border border-[#F3D96B] px-12">
+                            ${educational_teaching_word.title}
+                        </button>`; 
+}
+
+
+
 
 
 
@@ -2537,6 +2862,63 @@ function createAdminTeachingWordMiniCard(teachingWord) {
 
 
 
+
+async function renderAdminEducationalTeachingWordsPage() {
+    console.log(`${RENDER_LOG}      1.3 render trang MG giáo dục của admin`); 
+
+    state.error = null; 
+
+
+    try {
+        // 1. lấy toàn bộ MG giáo dục 
+        const {educationalTeachingWords} = await getAllEducationalTeachingWordsFlow(); 
+
+        // 2. check có trong cache hay chưa? Nếu chưa thì lấy từ server và lưu vào cache
+        for (let edu_tw of educationalTeachingWords) {
+            if (!ExistsInCache(edu_tw.id, "EDUCATIONAL_TEACHING_WORD")) {
+                const edu_tw_server = await getEducationalTeachingWordFlow(edu_tw.id); 
+
+                state.cache.educationalTeachingWords[edu_tw.id] = edu_tw_server; 
+            }
+        }
+
+        // 3. render ra DOM 
+        const container = document.querySelector('[data-user-role="ADMIN"] [data-page="EDUCATIONAL_TEACHING_WORDS"] .drawer-content .content .educational-teaching-words'); 
+        container.innerHTML = ""; 
+
+        for (let edu_tw of educationalTeachingWords) {
+            const educational_teaching_word = state.cache.educationalTeachingWords[edu_tw.id]; 
+
+            container.innerHTML += createAdminEducationalTeachingWordMiniCard(educational_teaching_word); 
+        }
+
+
+
+    } catch (err) {
+        state.error = err.message; 
+        console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
+        await render(); 
+    }
+
+}
+
+
+
+
+function createAdminEducationalTeachingWordMiniCard(educational_teaching_word) {
+    return `<div data-id="${educational_teaching_word.id}" class="educational-teaching-word min-h-24 border-2 border-black rounded-lg p-2 text-lg px-4 shadow-sm">
+                                ${educational_teaching_word.title}
+                            </div>`; 
+}
+
+
+
+
+
+
+
+
+
 async function renderAdminLifeLessonsPage() {
     console.log(`${RENDER_LOG}      1.3 render trang bài học của admin`); 
 
@@ -2720,6 +3102,74 @@ function createAdminTeachingWordEntity(teachingWord) {
                     <div data-content-type="content" contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${teachingWord.content}</div>
                 </div>`; 
 }
+
+
+
+
+
+
+
+
+async function renderAdminEducationalTeachingWordEntity() {
+    console.log(`${RENDER_LOG}      1.4 render thực thể MG giáo dục của admin`);
+
+    state.error = null; 
+
+
+    try {
+        // 1. lấy thực thể lời dạy 
+        const eduTwId = state.route.currentEntity.id; 
+
+        // 2. nếu chưa có trong cache thì lấy từ server
+        if (!ExistsInCache(eduTwId, "EDUCATIONAL_TEACHING_WORD")) {
+            const edu_tw_server = await getEducationalTeachingWordFlow(eduTwId); 
+
+            state.cache.educationalTeachingWords[eduTwId] = edu_tw_server; 
+        }
+
+
+        // 3. render ra DOM 
+        const container = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="EDUCATIONAL_TEACHING_WORD"]'); 
+        container.innerHTML = ""; 
+
+        const educational_teaching_word = state.cache.educationalTeachingWords[eduTwId]; 
+        container.innerHTML += createAdminEducationalTeachingWordEntity(educational_teaching_word); 
+
+
+    } catch (err) {
+        state.error = err.message; 
+        console.log(`${RENDER_LOG}          1.6.10 lỗi ở tầng render: ${err.message}`);
+        await render(); 
+    }
+}
+
+
+
+
+function createAdminEducationalTeachingWordEntity(educational_teaching_word) {
+    return `<div class="relative title">
+                    <div class="hidden actions absolute right-0 -top-2 flex gap-2">
+                        <button data-action="cancel" class="btn btn-sm btn-outline btn-ghost">Loại bỏ</button>    
+                        <button data-action="save" class="btn btn-sm btn-neutral">Lưu</button>    
+                    </div> 
+
+                    <div class="text-base font-semibold">Tiêu đề</div>
+                    <div data-content-type="title" contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 mt-2 p-2 px-4">${educational_teaching_word.title}</div>
+                </div>
+
+                <div class="relative content">
+                    <div class="hidden actions absolute right-0 -top-2 flex gap-2">
+                        <button data-action="cancel" class="btn btn-sm btn-outline btn-ghost">Loại bỏ</button>    
+                        <button data-action="save" class="btn btn-sm btn-neutral">Lưu</button>    
+                    </div>
+
+                    <div class="text-base font-semibold mt-10">Nội dung</div>
+                    <div data-content-type="content" contenteditable="true" class="text-xl outline-none border border-black rounded-lg h-96 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${educational_teaching_word.content}</div>
+                </div>`; 
+}
+
+
+
 
 
 
@@ -3001,14 +3451,14 @@ function renderOverlayEntity() {
     const purposeFreeWrite = document.querySelector("#purpose-free-write");
     const actionAddition = document.querySelector("#action-addition"); 
     const teachingWordAddition = document.querySelector("#teaching-word-addition"); 
-
+    const educationalTeachingWordAddition = document.querySelector("#educational-teaching-word-addition"); 
 
     if (state.ui.overlayEntity === null) {
         noteFreeWrite.classList.add("hidden"); 
         purposeFreeWrite.classList.add("hidden"); 
         actionAddition.classList.add("hidden"); 
         teachingWordAddition.classList.add("hidden"); 
-
+        educationalTeachingWordAddition.classList.add("hidden"); 
 
 
     } else if (state.ui.overlayEntity === "NOTE_FREE_WRITE") {
@@ -3037,6 +3487,11 @@ function renderOverlayEntity() {
 
     } else if (state.ui.overlayEntity === "TEACHING_WORD_ADDITION") {
         teachingWordAddition.classList.remove("hidden"); 
+
+
+    } else if (state.ui.overlayEntity === "EDUCATIONAL_TEACHING_WORD_ADDITION") {
+        educationalTeachingWordAddition.classList.remove("hidden"); 
+
     }
     
 }
@@ -3185,11 +3640,12 @@ function getRouteFromURL() {
     if (path === "/signup") return {name: "SIGN_UP"}; 
     if (path === "/home") return {name: "HOME", userRole: "USER"}; 
     if (path === "/teaching-words") return {name: "TEACHING_WORDS", userRole: "USER"}; 
+    if (path === "/educational-teaching-words") return {name: "EDUCATIONAL_TEACHING_WORDS", userRole: "USER"}; 
     if (path === "/life-lessons") return {name: "LIFE_LESSONS", userRole: "USER"}; 
     if (path === "/admin/home") return {name: "HOME", userRole: "ADMIN"}; 
     if (path === "/admin/teaching-words") return {name: "TEACHING_WORDS", userRole: "ADMIN"}; 
     if (path === "/admin/life-lessons") return {name: "LIFE_LESSONS", userRole: "ADMIN"}; 
-    
+    if (path === "/admin/educational-teaching-words") return {name: "EDUCATIONAL_TEACHING_WORDS", userRole: "ADMIN"};
 
     const parts = path.split("/"); 
 
@@ -3239,6 +3695,8 @@ function toURL(route) {
                 return "/teaching-words"; 
             } else if (route.name === "LIFE_LESSONS") {
                 return "/life-lessons"; 
+            } else if (route.name === "EDUCATIONAL_TEACHING_WORDS") {
+                return "/educational-teaching-words"
             } else if (route.name === "ENTITY") {
                 if (route.currentEntity.type === "TEACHING_WORD") {
                     return `/entity/teaching-word/${route.currentEntity.id}`; 
@@ -3248,7 +3706,9 @@ function toURL(route) {
                     return `/entity/purpose/${route.currentEntity.id}`; 
                 } else if (route.currentEntity.type === "NOTE") {
                     return `/entity/note/${route.currentEntity.id}`; 
-                } 
+                } else if (route.currentEntity.type === "EDUCATIONAL_TEACHING_WORD") {
+                    return `/entity/educational-teaching-word/${route.currentEntity.id}`; 
+                }
 
             }
         } else if (route.userRole === "ADMIN") {
@@ -3257,6 +3717,9 @@ function toURL(route) {
 
             } else if (route.name === "TEACHING_WORDS") {
                 return "/admin/teaching-words"; 
+
+            } else if (route.name === "EDUCATIONAL_TEACHING_WORDS") {
+                return "/admin/educational-teaching-words"; 
 
             } else if (route.name === "LIFE_LESSONS") {
                 return "/admin/life-lessons"; 
@@ -3272,6 +3735,8 @@ function toURL(route) {
                 } else if (route.currentEntity.type === "LIFE_LESSON") {
                     return `/admin/entity/life-lesson/${route.currentEntity.id}`; 
 
+                } else if (route.currentEntity.type === "EDUCATIONAL_TEACHING_WORD") {
+                    return `/admin/entity/educational-teaching-word/${route.currentEntity.id}`; 
                 }
             }
         }
@@ -3330,7 +3795,7 @@ async function redirect(route) {
 
 // ------- hàm khởi tạo app ---------------------------
 // là những gì cần làm lúc reload lại page, mình hiểu như vậy
-const VALID_ROUTE_NAME = new Set(["HOME", "TEACHING_WORDS", "LIFE_LESSONS", "ENTITY"]); 
+const VALID_ROUTE_NAME = new Set(["HOME", "TEACHING_WORDS", "EDUCATIONAL_TEACHING_WORDS", "LIFE_LESSONS", "ENTITY"]); 
 
 async function initApp() {
     console.log(`${CONTROLLER_LOG} vào hàm khởi tạo app`); 
@@ -3548,6 +4013,7 @@ async function handleSignup(fullname, email, username, password) {
 function clearCache() {
     state.cache = {
         teachingWords: {}, 
+        educationalTeachingWords: {},
         lifeLessonsReflection: {}, 
         lifeLessonsMain: {}, 
         purposes: {}, 
@@ -4166,6 +4632,34 @@ async function handleClickMiniCardTeachingWord(id) {
 
 
 
+// --------------------- ROUTE: USER - EDUCATIONAL TEACHING WORDS ----------------------
+async function handleClickMiniCardEducationalTeachingWord(id) {
+    console.log(`${CONTROLLER_LOG} hàm xử lí click vào mini card MG giáo dục có id: ${id}`); 
+
+    
+    // chuyển route thôi 
+    await navigate({
+        name: "ENTITY", 
+        userRole: "USER", 
+        currentEntity: {
+            id: id, 
+            type: "EDUCATIONAL_TEACHING_WORD"
+        }
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 // --------------------- ROUTE: USER - LIFE LESSONS ----------------------
 async function handleClickMiniCardLifeLesson(id) {
     console.log(`${CONTROLLER_LOG} hàm xử lí click vào mini card bài học có id: ${id}`); 
@@ -4278,7 +4772,24 @@ async function saveAdmin(contentType, content) {
         await updateTeachingWordFlow(entity.id, title, twContent, date); 
         delete state.cache.teachingWords[entity.id]; 
 
+    
 
+    } else if (entity.type === "EDUCATIONAL_TEACHING_WORD") {
+        const educational_teaching_word = state.cache.educationalTeachingWords[entity.id]; 
+
+        let title = educational_teaching_word.title; 
+        let etwContent = educational_teaching_word.content; 
+
+        if (contentType === "title") {
+            title = content; 
+
+        } else if (contentType === "content") {
+            etwContent = content; 
+
+        }
+
+        await updateEducationalTeachingWordFlow(entity.id, title, etwContent); 
+        delete state.cache.educationalTeachingWords[entity.id]; 
 
     } else if (entity.type === "LIFE_LESSON") {
         const lifeLessonMain = state.cache.lifeLessonsMain[entity.id]; 
@@ -4321,6 +4832,17 @@ async function handleAdminInput2(contentType) {
 
             await render(); 
 
+        } else if (entity.type === "EDUCATIONAL_TEACHING_WORD") {
+            if (contentType === "title") {
+                state.ui.adminSaveActions = "ETW_TITLE"; 
+
+            } else if (contentType === "content") {
+                state.ui.adminSaveActions = "ETW_CONTENT"; 
+
+            }
+
+            await render(); 
+
         } else if (entity.type === "LIFE_LESSON") {
             if (contentType === "main-content") {
                 state.ui.adminSaveActions = "LL_MAIN_CONTENT"; 
@@ -4354,7 +4876,7 @@ async function handleAdminCancelEdit() {
 
 
 async function handleAdminSaveEdit() {
-    console.log(`${CONTROLLER_LOG} vào hàm xử lí lưu khi edit của admin`); 
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí lưu khi edit của admin với state.ui.adminSaveActions: ${JSON.stringify(state.ui.adminSaveActions, null, 2)}`); 
 
     // làm gì? sử dụng saveAdmin thôi 
 
@@ -4365,20 +4887,28 @@ async function handleAdminSaveEdit() {
     if (state.ui.adminSaveActions === "LL_MAIN_CONTENT") {
         contentType = "main-content"; 
 
-        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-content-type="main-content"]').innerText; 
+        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="LIFE_LESSON"] [data-content-type="main-content"]').innerText; 
     } else if (state.ui.adminSaveActions === "TW_TITLE") {
         contentType = "title"; 
 
-        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-content-type="title"]').innerText; 
+        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="TEACHING_WORD"] [data-content-type="title"]').innerText; 
     } else if (state.ui.adminSaveActions === "TW_CONTENT") {
         contentType = "content"; 
 
-        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-content-type="content"]').innerText; 
+        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="TEACHING_WORD"] [data-content-type="content"]').innerText; 
     } else if (state.ui.adminSaveActions === "TW_DATE") {
         contentType = "date"; 
 
-        content = inputDateToDate(document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-content-type="date"]').value); 
-    }
+        content = inputDateToDate(document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="TEACHING_WORD"] [data-content-type="date"]').value); 
+    } else if (state.ui.adminSaveActions === "ETW_TITLE") {
+        contentType = "title"; 
+        
+        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="EDUCATIONAL_TEACHING_WORD"] [data-content-type="title"]').innerText; 
+    } else if (state.ui.adminSaveActions === "ETW_CONTENT") {
+        contentType = "content"; 
+        
+        content = document.querySelector('[data-user-role="ADMIN"] [data-page="ENTITY"] [data-entity-type="EDUCATIONAL_TEACHING_WORD"] [data-content-type="content"]').innerText; 
+    } 
 
     state.ui.saveStatus = "SAVING"; 
     await render(); 
@@ -4436,6 +4966,23 @@ async function handleClickAddTeachingWord() {
 
 
 
+
+
+async function handleClickAddEducationalTeachingWord() {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí click nút thêm MG giáo dục mới`); 
+
+
+    state.ui.overlayVisible = true; 
+    state.ui.overlayEntity = "EDUCATIONAL_TEACHING_WORD_ADDITION"; 
+    await render(); 
+}
+
+
+
+
+
+
+
 async function handleCloseTeachingWordAddition() {
     console.log(`${CONTROLLER_LOG} vào hàm xử lí đóng trang thêm lời dạy mới`); 
 
@@ -4476,6 +5023,69 @@ async function handleAddTeachingWord(title, date, content) {
 
 
 
+// -------------- ROUTE: ADMIN EDUCATIONAL TEACHING WORDS -------------
+async function handleClickAdminEducationalTeachingWordMiniCard(id) {
+    console.log(`${CONTROLLER_LOG} vào hàm xử click MG giáo dục mini card có id: ${id}`); 
+
+    
+    await navigate({
+        name: "ENTITY", 
+        userRole: "ADMIN", 
+        currentEntity: {
+            type: "EDUCATIONAL_TEACHING_WORD", 
+            id: id
+        }
+    });
+
+}
+
+
+
+
+
+
+async function handleCloseEducationalTeachingWordAddition() {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí đóng trang thêm MG giáo dục mới`); 
+
+    state.ui.overlayVisible = false; 
+    state.ui.overlayEntity = null; 
+    await render(); 
+}
+
+
+
+
+async function handleAddEducationalTeachingWord(title, content) {
+    console.log(`${CONTROLLER_LOG} vào hàm xử lí thêm lời dạy mới với chủ đề: ${title}, nội dung: ${content}`); 
+
+
+    state.error = null; 
+
+    try {
+        // làm gì? thì thêm vào server và sau đó quay ra thôi
+        await addEducationalTeachingWordFlow(title, content); 
+
+        state.ui.overlayVisible = false; 
+        state.ui.overlayEntity = null; 
+        await render();
+
+
+    } catch (err) {
+        state.error = err.message; 
+
+        console.log(`${CONTROLLER_LOG} lỗi ở tầng controller: ${err.message}`); 
+
+        await render(); 
+    }
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -4495,6 +5105,30 @@ async function handleClickAdminLifeLessonMainMiniCard(id) {
         }
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5075,6 +5709,70 @@ document.querySelector('[data-user-role="USER"] [data-page="TEACHING_WORDS"] .dr
 
 
 
+
+
+
+
+
+// ------------------ ROUTE: USER - EDUCATIONAL TEACHING WORDS -------------
+
+
+// ------- sự kiện click vào sidenav của trang educational teaching word user -------
+document.querySelector('[data-user-role="USER"] [data-page="EDUCATIONAL_TEACHING_WORDS"] .drawer-side').addEventListener("click", async (event) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang user educational teaching words`); 
+
+    const target = event.target.closest("li, button"); 
+
+    if (!target) return;
+
+    // đóng sidenav 
+    document.querySelector('[data-user-role="USER"] [data-page="EDUCATIONAL_TEACHING_WORDS"] .drawer-toggle').checked = false;
+
+    if (target.matches("li")) {
+        console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
+        console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
+
+        await navigate({name: target.dataset.route, userRole: "USER"}); 
+    }
+
+    if (target.matches("button")) {
+        console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
+
+        await handleLogOut(); 
+    }
+
+}); 
+
+
+
+
+document.querySelector('[data-user-role="USER"] [data-page="EDUCATIONAL_TEACHING_WORDS"]').addEventListener("click", async (e) => {
+    console.log(`${EVENT_HANDLER_LOG} lắng nghe sự kiện click trong trang MG giáo dục của user khi click vào mini Card Lời dạy`); 
+
+    const miniCard = e.target.closest(".mini-card"); 
+
+    if (!miniCard) return; 
+    
+    const id = miniCard.dataset.id; 
+    await handleClickMiniCardEducationalTeachingWord(id); 
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ------------------- ROUTE: USER - LIFE LESSONS -------------
 document.querySelector('[data-user-role="USER"] [data-page="LIFE_LESSONS"]').addEventListener("click", async (e) => {
     console.log(`${EVENT_HANDLER_LOG} lắng nghe sự kiện click trong trang bài học của user khi click vào mini card bài học`); 
@@ -5258,6 +5956,118 @@ document.querySelector("#teaching-word-addition").addEventListener("click", asyn
         await handleAddTeachingWord(title, date, content); 
     }
 }); 
+
+
+
+
+
+
+
+
+
+// HÀM CLICK VÀO TRANG EDUCATIONAL TEACHING WORD ADDITION 
+document.querySelector("#educational-teaching-word-addition").addEventListener("click", async (e) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang thêm MG giáo dục mới`); 
+
+    const miniActionEl = e.target.closest('[data-mini-action]'); 
+
+    if (!miniActionEl) return; 
+
+    const miniAction = miniActionEl.dataset.miniAction; 
+
+    if (miniAction === "close") {
+        await handleCloseEducationalTeachingWordAddition(); 
+
+
+    } else if (miniAction === "add") {
+        const title = document.querySelector('#educational-teaching-word-addition [data-content-type="title"]').value; 
+        const content = document.querySelector('#educational-teaching-word-addition [data-content-type="content"]').value; 
+
+
+        await handleAddEducationalTeachingWord(title, content); 
+    }
+}); 
+
+
+
+
+
+
+
+
+
+
+// ---------------- ROUTE: ADMIN EDUCATIONAL TEACHING WORDS ------------------
+
+
+// HÀM CLICK VÀO SIDE NAV 
+document.querySelector('[data-user-role="ADMIN"] [data-page="EDUCATIONAL_TEACHING_WORDS"] .drawer-side').addEventListener("click", async (event) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào side navigation của trang admin lời dạy`); 
+
+    const target = event.target.closest("li, button"); 
+    
+
+    if (!target) return; 
+
+    // đóng sidenav 
+    document.querySelector('[data-user-role="ADMIN"] [data-page="EDUCATIONAL_TEACHING_WORDS"] .drawer-toggle').checked = false;
+
+    if (target.matches("li")) {
+        console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử li`); 
+        console.log(`${EVENT_HANDLER_LOG}   1.2 phần tử li có data.route là: ${target.dataset.route}`); 
+
+        await navigate({name: target.dataset.route, userRole: "ADMIN"}); 
+    }
+
+    if (target.matches("button")) {
+        console.log(`${EVENT_HANDLER_LOG}   1.1 click vào phần tử button`)
+
+        await handleLogOut(); 
+    }
+
+}); 
+
+
+
+
+document.querySelector('[data-user-role="ADMIN"] [data-page="EDUCATIONAL_TEACHING_WORDS"]').addEventListener("click", async (e) => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào trang MG giáo dục của admin`); 
+
+    const teachingWordMiniCard = e.target.closest(".educational-teaching-words .educational-teaching-word"); 
+
+    if (!teachingWordMiniCard) return; 
+    
+    const id = (teachingWordMiniCard.dataset.id); 
+
+    await handleClickAdminEducationalTeachingWordMiniCard(id); 
+}); 
+
+
+
+
+
+
+document.querySelector('[data-user-role="ADMIN"] [data-page="EDUCATIONAL_TEACHING_WORDS"] #add-educational-teaching-word-button').addEventListener("click", async () => {
+    console.log(`${EVENT_HANDLER_LOG} sự kiện click vào nút thêm MG giáo dục trong trang MG giáo dục của admin`); 
+
+    // làm gì? xử lí thôi 
+    await handleClickAddEducationalTeachingWord(); 
+}); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

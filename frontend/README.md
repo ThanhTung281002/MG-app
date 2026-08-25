@@ -103,12 +103,12 @@ const state = {
     } || null, 
 
     route: {
-        name: "LOGIN" || "SIGNUP" || "HOME" || "TEACHING_WORDS" || "LIFE_LESSONS" || "ENTITY", 
-        userRole: "USER" || "ADMIN" || null, 
+        name: "LOGIN" || "SIGNUP" || "HOME" || "TEACHING_WORDS" || "LIFE_LESSONS" || "ENTITY" || initial: "LOG_IN", 
+        userRole: "USER" || "ADMIN" || initial: null, 
         currentEntity: {
             type: "PURPOSE" || "TEACHING_WORD" || "LIFE_LESSON" || "NOTE" || "USER", 
             id: "id of current entity"
-        } || null, 
+        } || initial: null, 
     },
 
     cache: {
@@ -120,7 +120,9 @@ const state = {
                 updatedAt
             }
         }, 
+        educationalTeachingWords: {}
         lifeLessonsReflection: {}, 
+        lifeLessonsMain: {},
         purposes: {
             "id1": {
                 id, 
@@ -157,27 +159,24 @@ const state = {
             }
         },
         users: {}, 
-        lifeLessonsMain: {}
-    }
-
+        
+    },
     ui: {
         loading: true || false, 
         disabled: true || false, 
         fabState: 0 || 1 || 2,
         overlayVisible: false || true || initial: false, 
-        overlayEntity: "NOTE_FREE_WRITE" || "PURPOSE_FREE_WRITE" || "ACTION_ADDITION" || "TEACHING_WORD_ADDITION" || null || initial: null, 
-        saveStatus: "SAVED" || "SAVING" || "EDITTING", 
+        overlayEntity: "NOTE_FREE_WRITE" || "PURPOSE_FREE_WRITE" || "ACTION_ADDITION" || "TEACHING_WORD_ADDITION" || "EDUCATIONAL_TEACHING_WORD_ADDITION" || null || initial: null, 
+        saveStatus: "SAVED" || "SAVING" || "EDITTING" || initial: "SAVED", 
         noteTypeMenuOpen: true || false || initial: false,
-        adminSaveActions: null || "TW_TITLE" || "TW_CONTENT" || "TW_DATE" || "LL_MAIN_CONTENT" || initial: null 
+        adminSaveActions: null || "TW_TITLE" || "TW_CONTENT" || "TW_DATE" || "LL_MAIN_CONTENT" || "ETW_TITLE" || "ETW_CONTENT" || initial: null 
 
 
     }, 
     error: "network error" || null,
-    systemInitializing: true || false, initial: true
-
+    systemInitializing: true || false || initial: true
+    
 }
-
-
 ```
 
 

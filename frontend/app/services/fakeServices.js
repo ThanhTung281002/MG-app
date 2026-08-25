@@ -171,6 +171,41 @@ mà Kami, Sere, Miko, Ima luôn dạy cho.
 
 
 
+
+
+
+
+let fakeEducationalTeachingWords = [
+    {
+        id: "1", 
+        title: "MG giáo dục bóng đá 2025", 
+        content: "Hãy đá với tinh thần xem bóng như là sự sống. SERE đã dạy rằng những ai xem bóng như sự sống thì rất khó mất bóng.",
+        updatedAt: Date.now()
+    },
+    {
+        id: "2", 
+        title: "MG giáo dục bóng đá 2026 pt.1", 
+        content: "Hãy đá với tinh thần xem bóng như là sự sống. SERE đã dạy rằng những ai xem bóng như sự sống thì rất khó mất bóng.",
+        updatedAt: Date.now()
+    },
+    {
+        id: "3", 
+        title: "MG giáo dục bóng đá 2026 pt.2", 
+        content: "Hãy đá với tinh thần xem bóng như là sự sống. SERE đã dạy rằng những ai xem bóng như sự sống thì rất khó mất bóng.",
+        updatedAt: Date.now()
+    },
+    
+]; 
+
+
+
+
+
+
+
+
+
+
 let fakeLifeLessonsReflection = [
     {
         id: "1", 
@@ -1536,6 +1571,122 @@ export async function checkHealth() {
         status: "ok"
     }
 }
+
+
+
+
+
+
+
+export async function getAllEducationalTeachingWords() {
+    console.log(`${API_LOG} lấy toàn bộ MG giáo dục`); 
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+    // 1. lấy toàn bộ MG giáo dục dạng rút gọn
+    const educationalTeachingWords = fakeEducationalTeachingWords.map(edu_tw => ({
+        id: edu_tw.id
+    }))
+
+
+    // 2. return theo yêu cầu. 
+    return {
+        educationalTeachingWords: educationalTeachingWords
+    }
+}
+
+
+
+
+
+
+
+
+
+export async function getEducationalTeachingWord(id) {
+    console.log(`${API_LOG} vào lấy MG giáo dục có id: ${id}`); 
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+    // 1. từ id tìm từ cơ sở dữ liệu
+    const educational_teaching_word = fakeEducationalTeachingWords.find(edu_tw => edu_tw.id === id); 
+
+    if (!educational_teaching_word) {
+        throw new Error("Educational Teaching Word not found"); 
+    }
+
+
+    // 2. return theo yêu cầu 
+    return educational_teaching_word; 
+}
+
+
+
+
+export async function addEducationalTeachingWord(title, content) {
+    console.log(`${API_LOG} thêm lấy MG giáo dục mới có title: ${title} và content: ${content}`); 
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+    
+    // 1. thêm thôi 
+    fakeEducationalTeachingWords.push({
+        id: String(fakeEducationalTeachingWords.length + 1), 
+        title: title, 
+        content: content, 
+        updatedAt: Date.now()
+    }); 
+
+    return {
+        id: String(fakeEducationalTeachingWords.length),
+        createdAt: Date.now()
+    }
+
+}
+
+
+
+
+
+
+
+export async function updateEducationalTeachingWord(id, title, content) {
+    console.log(`${API_LOG} cập nhập cho MG giáo dục: ${id}, với title ${title}, content: ${content}`);
+    
+
+    // 0. giả lập delay
+    await new Promise(resolve => setTimeout(resolve, delay));
+
+
+    // 1. kiểm tra có trong cơ sở dữ liệu không
+    const edu_tw = fakeEducationalTeachingWords.find(tw => tw.id === id); 
+
+    if (!edu_tw) {
+        throw new Error("Educational Teaching Word not found"); 
+    }
+
+    // 2. cập nhập 
+    edu_tw.title = title; 
+    edu_tw.content = content; 
+    edu_tw.updatedAt = Date.now(); 
+
+
+    // 3. trả theo yêu cầu 
+    return {
+        updatedAt: Date.now()
+    }
+}
+
+
+
+
+
+
+
+
 
 
 
