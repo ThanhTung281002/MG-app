@@ -275,6 +275,38 @@ export async function addTeachingWord(title, date, content) {
 
 
 
+
+
+export async function getAllEducationalTeachingWords() {
+    return request("/educational-teaching-words?view=basic");
+}
+
+
+
+export async function getEducationalTeachingWord(id) {
+    return request(`/educational-teaching-words/${encodeURIComponent(id)}`);
+}
+
+
+
+export async function addEducationalTeachingWord(title, content) {
+    return request("/educational-teaching-words", {
+        method: "POST",
+        body: { title, content }
+    });
+}
+
+
+
+export async function updateEducationalTeachingWord(id, title, content) {
+    return request(`/educational-teaching-words/${encodeURIComponent(id)}`, {
+        method: "PUT",
+        body: { title, content }
+    });
+}
+
+
+
 export async function checkHealth() {
     return request("/health", {
         auth: false
