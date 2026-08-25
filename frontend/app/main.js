@@ -1000,6 +1000,7 @@ async function renderRoute() {
                 // render luôn cho 2 trang còn lại
                 await renderUserTeachingWordsPage(); 
                 await renderUserLifeLessonsPage(); 
+                await renderUserEducationalTeachingWordsPage(); 
 
             } else if (state.route.name === "TEACHING_WORDS") {
                 showUserTeachingWordsPage(); 
@@ -1012,12 +1013,23 @@ async function renderRoute() {
                 await renderUnresolvedNotes(); 
 
                 await renderUserLifeLessonsPage(); 
+
+                await renderUserEducationalTeachingWordsPage(); 
             
 
             } else if (state.route.name === "EDUCATIONAL_TEACHING_WORDS") {
                 showUserEducationalTeachingWordsPage(); 
                 await renderUserEducationalTeachingWordsPage(); 
 
+                // render cho 3 trang lớn còn lại 
+                await renderUserLifeLessonsPage(); 
+
+                await renderReflectionTeachingWord(); 
+                await renderlatestLifeLessons(); 
+                await renderActivePurposes(); 
+                await renderUnresolvedNotes(); 
+
+                await renderUserTeachingWordsPage(); 
 
             } else if (state.route.name === "LIFE_LESSONS") {
                 showUserLifeLessonsPage(); 
@@ -1030,6 +1042,8 @@ async function renderRoute() {
                 await renderUnresolvedNotes(); 
 
                 await renderUserTeachingWordsPage(); 
+
+                await renderUserEducationalTeachingWordsPage(); 
 
 
             } else {
