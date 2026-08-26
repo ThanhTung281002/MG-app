@@ -2653,7 +2653,7 @@ async function renderUserEducationalTeachingWordsPage() {
 
 
 function createEducationalTeachingWordMiniCard(educational_teaching_word) {
-    return `<button data-id="${educational_teaching_word.id}" class="btn mini-card flex justify-center items-center bg-white rounded-xl min-h-20 text-xl font-semibold text-center text-[#4A462F] border border-[#F3D96B] px-12">
+    return `<button data-id="${educational_teaching_word.id}" class="btn mini-card text-center bg-white rounded-xl min-h-20 h-auto text-xl font-semibold text-[#4A462F] border border-[#F3D96B] px-8 py-4">
                             ${educational_teaching_word.title}
                         </button>`; 
 }
