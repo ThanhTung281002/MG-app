@@ -1439,7 +1439,7 @@ function createTeachingWordCard(teachingWord) {
     // chỗ content phải là bản tóm tắt của nó mới hợp lí 
     return `<div class="teaching-word-card card mt-4 shadow-md bg-white rounded-4xl">
                                 <div class="card-body relative">
-                                    <h1 class="card-title text-2xl">${teachingWord.title}</h1>
+                                    <h1 class="card-title text-2xl whitespace-pre-wrap">${teachingWord.title}</h1>
                                     <h2 class="text-xl">${teachingWord.displayCode}</h2>
                                     <p class="whitespace-pre-wrap mt-4 line-clamp-[16]">${teachingWord.content}</p>
 
@@ -1804,7 +1804,7 @@ async function renderTeachingWordEntity() {
 function createTeachingWordEntity(teachingWord) {
     console.log(`${RENDER_LOG}              1.5.1.1 tạo ra nội dung của thực thể teaching word có: ${JSON.stringify(teachingWord, null, 2)}`); 
 
-    return `<h1 class="text-3xl">${teachingWord.title}</h1>
+    return `<h1 class="text-3xl whitespace-pre-wrap">${teachingWord.title}</h1>
                         <div class="mt-8 text-xl whitespace-pre-wrap">${teachingWord.content}</div>
                     
                     
@@ -1891,7 +1891,7 @@ async function renderEducationalTeachingWordEntity() {
 
 
 function createEducationalTeachingWordEntity(educational_teaching_word) {
-    return `<h1 class="text-3xl">${educational_teaching_word.title}</h1>
+    return `<h1 class="text-3xl whitespace-pre-wrap">${educational_teaching_word.title}</h1>
                         <div class="mt-8 text-xl whitespace-pre-wrap">${educational_teaching_word.content}</div>
                     
                     
@@ -3093,7 +3093,7 @@ function createAdminTeachingWordEntity(teachingWord) {
                     </div> 
 
                     <div class="text-base font-semibold">Tiêu đề</div>
-                    <div data-content-type="title" contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 mt-2 p-2 px-4">${teachingWord.title}</div>
+                    <div data-content-type="title" contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 max-h-28 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${teachingWord.title}</div>
                 </div>
 
                 <div class="relative date">
@@ -3168,7 +3168,7 @@ function createAdminEducationalTeachingWordEntity(educational_teaching_word) {
                     </div> 
 
                     <div class="text-base font-semibold">Tiêu đề</div>
-                    <div data-content-type="title" contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 mt-2 p-2 px-4">${educational_teaching_word.title}</div>
+                    <div data-content-type="title" contenteditable="true" class="text-xl outline-none border border-black rounded-lg min-h-20 max-h-28 mt-2 p-2 px-4 whitespace-pre-wrap overflow-auto">${educational_teaching_word.title}</div>
                 </div>
 
                 <div class="relative content">
