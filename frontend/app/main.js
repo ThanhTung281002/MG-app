@@ -2845,6 +2845,26 @@ async function renderAdminTeachingWordsPage() {
             }
         }
 
+
+        // 1.1 sắp xếp lại từ mới nhất đến cũ nhất theo ngày đăng
+        tws.sort((a, b) => {
+            const A = parseTeachingWordCode(state.cache.teachingWords[a.id].displayCode);
+            const B = parseTeachingWordCode(state.cache.teachingWords[b.id].displayCode);
+
+            if (A.year !== B.year) {
+                return B.year - A.year;
+            }
+
+            if (A.week !== B.week) {
+                return B.week - A.week;
+            }
+
+            return B.day - A.day;
+        });
+
+
+    
+
         // 2. render ra DOM 
         const container = document.querySelector('[data-user-role="ADMIN"] [data-page="TEACHING_WORDS"] .teaching-words'); 
         container.innerHTML = ""; 
@@ -2870,6 +2890,28 @@ function createAdminTeachingWordMiniCard(teachingWord) {
                                 <span class="mr-2 font-light">${teachingWord.displayCode}</span> ${teachingWord.title}
                             </div>`; 
 }
+
+
+
+
+
+function parseTeachingWordCode(displayCode) {
+    const match = displayCode.match(/^(T[2-7]|CN)W(\d+)Y(\d+)$/);
+
+    if (!match) {
+        return null;
+    }
+
+    const [, dayText, weekText, yearText] = match;
+
+    return {
+        day: dayText === "CN" ? 1 : Number(dayText.slice(1)),
+        week: Number(weekText),
+        year: 2000 + Number(yearText)
+    };
+}
+
+
 
 
 
