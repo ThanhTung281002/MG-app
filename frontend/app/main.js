@@ -2886,8 +2886,9 @@ async function renderAdminTeachingWordsPage() {
 
 
 function createAdminTeachingWordMiniCard(teachingWord) {
-    return `<div data-id="${teachingWord.id}" class="teaching-word min-h-24 border-2 border-black rounded-lg p-2 text-lg px-4 shadow-sm">
-                                <span class="mr-2 font-light">${teachingWord.displayCode}</span> ${teachingWord.title}
+    return `<div data-id="${teachingWord.id}" class="teaching-word min-h-24 border-2 border-black/35 rounded-lg p-3 text-xl px-4 shadow-sm">
+                                <span class="mr-2 font-light">${teachingWord.displayCode}</span> 
+                                <span class="font-semibold">${teachingWord.title} </span>
                             </div>`; 
 }
 
